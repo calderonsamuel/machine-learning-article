@@ -1,5 +1,6 @@
 # Librerias
 ```{python}
+# Importaciones
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -10,19 +11,35 @@ from sklearn.decomposition import PCA
 ```
 # Cargar data
 ```{python}
+# Cargar data
 df = pd.read_csv("data/OnlineNewsPopularity.csv")
 ```
 # Metodos practicos
 ```{python}
+# Funciones usables reusables
 # Eliminar espacios vacios de variables
 def borrar_espacios(text_param: str) -> str:
   return text_param.replace(' ', '')
-
 def quitar_espacios_vacíos_df(df_param):
   for key in df.columns:
     df_param.rename(columns={str(key): borrar_espacios(str(key))}, inplace=True)
-
   return df_param
+# Mostrar grafico de correlacion
+def show_correlation(df_param):
+    # Matriz de correlacion
+    matriz_correlacion = df_param.corr()
+
+    plt.matshow(matriz_correlacion, cmap="coolwarm")
+    plt.colorbar()
+    plt.show()
+# Mostrar grafico codo
+def show_codo_graf(ve_param, vc_param):
+    # Visualizar gráfico de codo
+    plt.plot(range(1, len(ve_param) + 1), vc_param)
+    plt.xlabel('Número de componentes')
+    plt.ylabel('Varianza explicada acumulada')
+    plt.grid(True)
+    plt.show()
 ```
 # Ordenamiento
 ```{python}
@@ -37,15 +54,7 @@ df.drop(['url'], axis=1, inplace=True) # Todos los urls estan agregadas pero ya 
 ```
 # Matriz de correlacion
 ```{python}
-# Matriz de correlacion
-matriz_correlacion = df.corr()
-```
-
-```{python}
-# Visualizar la matriz de correlación utilizando un mapa de calor:
-plt.matshow(matriz_correlacion, cmap="coolwarm")
-plt.colorbar()
-plt.show()
+show_correlation(df)
 ```
 # Disminuir dimensionalidad con PCA
 ```{python}
@@ -64,13 +73,9 @@ variance_explained = pca.explained_variance_ratio_
 variance_cumulada = np.cumsum(variance_explained)
 ```
 ```{python}
-# Visualizar gráfico de codo
-plt.plot(range(1, len(variance_explained) + 1), variance_cumulada)
-plt.xlabel('Número de componentes')
-plt.ylabel('Varianza explicada acumulada')
-plt.grid(True)
-plt.show()
+show_codo_graf(variance_explained, variance_cumulada)
 ```
+# Establecer umbral de varianza explicada
 ```{python}
 # Establecer umbral de varianza explicada
 umbral_varianza = 0.8
@@ -80,12 +85,17 @@ componentes_seleccionados = np.where(variance_cumulada >= umbral_varianza)[0]
 numero_componentes = len(componentes_seleccionados)
 
 print(f"Número de componentes seleccionados para explicar {umbral_varianza:.2f} de la varianza: {numero_componentes}")
-
-```
-
-```{python}
-df['shares'].value_counts() # Todavia no lo chequee
 ```
 ```{python}
+componentes_descartados = np.where(variance_cumulada < umbral_varianza)[0]
 
+# Obtener nombres de las columnas descartadas
+columnas_descartadas = df.columns[componentes_descartados]
+# Eliminar columnas descartadas por nombre
+df.drop(columnas_descartadas, axis=1, inplace=True)
+```
+
+
+```{python}
+df.columns
 ```
