@@ -1,0 +1,11 @@
+# Librerias
+```{python}
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+```
+
+# Cargar data
+```{python}
+news_data = pd.read_csv("data/OnlineNewsPopularity.csv")
+```
