@@ -1,0 +1,111 @@
+---
+title: "Some title for my paper"
+author:
+  - name: Norah Jones 
+    affiliation: Spacely Sprockets
+  - name: Juan Perez 
+    affiliation: Looney Toons
+  - name: Reina Pachas 
+    affiliation: Looney Toons
+abstract: "This document is very important. It provides an overview of using Quarto as a tool for producing PDF outputs for data science projects."
+bibliography: references.bib
+
+format: 
+  ieee-pdf: default
+
+jupyter: python3
+
+execute: 
+  echo: false
+---
+
+# Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+# Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{python}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{python}
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed). This is the default behavior.
+
+When you use `echo: true` you will show both the code and the output.
+
+```{python}
+#| echo: true
+print("Hello")
+```
+
+# Using figures and equations
+
+Using `fig-cap` allows you to specifiy a caption for a figure. Use it in code blocks where the last line prints a plot.
+
+```{python}
+#| fig-cap: Radial plot
+#| label: fig-radial
+import numpy as np
+import matplotlib.pyplot as plt
+
+r = np.arange(0, 2, 0.01)
+theta = 2 * np.pi * r
+fig, ax = plt.subplots(
+  subplot_kw = {'projection': 'polar'} 
+)
+ax.plot(theta, r)
+ax.set_rticks([0.5, 1, 1.5, 2])
+ax.grid(True)
+plt.show()
+```
+
+You can write Latex equiations:
+
+$$
+E=mc^2
+$$
+
+If the label attribute of a code chunk starts with `fig-` when it renders a  plot, you can reference it. For example, here we reference @fig-radial.
+
+Be attentive as some things might need manual tweaking.
+
+# Using other formating
+
+Multiple formatting options
+
+1. You can use lists
+1. They will numerate by themselves
+1. No need to worry about counting
+
+You are not restricted to numbered lists.
+
+- first
+- second
+- third
+
+## Use of sub headers
+
+Organize your document as you please. How much organization do you really need?
+
+## Another subheader
+
+Does this looks nice to you? This document follows Markdown conventions.
+
+### A deeper level
+
+However, is best that you don't go too deep because lower levels might not be fully supported in this template.
+
+# Citations
+
+You can add citationsfor something some said at some point. Your references should be inside the `references.bib` file. Some people might have already researched this field [see @misc_online_news_popularity_332, pp. 1-2].
+
+# References
+
