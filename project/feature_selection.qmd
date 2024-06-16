@@ -36,7 +36,7 @@ def show_correlation(df_param):
 def show_codo_graf(ve_param, vc_param):
     # Visualizar gráfico de codo
     plt.plot(range(1, len(ve_param) + 1), vc_param)
-    plt.xlabel('Número de componentes')
+    plt.xlabel('Número de caracteristicas')
     plt.ylabel('Varianza explicada acumulada')
     plt.grid(True)
     plt.show()
@@ -67,7 +67,7 @@ pca = PCA()
 pca.fit(df_scaled)
 ```
 ```{python}
-# Obtener varianza explicada por cada componente
+# Obtener varianza explicada por cada caracteristica
 variance_explained = pca.explained_variance_ratio_
 # Calcular varianza acumulada
 variance_cumulada = np.cumsum(variance_explained)
@@ -79,23 +79,32 @@ show_codo_graf(variance_explained, variance_cumulada)
 ```{python}
 # Establecer umbral de varianza explicada
 umbral_varianza = 0.8
-# Seleccionar componentes principales que cumplan con el umbral
-componentes_seleccionados = np.where(variance_cumulada >= umbral_varianza)[0]
-# Número de componentes seleccionados
-numero_componentes = len(componentes_seleccionados)
+# Seleccionar caracteristicas principales que cumplan con el umbral
+caracteristicas_seleccionados = np.where(variance_cumulada >= umbral_varianza)[0]
+# Número de caracteristicas seleccionados
+numero_caracteristicas = len(caracteristicas_seleccionados)
 
-print(f"Número de componentes seleccionados para explicar {umbral_varianza:.2f} de la varianza: {numero_componentes}")
+print(f"Número de caracteristicas seleccionados para explicar {umbral_varianza:.2f} de la varianza: {numero_caracteristicas}")
 ```
+# Descartar caracteristicas no seleccionadas
 ```{python}
-componentes_descartados = np.where(variance_cumulada < umbral_varianza)[0]
-
+# Descartar caracteristicas no seleccionados
+caracteristicas_descartados = np.where(variance_cumulada < umbral_varianza)[0]
 # Obtener nombres de las columnas descartadas
-columnas_descartadas = df.columns[componentes_descartados]
+columnas_descartadas = df.columns[caracteristicas_descartados]
 # Eliminar columnas descartadas por nombre
-df.drop(columnas_descartadas, axis=1, inplace=True)
+reduced_df = df.drop(columnas_descartadas, axis=1)
 ```
-
-
+# Imprimir caracteristicas selecionadas y descartados
 ```{python}
-df.columns
+# Imprimir caracteristicas
+print('Caracteristicas seleccionadas:')
+print(df.columns[caracteristicas_seleccionados])
+print('Caracteristicas descartadas:')
+print(columnas_descartadas)
+```
+# Descargar df preparado
+```{python}
+# Descargar caracteristicas preparadas
+reduced_df.to_csv('data/ready_to_train.csv', index=False)
 ```
