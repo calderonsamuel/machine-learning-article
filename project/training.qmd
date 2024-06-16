@@ -9,3 +9,5 @@ import matplotlib.pyplot as plt
 ```{python}
 news_data = pd.read_csv("data/OnlineNewsPopularity.csv")
 ```
+
+# Modelo de regresion

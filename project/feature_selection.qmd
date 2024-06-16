@@ -1,0 +1,36 @@
+# Librerias
+```{python}
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+```
+# Cargar data
+```{python}
+df = pd.read_csv("data/OnlineNewsPopularity.csv")
+```
+# Metodos practicos
+```{python}
+# Eliminar espacios vacios de variables
+def borrar_espacios(text_param: str) -> str:
+  return text_param.replace(' ', '')
+
+def quitar_espacios_vacíos_df(df_param):
+  for key in df.columns:
+    df_param.rename(columns={str(key): borrar_espacios(str(key))}, inplace=True)
+
+  return df_param
+```
+# Ordenamiento
+```{python}
+# Mostrar data
+df.head(5)
+```
+# Eliminacion de caracteristicas Irrelevantes
+```{python}
+# Eliminar variables no ocupadas
+df = quitar_espacios_vacíos_df(df)
+df.drop(['url'], axis=1, inplace=True) # Todos los urls estan agregadas pero ya no existen, por esta razon quitamos el campo.
+```
