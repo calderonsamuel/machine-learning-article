@@ -30,7 +30,8 @@
 				"streetsidesoftware.code-spell-checker",
 				"quarto.quarto",
 				"ms-toolsai.jupyter",
-				"ms-toolsai.vscode-jupyter-slideshow"
+				"ms-toolsai.vscode-jupyter-slideshow",
+				"tomoki1207.pdf"
 			]
 		}
 	},
