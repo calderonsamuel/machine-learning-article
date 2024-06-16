@@ -1,3 +1,3 @@
 quarto install chromium
-quarto add dfolio/quarto-ieee --no-prompt
+quarto add quarto-journals/elsevier --no-prompt
 pip3 install -r requirements.txt
