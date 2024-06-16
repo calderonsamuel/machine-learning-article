@@ -1,0 +1,185 @@
+---
+title: "Online news popularity"
+author: "Calderon, S., Arenas, K.,  Torres, Jose."
+keep-tex: true
+format: 
+  elsevier-pdf:
+    journal:
+      formatting: preprint
+      model: 3p
+      layout: twocolumn
+
+execute: 
+  echo: false
+  warning: false
+
+jupyter: python3
+
+bibliography: references.bib
+---
+
+```{python}
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+```
+
+```{python}
+news_data = pd.read_csv("data/OnlineNewsPopularity.csv")
+```
+
+# Introducción
+
+El estudio de la popularidad de las noticias en línea ha cobrado gran relevancia en la última década, ya que los medios compiten por la atención en un entorno digital saturado. La capacidad de predecir qué noticias serán populares es esencial para optimizar estrategias de contenido y aumentar la participación de la audiencia. Para abordar este desafío, se han desarrollado modelos basados en datos históricos y aprendizaje automático que consideran una variedad de características, como el contenido de la noticia, el comportamiento del usuario y las dinámicas de las plataformas de distribución.
+
+El objetivo de este artículo es desarrollar un modelo de aprendizaje automático que logre predecir la popularidad de los artículos de noticias en línea antes de su publicación. La sección de estado del arte presenta trabajos previos en la materia, incluyendo la metodología y resultados. La sección Diseño del experimento se centra en explicar la metodología de este artículo, incluyendo la descripción del conjunto de datos y los modelos a ser entrenados.
+
+# Estado del arte
+
+Esta sección proporciona un resumen cohesivo de estudios de investigación enfocados en medir y predecir la popularidad de los artículos de noticias en línea. Los dos primeros estudios abordan los desafíos de predecir la popularidad de las noticias en el momento de su publicación, mientras que los últimos tres profundizan en la aplicación de técnicas de aprendizaje automático en un único conjunto de datos para mejorar las capacidades predictivas de la popularidad de los artículos de noticias.
+
+[@arapakis2014] investiga las dificultades asociadas con predecir la popularidad de los artículos de noticias inmediatamente después de su publicación. Utilizando un conjunto de datos de 13,319 artículos de Yahoo News, los autores critican investigaciones previas, que afirmaban una alta precisión en la predicción de la popularidad de las noticias utilizando características basadas en el contenido. Se argumenta que la tarea es más compleja de lo que se pensaba, principalmente debido a la alta asimetría en la distribución de popularidad. Sus experimentos revelan que los métodos de clasificación y regresión existentes están sesgados hacia la predicción de artículos impopulares, fallando en identificar con precisión los populares, que son cruciales para la identificación temprana. El estudio concluye que los métodos actuales son inadecuados para predecir la popularidad de las noticias desde el inicio utilizando solo características basadas en el contenido, destacando la necesidad de enfoques más robustos.
+
+En [@hensinger2012], los autores abordan el desafío de predecir qué artículos de noticias aparecerán en una lista de "más leídos". Proponen que la popularidad es un concepto relativo influenciado por el atractivo de los artículos publicados simultáneamente. Empleando una función lineal en una representación de bolsa de palabras, utilizan Máquinas de Soporte Vectorial de Ranking (Ranking SVMs) entrenadas en pares de artículos de la misma fecha y medio. El modelo, que utiliza información mínima como contenido textual, fechas de publicación y estado de popularidad, predice con éxito los artículos populares e identifica palabras clave influyentes. Utilizando un conjunto de datos de diez medios importantes en inglés durante un año, el estudio logra precisiones que a menudo superan el 60%, superando los métodos de clasificación binaria. Esta investigación destaca la naturaleza dinámica del atractivo de las noticias y proporciona un marco robusto para predecir la popularidad de las noticias.
+
+En [@fernandes2015], se introduce un Sistema Proactivo de Soporte de Decisiones Inteligente (IDSS) está diseñado para predecir la popularidad de los artículos de noticias en línea antes de su publicación. Utilizando un conjunto de datos de 39,000 artículos del sitio web Mashable, el IDSS aprovecha diversas características, incluyendo contenido digital, popularidad de noticias referenciadas, participación de palabras clave y análisis de sentimientos. El sistema emplea modelos de aprendizaje automático como Bosques Aleatorios (Random Forest), Adaptive Boosting y Máquinas de Soporte Vectorial (SVM) para una tarea de clasificación binaria. El modelo Random Forest alcanza un poder de discriminación del 73%, mientras que un módulo de optimización que utiliza búsqueda local por escalada estocástica mejora la probabilidad de popularidad estimada en 15 puntos porcentuales. El IDSS no solo predice, sino que también sugiere modificaciones en el contenido y la estructura del artículo para mejorar la popularidad esperada, demostrando ser una herramienta valiosa para los autores de noticias en línea.
+
+Usando el mismo conjunto de datos, [@Ren2015PredictingAE] evalúa diversas técnicas de aprendizaje automático para predecir la popularidad de los artículos de noticias en línea. Se obtuvieron conocimientos iniciales utilizando regresión lineal y logística, logrando la regresión logística una precisión del 66% al categorizar la variable objetivo en categorías binarias. Usando SVM, los autores enfrentaron inicialmente problemas de alto sesgo, pero mostraron mejoras marginales con núcleos más complejos, alcanzando una precisión del 55%. Sin embargo, el modelo de Random Forest emergió como el más efectivo, logrando una precisión del 70% con parámetros óptimos. Al aprovechar múltiples árboles de decisión y subconjuntos de características, Random Forest mitigó eficazmente la varianza, proporcionando las predicciones más precisas.
+
+Finalmente, [@khan2018] explora la predicción de la popularidad de artículos de noticias utilizando el conjunto de datos de Mashable mediante diversas técnicas de aprendizaje automático. Se aplicaron métodos de selección de características como la selección univariada, la eliminación recursiva de características y el análisis de componentes principales para identificar las características más relevantes que influyen en la popularidad de los artículos. Evaluaron once modelos de clasificación, incluidos Naïve Bayes, regresión logística, árboles de decisión, redes neuronales, bosques aleatorios y máquinas de vectores de soporte. Entre estos, el método de potenciación del gradiente (gradient boosting) surgió como el modelo más eficaz, logrando una precisión del 79.7%. El estudio concluyó que los métodos en ensamble, en particular gradient boosting, son los que mejor funcionan para predecir la popularidad de los artículos de noticias.
+
+Esta colección de investigaciones destaca las complejidades y avances en la predicción de la popularidad de las noticias en línea. La predicción temprana desde el inicio sigue siendo un desafío debido a las distribuciones de popularidad sesgadas y los sesgos de los modelos. Sin embargo, las técnicas sofisticadas de aprendizaje automático y las estrategias exhaustivas de preprocesamiento muestran promesas para mejorar la precisión de la predicción. La investigación y desarrollo continuos de metodologías robustas son cruciales para futuros avances en este dominio.
+
+# Diseño del experimento
+
+Para este estudio, se utilizará el conjunto de datos elaborado en [@fernandes2015]. Cuenta con 59 características y una columna target. esta última contiene información de las veces que el artículo fue compartido (numérica), siendo esta la medición de popularidad. En general, el conjunto de datos permite un análisis exhaustivo de las características del contenido, la participación del usuario y la efectividad de varios tipos de contenido a lo largo de diferentes canales y en el tiempo. A continuación, se presenta una descripción más detallada.
+
+## Descripción del conjunto de datos
+
+El conjunto de datos proporciona una visión general exhaustiva del contenido en línea, incorporando varias métricas y características relacionadas con atributos textuales, elementos multimedia e indicadores de participación. Captura atributos textuales clave, como el número de tokens en los títulos y el contenido, la proporción de tokens únicos y la longitud promedio de los tokens, ofreciendo información sobre la complejidad y estructura del contenido. El conjunto de datos también incluye métricas de palabras clave, que destacan la relevancia e importancia de las palabras clave en el contenido. Además, registra el número de hipervínculos y elementos multimedia como imágenes y videos, reflejando la riqueza y los aspectos multimedia de los artículos o publicaciones.
+
+Además, el conjunto de datos clasifica el contenido en diferentes canales, como estilo de vida, entretenimiento, negocios, redes sociales, tecnología y noticias mundiales, proporcionando una clara clasificación de los tipos de contenido. Se incluye información temporal a través de variables que indican el día de la semana en que se publicó el contenido y si se publicó en un fin de semana. En estos casos, las variables han sido incluidas como binarias.
+
+```{python}
+# Select columns containing "is"
+selected_data = news_data.filter(like='is')
+
+# Calculate the mean of each selected column
+mean_data = selected_data.mean()
+
+# Create a new DataFrame for plotting
+plot_data = mean_data.reset_index()
+plot_data.columns = ['variable', 'prop']
+
+# Create labels
+plot_data['label'] = (plot_data['prop'] * 100).round(1).astype(str) + ' '
+
+# Plot using seaborn and matplotlib
+plt.figure(figsize=(10, 6))
+barplot = sns.barplot(x='prop', y='variable', data=plot_data, color='lightblue')
+for index, row in plot_data.iterrows():
+    barplot.text(row.prop, index, row.label, color='black', ha="center", va="center", fontweight='bold')
+barplot.set_xlabel("Porcentaje de valores '1'")
+barplot.set_ylabel("")
+barplot.set_xticklabels([])
+barplot.figure.suptitle('')
+plt.show()
+```
+
+
+El conjunto de datos también presenta componentes de análisis semántico latente y puntuaciones de sentimiento, capturando el tono emocional y la objetividad del contenido. Las métricas de participación, como el número de veces que se comparte y las referencias a sí mismo, son cruciales para comprender el alcance e impacto del contenido. Todas estas son variables continuas.
+
+## Metodología
+
+# Referencias
+
+# Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+# Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{python}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{python}
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed). This is the default behavior.
+
+When you use `echo: true` you will show both the code and the output.
+
+```{python}
+#| echo: true
+print("Hello")
+```
+
+# Using figures and equations
+
+Using `fig-cap` allows you to specifiy a caption for a figure. Use it in code blocks where the last line prints a plot.
+
+```{python}
+#| fig-cap: Radial plot
+#| label: fig-radial
+import numpy as np
+import matplotlib.pyplot as plt
+
+r = np.arange(0, 2, 0.01)
+theta = 2 * np.pi * r
+fig, ax = plt.subplots(
+  subplot_kw = {'projection': 'polar'} 
+)
+ax.plot(theta, r)
+ax.set_rticks([0.5, 1, 1.5, 2])
+ax.grid(True)
+plt.show()
+```
+
+You can write Latex equiations:
+
+$$
+E=mc^2
+$$
+
+If the label attribute of a code chunk starts with `fig-` when it renders a  plot, you can reference it. For example, here we reference @fig-radial.
+
+Be attentive as some things might need manual tweaking.
+
+# Using other formating
+
+Multiple formatting options
+
+1. You can use lists
+1. They will numerate by themselves
+1. No need to worry about counting
+
+You are not restricted to numbered lists.
+
+- first
+- second
+- third
+
+## Use of sub headers
+
+Organize your document as you please. How much organization do you really need?
+
+## Another subheader
+
+Does this looks nice to you? This document follows Markdown conventions.
+
+### A deeper level
+
+However, is best that you don't go too deep because lower levels might not be fully supported in this template.
+
+# Citations
+
+You can add citationsfor something some said at some point. Your references should be inside the `references.bib` file. Some people might have already researched this field [see @misc_online_news_popularity_332, pp. 1-2].
+
+# References
+
