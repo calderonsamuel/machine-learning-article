@@ -1,6 +1,6 @@
 ---
 title: "Online news popularity"
-author: "Calderon, S., Arenas, K.,  Torres, Jose."
+author: "Calderon, S., Arenas, K.,  Torres, J. L."
 keep-tex: true
 format: 
   elsevier-pdf:
