@@ -3,6 +3,7 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
@@ -36,19 +37,54 @@ df.drop(['url'], axis=1, inplace=True) # Todos los urls estan agregadas pero ya 
 ```
 # Matriz de correlacion
 ```{python}
+# Matriz de correlacion
 matriz_correlacion = df.corr()
 ```
 
 ```{python}
-# Grafica matriz de correlacion
+# Visualizar la matriz de correlación utilizando un mapa de calor:
 plt.matshow(matriz_correlacion, cmap="coolwarm")
 plt.colorbar()
 plt.show()
 ```
+# Disminuir dimensionalidad con PCA
+```{python}
+# Normalizar datos
+scaler = StandardScaler()
+df_scaled = scaler.fit_transform(df)
+# Crear objeto PCA
+pca = PCA()
+# Ajustar el modelo PCA a los datos normalizados
+pca.fit(df_scaled)
+```
+```{python}
+# Obtener varianza explicada por cada componente
+variance_explained = pca.explained_variance_ratio_
+# Calcular varianza acumulada
+variance_cumulada = np.cumsum(variance_explained)
+```
+```{python}
+# Visualizar gráfico de codo
+plt.plot(range(1, len(variance_explained) + 1), variance_cumulada)
+plt.xlabel('Número de componentes')
+plt.ylabel('Varianza explicada acumulada')
+plt.grid(True)
+plt.show()
+```
+```{python}
+# Establecer umbral de varianza explicada
+umbral_varianza = 0.8
+# Seleccionar componentes principales que cumplan con el umbral
+componentes_seleccionados = np.where(variance_cumulada >= umbral_varianza)[0]
+# Número de componentes seleccionados
+numero_componentes = len(componentes_seleccionados)
 
+print(f"Número de componentes seleccionados para explicar {umbral_varianza:.2f} de la varianza: {numero_componentes}")
+
+```
 
 ```{python}
-df['actions'].value_counts() # Todavia no lo chequee
+df['shares'].value_counts() # Todavia no lo chequee
 ```
 ```{python}
 
