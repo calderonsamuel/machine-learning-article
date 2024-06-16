@@ -34,3 +34,22 @@ df.head(5)
 df = quitar_espacios_vacíos_df(df)
 df.drop(['url'], axis=1, inplace=True) # Todos los urls estan agregadas pero ya no existen, por esta razon quitamos el campo.
 ```
+# Matriz de correlacion
+```{python}
+matriz_correlacion = df.corr()
+```
+
+```{python}
+# Grafica matriz de correlacion
+plt.matshow(matriz_correlacion, cmap="coolwarm")
+plt.colorbar()
+plt.show()
+```
+
+
+```{python}
+df['actions'].value_counts() # Todavia no lo chequee
+```
+```{python}
+
+```
