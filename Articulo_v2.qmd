@@ -1,6 +1,7 @@
 ---
-title: "Online news popularity"
-author: "Calderon, S., Arenas, K.,  Torres, J. L."
+title: "Predecir la popularidad de noticias en línea utilizando modelos de clasificación y/o regresión"
+author: "Calderon, S., Arenas, K.,  Torres, J."
+afiliación: "Pontificia Universidad Católica del Perú"
 keep-tex: true
 format: 
   elsevier-pdf:
