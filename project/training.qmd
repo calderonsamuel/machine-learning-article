@@ -20,9 +20,7 @@ from sklearn.model_selection import KFold
 # Cargar data
 ```{python}
 # Cargar data
-# Verificar que el archivo exista en el directorio 'data'
 df = pd.read_csv("data/ReadyToTrain.csv")
-df
 ```
 # Separar variables predictoras y objetivo
 ```{python}
@@ -34,17 +32,17 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_
 ```
 # Metodos de Entrenaiento
 ```{python}
-# Bosque aleatorio      -> 0.045276831882961284
+# Bosque aleatorio 
 modelo_bosque_aleatorio = RandomForestClassifier(n_estimators=50, random_state=42)
 modelo_bosque_aleatorio.fit(x_train, y_train)
 ```
 ```{python}
-# Regresion Logistica   -> 0.05978055240257284
+# Regresion Logistica
 modelo_regresion_logistica = LogisticRegression()
 modelo_regresion_logistica.fit(x_train, y_train)
 ```
 ```{python}
-# K-Nearest Neighbors   -> 
+# K-Nearest Neighbors
 modelo_knn = KNeighborsRegressor(n_neighbors=10)
 modelo_knn.fit(x_train, y_train)
 # Evaluacion del Modelo
@@ -87,10 +85,6 @@ for train_index, test_index in kfold.split(x, y):
 ```{python}
 # Hacer predicciones en el conjunto de prueba
 y_pred = modelo_regresion_logistica.predict(x_test)
-```
-# Hacer predicciones en el conjunto de prueba
-```{python}
-
 accuracy = accuracy_score(y_test, y_pred)
 print("Accuracy:", accuracy)
 ```
