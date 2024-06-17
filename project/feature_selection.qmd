@@ -108,3 +108,28 @@ print(columnas_descartadas)
 # Descargar caracteristicas preparadas
 reduced_df.to_csv('data/ReadyToTrain.csv', index=False)
 ```
+
+
+# Tecnicas para evaluar caracteristicas (Revisar)
+```{python}
+# Codificación binaria para variables categóricas con dos valores (True/False)
+data['data_channel_is_lifestyle'] = data['data_channel_is_lifestyle'].astype(int)
+data['weekday_is_monday'] = data['weekday_is_monday'].astype(int)
+
+# Codificación one-hot encoding para variables categóricas con múltiples valores
+from sklearn.preprocessing import OneHotEncoder
+
+encoder = OneHotEncoder(handle_unknown='ignore')
+data_encoded = encoder.fit_transform(data[['data_channel_is_entertainment', 'data_channel_is_bus', ...]])
+data = pd.concat([data, data_encoded], axis=1)
+```
+
+```{python}
+# Manejo de valores faltantes.
+# Imputación de valores faltantes con la mediana
+from sklearn.impute import SimpleImputer
+
+imputer = SimpleImputer(strategy='median')
+data_imputed = imputer.fit_transform(data)
+data = pd.DataFrame(data_imputed, columns=data.columns)
+```

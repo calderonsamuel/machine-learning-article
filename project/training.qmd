@@ -4,13 +4,15 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+#KNN
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.metrics import mean_squared_error, r2_score
 ```
 
 # Cargar data
@@ -30,28 +32,39 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_
 ```
 # Metodos de Entrenaiento
 ```{python}
-# Bosque aleatorio -> 0.045276831882961284
+# Bosque aleatorio      -> 0.045276831882961284
 modelo_bosque_aleatorio = RandomForestClassifier(n_estimators=50, random_state=42)
 modelo_bosque_aleatorio.fit(x_train, y_train)
 ```
 ```{python}
-# Regresion Logistica -> 0.05978055240257284
+# Regresion Logistica   -> 0.05978055240257284
 modelo_regresion_logistica = LogisticRegression()
 modelo_regresion_logistica.fit(x_train, y_train)
 ```
+```{python}
+# K-Nearest Neighbors   -> 
+modelo_knn = KNeighborsRegressor(n_neighbors=10)
+modelo_knn.fit(x_train, y_train)
+# Evaluacion del Modelo
+y_pred = modelo_knn.predict(x_test)
 
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
 
+print("Error cuadrático medio:", mse)
+print("Coeficiente de determinación:", r2)
+```
 
 
 # Hacer predicciones en el conjunto de prueba
 ```{python}
 # Hacer predicciones en el conjunto de prueba
-y_pred = modelo_bosque_aleatorio.predict(x_test)
+y_pred = modelo_knn.predict(x_test)
 ```
 # Hacer predicciones en el conjunto de prueba
 ```{python}
 # Hacer predicciones en el conjunto de prueba
-precision = accuracy_score(y_test, y_pred)
+precision = modelo_knn(y_test, y_pred)
 print("Precisión:", precision)
 ```
 # Evaluacion del Modelo
@@ -67,5 +80,8 @@ print("Precisión:", accuracy)
 print("Precisión:", precision)
 print("Recuperación:", recall)
 print("Puntuación F1:", f1)
+```
+
+```{python}
 
 ```
