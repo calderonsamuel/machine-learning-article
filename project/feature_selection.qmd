@@ -1,0 +1,208 @@
+# Librerias
+```{python}
+# Importaciones
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+```
+# Cargar data
+```{python}
+# Cargar data
+df = pd.read_csv("data/OnlineNewsPopularity.csv")
+```
+# Metodos practicos
+```{python}
+# Funciones usables reusables
+# Eliminar espacios vacios de variables
+def borrar_espacios(text_param: str) -> str:
+  return text_param.replace(' ', '')
+def quitar_espacios_vacíos_df(df_param):
+  for key in df.columns:
+    df_param.rename(columns={str(key): borrar_espacios(str(key))}, inplace=True)
+  return df_param
+# Mostrar grafico de correlacion
+def show_correlation(df_param):
+    # Matriz de correlacion
+    matriz_correlacion = df_param.corr()
+
+    plt.matshow(matriz_correlacion, cmap="coolwarm")
+    plt.colorbar()
+    plt.show()
+# Mostrar grafico codo
+def show_codo_graf(ve_param, vc_param):
+    # Visualizar gráfico de codo
+    plt.plot(range(1, len(ve_param) + 1), vc_param)
+    plt.xlabel('Número de caracteristicas')
+    plt.ylabel('Varianza explicada acumulada')
+    plt.grid(True)
+    plt.show()
+```
+# Ordenamiento
+```{python}
+# Mostrar data
+df.head(5)
+```
+# Eliminacion de caracteristicas Irrelevantes
+```{python}
+# Eliminar variables no ocupadas
+df = quitar_espacios_vacíos_df(df)
+# Descartando url
+df.drop(['url', 'timedelta'], axis=1, inplace=True) # Todos los urls estan agregadas pero ya no existen, por esta razon quitamos el campo.
+# Descartamos time_delta
+df
+```
+# Union de variables variables
+```{python}
+# Uniendo variables de categoria de articulos
+df['data_channel_is_lifestyle'] = df['data_channel_is_lifestyle'].astype(bool)
+df['data_channel_is_entertainment'] = df['data_channel_is_entertainment'].astype(bool)
+df['data_channel_is_bus'] = df['data_channel_is_bus'].astype(bool)
+df['data_channel_is_socmed'] = df['data_channel_is_socmed'].astype(bool)
+df['data_channel_is_tech'] = df['data_channel_is_tech'].astype(bool)
+df['data_channel_is_world'] = df['data_channel_is_world'].astype(bool)
+
+conditions = [
+    df['data_channel_is_lifestyle'],
+    df['data_channel_is_entertainment'],
+    df['data_channel_is_bus'],
+    df['data_channel_is_socmed'],
+    df['data_channel_is_tech'],
+    df['data_channel_is_world']
+]
+
+choices = [1,2,3,4,5,6]
+
+df['data_channel'] = np.select(conditions, choices, default=0)
+# df['data_channel'].value_counts()
+# Descatando variables ya no ocupadas
+df.drop(['data_channel_is_lifestyle',
+    'data_channel_is_entertainment',
+    'data_channel_is_bus',
+    'data_channel_is_socmed',
+    'data_channel_is_tech',
+    'data_channel_is_world'], axis=1, inplace=True)
+```
+```{python}
+# Uniendo variables de Dia de Publicacion
+df['weekday_is_monday'] = df['weekday_is_monday'].astype(bool)
+df['weekday_is_tuesday'] = df['weekday_is_tuesday'].astype(bool)
+df['weekday_is_wednesday'] = df['weekday_is_wednesday'].astype(bool)
+df['weekday_is_thursday'] = df['weekday_is_thursday'].astype(bool)
+df['weekday_is_friday'] = df['weekday_is_friday'].astype(bool)
+df['weekday_is_saturday'] = df['weekday_is_saturday'].astype(bool)
+df['weekday_is_sunday'] = df['weekday_is_sunday'].astype(bool)
+
+conditions = [
+    df['weekday_is_monday'],
+    df['weekday_is_tuesday'],
+    df['weekday_is_wednesday'],
+    df['weekday_is_thursday'],
+    df['weekday_is_friday'],
+    df['weekday_is_saturday'],
+    df['weekday_is_sunday']
+]
+
+choices = [1,2,3,4,5,6,7]
+
+df['publication_day'] = np.select(conditions, choices, default=0)
+# df['data_channel'].value_counts()
+# Descatando variables ya no ocupadas
+df.drop(['weekday_is_monday',
+    'weekday_is_tuesday',
+    'weekday_is_wednesday',
+    'weekday_is_thursday',
+    'weekday_is_friday',
+    'weekday_is_saturday',
+    'weekday_is_sunday'], axis=1, inplace=True)
+```
+```{python}
+df[''].head()
+```
+
+
+
+# Matriz de correlacion
+```{python}
+show_correlation(df)
+```
+# Disminuir dimensionalidad con PCA
+```{python}
+# Normalizar datos
+scaler = StandardScaler()
+df_scaled = scaler.fit_transform(df)
+# Crear objeto PCA
+pca = PCA()
+# Ajustar el modelo PCA a los datos normalizados
+pca.fit(df_scaled)
+```
+```{python}
+# Obtener varianza explicada por cada caracteristica
+variance_explained = pca.explained_variance_ratio_
+# Calcular varianza acumulada
+variance_cumulada = np.cumsum(variance_explained)
+```
+```{python}
+show_codo_graf(variance_explained, variance_cumulada)
+```
+# Establecer umbral de varianza explicada
+```{python}
+# Establecer umbral de varianza explicada
+umbral_varianza = 0.8
+# Seleccionar caracteristicas principales que cumplan con el umbral
+caracteristicas_seleccionados = np.where(variance_cumulada >= umbral_varianza)[0]
+# Número de caracteristicas seleccionados
+numero_caracteristicas = len(caracteristicas_seleccionados)
+
+print(f"Número de caracteristicas seleccionados para explicar {umbral_varianza:.2f} de la varianza: {numero_caracteristicas}")
+```
+# Descartar caracteristicas no seleccionadas
+```{python}
+# Descartar caracteristicas no seleccionados
+caracteristicas_descartados = np.where(variance_cumulada < umbral_varianza)[0]
+# Obtener nombres de las columnas descartadas
+columnas_descartadas = df.columns[caracteristicas_descartados]
+# Eliminar columnas descartadas por nombre
+reduced_df = df.drop(columnas_descartadas, axis=1)
+```
+# Imprimir caracteristicas selecionadas y descartados
+```{python}
+# Imprimir caracteristicas
+print('Caracteristicas seleccionadas:')
+print(df.columns[caracteristicas_seleccionados])
+print('Caracteristicas descartadas:')
+print(columnas_descartadas)
+```
+# Descargar df preparado
+```{python}
+# Descargar caracteristicas preparadas
+reduced_df.to_csv('data/ReadyToTrain.csv', index=False)
+```
+
+
+# Tecnicas para evaluar caracteristicas (Revisar)
+```{python}
+# Codificación binaria para variables categóricas con dos valores (True/False)
+data['data_channel_is_lifestyle'] = data['data_channel_is_lifestyle'].astype(int)
+data['weekday_is_monday'] = data['weekday_is_monday'].astype(int)
+
+# Codificación one-hot encoding para variables categóricas con múltiples valores
+from sklearn.preprocessing import OneHotEncoder
+
+encoder = OneHotEncoder(handle_unknown='ignore')
+data_encoded = encoder.fit_transform(data[['data_channel_is_entertainment', 'data_channel_is_bus', ...]])
+data = pd.concat([data, data_encoded], axis=1)
+```
+
+```{python}
+# Manejo de valores faltantes.
+# Imputación de valores faltantes con la mediana
+from sklearn.impute import SimpleImputer
+
+imputer = SimpleImputer(strategy='median')
+data_imputed = imputer.fit_transform(data)
+data = pd.DataFrame(data_imputed, columns=data.columns)
+```
