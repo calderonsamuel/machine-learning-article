@@ -1,6 +1,6 @@
 ---
 title: "Online news popularity"
-author: "Calderon, S., Arenas, K.,  Torres, J."
+author: "Calderon, S., Arenas, K.,  Torres, Jose."
 keep-tex: true
 format: 
   elsevier-pdf:
@@ -85,6 +85,7 @@ barplot.set_xticklabels([])
 barplot.figure.suptitle('')
 plt.show()
 ```
+
 
 
 El conjunto de datos también presenta componentes de análisis semántico latente y puntuaciones de sentimiento, capturando el tono emocional y la objetividad del contenido. Las métricas de participación, como el número de veces que se comparte y las referencias a sí mismo, son cruciales para comprender el alcance e impacto del contenido. Todas estas son variables continuas.
