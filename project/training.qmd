@@ -3,14 +3,14 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+# RandomForest
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
-
+# LogisticRegression 
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-#KNN
+# KNN
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 # Validacion Cruzada
@@ -57,9 +57,7 @@ print("Error cuadrático medio:", mse)
 print("Coeficiente de determinación:", r2)
 ```
 
-
-
-# Validacion cruzada
+<!-- # Validacion cruzada
 ```{python}
 k = 5
 # Configuración de la validación cruzada KFold
@@ -83,7 +81,8 @@ for train_index, test_index in kfold.split(x, y):
     print("Precisión:", precision)
     print("Recuperación:", recall)
     print("Puntuación F1:", f1)
-```
+``` -->
+
 # Hacer predicciones en el conjunto de prueba
 ```{python}
 # Hacer predicciones en el conjunto de prueba
@@ -91,28 +90,7 @@ y_pred = modelo_regresion_logistica.predict(x_test)
 ```
 # Hacer predicciones en el conjunto de prueba
 ```{python}
-# Hacer predicciones en el conjunto de prueba
-# precision = modelo_regresion_logistica(y_test, y_pred)
-# print("Precisión:", precision)
 
 accuracy = accuracy_score(y_test, y_pred)
-print("Precisión:", accuracy)
-```
-# Evaluacion del Modelo
-```{python}
-y_pred = modelo_regresion_logistica.predict(x_test)
-
-accuracy = accuracy_score(y_test, y_pred)
-precision = precision_score(y_test, y_pred)
-recall = recall_score(y_test, y_pred)
-f1 = f1_score(y_test, y_pred)
-
-print("Precisión:", accuracy)
-print("Precisión:", precision)
-print("Recuperación:", recall)
-print("Puntuación F1:", f1)
-```
-
-```{python}
-
+print("Accuracy:", accuracy)
 ```
