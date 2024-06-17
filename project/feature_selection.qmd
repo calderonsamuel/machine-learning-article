@@ -119,10 +119,6 @@ df.drop(['weekday_is_monday',
     'weekday_is_saturday',
     'weekday_is_sunday'], axis=1, inplace=True)
 ```
-```{python}
-df[''].head()
-```
-
 # Matriz de correlacion
 ```{python}
 show_correlation(df)
