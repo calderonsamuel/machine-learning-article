@@ -87,13 +87,16 @@ for train_index, test_index in kfold.split(x, y):
 # Hacer predicciones en el conjunto de prueba
 ```{python}
 # Hacer predicciones en el conjunto de prueba
-y_pred = modelo_knn.predict(x_test)
+y_pred = modelo_regresion_logistica.predict(x_test)
 ```
 # Hacer predicciones en el conjunto de prueba
 ```{python}
 # Hacer predicciones en el conjunto de prueba
-precision = modelo_knn(y_test, y_pred)
-print("Precisión:", precision)
+# precision = modelo_regresion_logistica(y_test, y_pred)
+# print("Precisión:", precision)
+
+accuracy = accuracy_score(y_test, y_pred)
+print("Precisión:", accuracy)
 ```
 # Evaluacion del Modelo
 ```{python}
