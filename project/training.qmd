@@ -3,11 +3,43 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 ```
 
 # Cargar data
 ```{python}
-news_data = pd.read_csv("data/OnlineNewsPopularity.csv")
+# Cargar data
+# Verificar que el archivo exista en el directorio 'data'
+df = pd.read_csv("data/ReadyToTrain.csv")
+df
 ```
 
-# Modelo de regresion
+# Metodos Practicos
+```{python}
+# Separar variables predictoras y objetivo
+x = df.drop("shares", axis=1)
+y = df["shares"]
+# Dividir conjunto de entrenamiento y de prueba
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+```
+# Entrenamiento bosque aleatorio
+```{python}
+# Entrenamiento bosque aleatorio
+modelo_bosque_aleatorio = RandomForestClassifier(n_estimators=70, random_state=42)
+modelo_bosque_aleatorio.fit(x_train, y_train)
+```
+# Hacer predicciones en el conjunto de prueba
+```{python}
+# Hacer predicciones en el conjunto de prueba
+y_pred = modelo_bosque_aleatorio.predict(x_test)
+```
+# Hacer predicciones en el conjunto de prueba
+```{python}
+# Hacer predicciones en el conjunto de prueba
+precision = accuracy_score(y_test, y_pred)
+print("Precisión:", precision)
+```

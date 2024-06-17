@@ -106,5 +106,5 @@ print(columnas_descartadas)
 # Descargar df preparado
 ```{python}
 # Descargar caracteristicas preparadas
-reduced_df.to_csv('data/ready_to_train.csv', index=False)
+reduced_df.to_csv('data/ReadyToTrain.csv', index=False)
 ```
