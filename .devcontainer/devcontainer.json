@@ -19,7 +19,11 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
+	"postCreateCommand": {
+		"chromium": "quarto install chromium",
+		"elsevier": "quarto add quarto-journals/elsevier --no-prompt",
+		"python-requirements": "pip3 install -r requirements.txt"
+	},
 
 	// Configure tool-specific properties.
 	"customizations": {
