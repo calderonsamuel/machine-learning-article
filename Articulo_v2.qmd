@@ -57,7 +57,7 @@ Esta colección de investigaciones destaca las complejidades y avances en la pre
 
 Para este estudio, se utilizará el conjunto de datos elaborado en [@fernandes2015]. Cuenta con 59 características y una columna target. esta última contiene información de las veces que el artículo fue compartido (numérica), siendo esta la medición de popularidad. En general, el conjunto de datos permite un análisis exhaustivo de las características del contenido, la participación del usuario y la efectividad de varios tipos de contenido a lo largo de diferentes canales y en el tiempo. A continuación, se presenta una descripción más detallada.
 
-## Descripción del conjunto de datos
+## Descripción del conjunto de datos (falta completar)
 
 El conjunto de datos proporciona una visión general exhaustiva del contenido en línea, incorporando varias métricas y características relacionadas con atributos textuales, elementos multimedia e indicadores de participación. Captura atributos textuales clave, como el número de tokens en los títulos y el contenido, la proporción de tokens únicos y la longitud promedio de los tokens, ofreciendo información sobre la complejidad y estructura del contenido. El conjunto de datos también incluye métricas de palabras clave, que destacan la relevancia e importancia de las palabras clave en el contenido. Además, registra el número de hipervínculos y elementos multimedia como imágenes y videos, reflejando la riqueza y los aspectos multimedia de los artículos o publicaciones.
 
@@ -93,6 +93,34 @@ plt.show()
 El conjunto de datos también presenta componentes de análisis semántico latente y puntuaciones de sentimiento, capturando el tono emocional y la objetividad del contenido. Las métricas de participación, como el número de veces que se comparte y las referencias a sí mismo, son cruciales para comprender el alcance e impacto del contenido. Todas estas son variables continuas.
 
 ## Metodología
+
+El presente trabajo se prioriza en el procesamiento de los datos y esencialmente antes del entrenamiento de los datos. Por tanto, se seguirá los siguientes pasos: 
+
+#1) Preparación de datos, este punto realizaremos la limpieza de datos, el manejo de valores faltantes, nulos y detección de los outlier. 
+
+
+
+2) Exploración y análisis de datos: en este paso realizaremos la reducción de la dimensionalidad utilizando la herramienta de análisis de principales componentes (PCA) y análisis de correlación de datos, ambos métodos nos ayudaran a visualizar y entender las relaciones y patrones de las variables. 
+
+PCA, toma encuenta la varianza ya incluye el analis de  correlacion 
+
+3) Selección y entrenamiento del modelo; 
+los datos clasificacion: 
+'RandomForest': RandomForestClassifier(),
+'AdaBoost': AdaBoostClassifier(),
+'LogisticRegression': LogisticRegression()
+GridSearchCV
+gradienBoots
+Redes neuronales (opcional)
+
+considerando que los datos se acomodan para aplicar modelos de regresión, priorizaremos la metodología de , el cual es una técnica que se utiliza la mejor combinación de hiperparámetros. En este punto, además, optimizaremos los parámetros del modelo para mejorar su rendimiento. 
+
+4) En seguida realizaremos la validación y evaluación del modelo: en otras palabras, medir el rendimiento del modelo utilizando datos de prueba y métricas de evaluación.
+Aquiursasi y el area bajo la curva  
+
+5) Finalmente se describirá los resultados, interpretación y discusiones: en esta parte nos apoyaremos mediante figuras y gráficos estadísticos y correlacionaremos con anteriores resultados. 
+
+# Experimentación y resultados
 
 # Referencias
 
