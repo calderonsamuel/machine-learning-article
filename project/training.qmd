@@ -4,8 +4,8 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 # RandomForest
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.metrics import accuracy_score
 # LogisticRegression 
 from sklearn.linear_model import LogisticRegression
@@ -15,9 +15,14 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 # Validacion Cruzada
 from sklearn.model_selection import KFold
+
+
+
+from sklearn.datasets import make_classification
+from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, recall_score, f1_score, roc_curve
 ```
 
-# Cargar data
+# Cargar data 
 ```{python}
 # Cargar data
 df = pd.read_csv("data/ReadyToTrain.csv")
@@ -25,10 +30,11 @@ df = pd.read_csv("data/ReadyToTrain.csv")
 # Separar variables predictoras y objetivo
 ```{python}
 # Separar variables predictoras y objetivo
-x = df.drop("shares", axis=1)
-y = df["shares"]
+# x = df.drop("shares", axis=1)
+# y = df["shares"]
 # Dividir conjunto de entrenamiento y de prueba
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+x, y = make_classification(n_samples=1000, n_features=20, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
 ```
 # Metodos de Entrenaiento
 ```{python}
@@ -54,6 +60,64 @@ r2 = r2_score(y_test, y_pred)
 print("Error cuadrático medio:", mse)
 print("Coeficiente de determinación:", r2)
 ```
+
+# Metodo Samuel
+```{python}
+models = {
+    'RandomForest': RandomForestClassifier(),
+    'AdaBoost': AdaBoostClassifier(),
+    'LogisticRegression': LogisticRegression()
+}
+
+param_grids = {
+    'RandomForest': {'n_estimators': [10, 20, 50, 100, 200, 400]},
+    'AdaBoost': {'n_estimators': [10, 20, 50, 100, 200, 400]},
+    'LogisticRegression': {
+        'penalty': ['l1', 'l2'],
+        'C': [0.001, 0.01, 0.1, 1, 10],
+        'solver': ['liblinear', 'saga']
+    }
+}
+
+# Se realiza búsqueda en grid para cada modelo y se obtiene los mejores estimadores de cada búsqueda.
+best_models = {}
+for model_name, model in models.items():
+    print(f"Training {model_name}...")
+    grid_search = GridSearchCV(model, param_grids[model_name], cv=5, scoring='roc_auc', n_jobs=10, verbose=3)
+    grid_search.fit(x_train, y_train)
+    best_models[model_name] = grid_search.best_estimator_
+
+# Mostrar los mejores modelos encontrados
+for model_name, best_model in best_models.items():
+    print(f"Best {model_name} model:")
+    print(best_model)
+    print()
+```
+```{python}
+# Se obtienen las métricas de todos los modelos.
+results = {}
+for model_name, model in best_models.items():
+    y_pred_prob = model.predict_proba(x_test)[:, 1]
+    auc = roc_auc_score(y_test, y_pred_prob)
+    accuracy = accuracy_score(y_test, model.predict(x_test))
+    precision = precision_score(y_test, model.predict(x_test))
+    recall = recall_score(y_test, model.predict(x_test))
+    f1 = f1_score(y_test, model.predict(x_test))
+    results[model_name] = {
+        'AUC': auc,
+        'Accuracy': accuracy,
+        'Precision': precision,
+        'Recall': recall,
+        'F1': f1
+    }
+
+# Print resultados de evaluación
+for model_name, metrics in results.items():
+    print(f"{model_name}: {metrics}")
+```
+
+
+
 
 <!-- # Validacion cruzada
 ```{python}
