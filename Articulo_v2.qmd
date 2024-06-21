@@ -109,13 +109,19 @@ exhaustiva a través de un rango especificado de valores de parámetros. Además
 el modelo GradientBoostingClassifier (Friedman, 2001), un método de boosting que, al igual 
 que AdaBoost, combina múltiples modelos débiles para formar un modelo fuerte. Estos enfoques 
 maximizan la precisión y robustez de las predicciones al ajustar finamente los parámetros y 
-combinar varios clasificadores en un esquema de ensamble. 3) En seguida realizaremos la 
-validación y evaluación del modelo: en otras palabras, medir el rendimiento del modelo 
-utilizando datos de prueba y métricas de evaluación. Para ello, se evaluará el rendimiento de 
-los modelos mediante área bajo la curva (AUC), una métrica que proporciona una medida 
-agregada del rendimiento en todas las posibles clasificaciones. 4) Finalmente se describirá }
-los resultados, interpretación y discusiones: en esta parte nos apoyaremos mediante figuras y 
-gráficos estadísticos y correlacionaremos con anteriores resultados. 
+combinar varios clasificadores en un esquema de ensamble. 3) Validación y evaluación del 
+modelo: en otras palabras, medir el rendimiento del modelo utilizando datos de prueba y 
+métricas de evaluación. Para ello, se evaluará el rendimiento de los modelos mediante área 
+bajo la curva (AUC), una métrica que proporciona una medida agregada del rendimiento en todas 
+las posibles clasificaciones. 4) Finalmente se describirá  los resultados, interpretación y 
+discusiones: en esta parte nos apoyaremos mediante figuras y gráficos estadísticos y }
+correlacionaremos con anteriores resultados.
+
+### Exploración y análisis de datos
+
+### Selección y entrenamiento del modelo
+
+### Validación y evaluación del modelo
 
 # Experimentación y resultados
 
