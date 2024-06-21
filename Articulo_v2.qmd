@@ -57,7 +57,7 @@ Esta colección de investigaciones destaca las complejidades y avances en la pre
 
 Para este estudio, se utilizará el conjunto de datos elaborado en [@fernandes2015]. Cuenta con 59 características y una columna target. esta última contiene información de las veces que el artículo fue compartido (numérica), siendo esta la medición de popularidad. En general, el conjunto de datos permite un análisis exhaustivo de las características del contenido, la participación del usuario y la efectividad de varios tipos de contenido a lo largo de diferentes canales y en el tiempo. A continuación, se presenta una descripción más detallada.
 
-## Descripción del conjunto de datos (falta completar)
+## Descripción del conjunto de datos
 
 El trabajo utiliza los datos del repositorio de aprendizaje automático UCI (https://archive.ics.uci.edu/dataset/332/online+news+popularity). La información fue utilizada para entrenar modelos predictivos de compartidos de noticias de Mashable (www.mashable.com), abarca un período de dos años (7 de enero de 2013 al 7 de enero de 2015) y contiene 58 características heterogéneas. Estas características incluyen la longitud del título y del contenido, el número de imágenes y videos, variables temporales como el día de la semana y la hora de publicación, y metadatos como la popularidad en otras plataformas y el tema de la noticia. También se consideran características sociales, como el número de comentarios y compartidos en redes sociales, y técnicas, como la presencia de multimedia y palabras clave. Este conjunto de datos integral permite un análisis exhaustivo para desarrollar modelos predictivos efectivos que estimen la popularidad de una noticia basada en su probabilidad de ser compartida.
 
