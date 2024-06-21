@@ -94,30 +94,56 @@ El conjunto de datos también presenta componentes de análisis semántico laten
 
 ## Metodología
 
-El presente trabajo prioriza el procesamiento de datos, ya que es el paso más importante y 
-esencial antes de entrenar los datos. El conjunto de datos que actualmente manejamos, cuenta 
-con 59 características y 39 mil registros. Para el desarrollo del proyecto se seguirá los 
-siguientes pasos: 1) Exploración y análisis de datos: en este paso realizaremos la reducción 
-de la dimensionalidad utilizando la herramienta de análisis de principales componentes (PCA) 
-y análisis de correlación de datos, ambos métodos nos ayudaran a visualizar y entender las 
-relaciones y patrones de las variables. 2) Selección y entrenamiento del modelo; los datos 
-clasificacion: En paso utilizaremos varios modelos de clasificación, incluyendo 
-RandomForestClassifier (Breiman, 2001), AdaBoostClassifier (Freund & Schapire, 1997) y 
-LogisticRegression (Cox, 1958). Para optimizar los hiperparámetros y mejorar el rendimiento 
-de estos modelos, se empleó GridSearchCV (Pedregosa et al., 2011), que realiza una búsqueda 
-exhaustiva a través de un rango especificado de valores de parámetros. Además, se consideró 
-el modelo GradientBoostingClassifier (Friedman, 2001), un método de boosting que, al igual 
-que AdaBoost, combina múltiples modelos débiles para formar un modelo fuerte. Estos enfoques 
-maximizan la precisión y robustez de las predicciones al ajustar finamente los parámetros y 
-combinar varios clasificadores en un esquema de ensamble. 3) Validación y evaluación del 
-modelo: en otras palabras, medir el rendimiento del modelo utilizando datos de prueba y 
-métricas de evaluación. Para ello, se evaluará el rendimiento de los modelos mediante área 
-bajo la curva (AUC), una métrica que proporciona una medida agregada del rendimiento en todas 
-las posibles clasificaciones. 4) Finalmente se describirá  los resultados, interpretación y 
-discusiones: en esta parte nos apoyaremos mediante figuras y gráficos estadísticos y }
-correlacionaremos con anteriores resultados.
+El presente trabajo prioriza la etapa de procesamiento del dataset, paso fundamental antes de realizar el entrenamiento de los datos. El conjunto de datos que actualmente 
+manejamos cuenta con 59 características y 39 mil registros, claramente se observa la necesidad de reducir el numero de caracteristicas. Para un adecuado procesamiento y 
+entrenamiento de datos, el presente trabjo considera los sigientes pasos: 1) Exploración y análisis de datos: en este paso realizaremos la reducción de la dimensionalidad 
+utilizando la herramienta de análisis de principales componentes (PCA) y análisis de correlación de datos, ambos métodos nos ayudaran a visualizar y entender las relaciones y 
+patrones de las variables. 2) Selección y entrenamiento del modelo; los datos clasificacion: En paso utilizaremos varios modelos de clasificación, incluyendo 
+RandomForestClassifier (Breiman, 2001), AdaBoostClassifier (Freund & Schapire, 1997) y LogisticRegression (Cox, 1958). Para optimizar los hiperparámetros y mejorar el 
+rendimiento de estos modelos, se empleó GridSearchCV (Pedregosa et al., 2011), que realiza una búsqueda exhaustiva a través de un rango especificado de valores de parámetros. 
+Además, se consideró el modelo GradientBoostingClassifier (Friedman, 2001), un método de boosting que, al igual que AdaBoost, combina múltiples modelos débiles para formar un 
+modelo fuerte. Estos enfoques maximizan la precisión y robustez de las predicciones al ajustar finamente los parámetros y combinar varios clasificadores en un esquema de 
+ensamble. 3) Validación y evaluación del modelo: en otras palabras, medir el rendimiento del modelo utilizando datos de prueba y métricas de evaluación. Para ello, se evaluará 
+el rendimiento de los modelos mediante área bajo la curva (AUC), una métrica que proporciona una medida agregada del rendimiento en todas las posibles clasificaciones. 4) 
+Finalmente se describirá  los resultados, interpretación y discusiones: en esta parte nos apoyaremos mediante 
+figuras y gráficos estadísticos y correlacionaremos con anteriores resultados.
 
 ### Exploración y análisis de datos
+En la fase de exploración y análisis de datos, se comienza con el ordenamiento de caracteres, que implica la normalización y 
+limpieza de los datos textuales, como la conversión a minúsculas, la eliminación de espacios vacios y caracteres especiales. 
+Luego, se procede a la eliminación de características irrelevantes, identificando y descartando aquellas que no aportan valor 
+predictivo. A continuación, se realiza la unión de variables, combinando múltiples características en una sola para simplificar  
+el análisis. La creación de una matriz de correlación permite identificar relaciones entre variables, ayudando a detectar 
+características redundantes. Finalmente, se aplica la disminución de dimensionalidad, utilizando técnicas como el Análisis de 
+Componentes Principales (PCA), para reducir el número de características manteniendo la mayor cantidad de información posible. 
+Este proceso asegura que los datos sean limpios, relevantes y manejables, facilitando el desarrollo de modelos predictivos 
+efectivos.
+
+```{python}
+# Eliminar espacios vacios de variables
+def borrar_espacios(text_param: str) -> str:
+  return text_param.replace(' ', '')
+def quitar_espacios_vacíos_df(df_param):
+  for key in df.columns:
+    df_param.rename(columns={str(key): borrar_espacios(str(key))}, inplace=True)
+  return df_param
+# Mostrar grafico de correlacion
+def show_correlation(df_param):
+    # Matriz de correlacion
+    matriz_correlacion = df_param.corr()
+
+    plt.matshow(matriz_correlacion, cmap="coolwarm")
+    plt.colorbar()
+    plt.show()
+# Mostrar grafico codo
+def show_codo_graf(ve_param, vc_param):
+    # Visualizar gráfico de codo
+    plt.plot(range(1, len(ve_param) + 1), vc_param)
+    plt.xlabel('Número de caracteristicas')
+    plt.ylabel('Varianza explicada acumulada')
+    plt.grid(True)
+    plt.show()
+```
 
 ### Selección y entrenamiento del modelo
 
