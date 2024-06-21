@@ -97,24 +97,24 @@ El conjunto de datos también presenta componentes de análisis semántico laten
 El presente trabajo prioriza el procesamiento de datos, ya que es el paso más importante y 
 esencial antes de entrenar los datos. El conjunto de datos que actualmente manejamos, cuenta 
 con 59 características y 39 mil registros. Para el desarrollo del proyecto se seguirá los 
-siguientes pasos: 1) Exploración y análisis de datos: en este paso realizaremos la reducción de 
-la dimensionalidad utilizando la herramienta de análisis de principales componentes (PCA) y 
-análisis de correlación de datos, ambos métodos nos ayudaran a visualizar y entender las 
+siguientes pasos: 1) Exploración y análisis de datos: en este paso realizaremos la reducción 
+de la dimensionalidad utilizando la herramienta de análisis de principales componentes (PCA) 
+y análisis de correlación de datos, ambos métodos nos ayudaran a visualizar y entender las 
 relaciones y patrones de las variables. 2) Selección y entrenamiento del modelo; los datos 
 clasificacion: En paso utilizaremos varios modelos de clasificación, incluyendo 
 RandomForestClassifier (Breiman, 2001), AdaBoostClassifier (Freund & Schapire, 1997) y 
-LogisticRegression (Cox, 1958). Para optimizar los hiperparámetros y mejorar el rendimiento de 
-estos modelos, se empleó GridSearchCV (Pedregosa et al., 2011), que realiza una búsqueda 
-exhaustiva a través de un rango especificado de valores de parámetros. Además, se consideró el 
-modelo GradientBoostingClassifier (Friedman, 2001), un método de boosting que, al igual que 
-AdaBoost, combina múltiples modelos débiles para formar un modelo fuerte. Estos enfoques 
+LogisticRegression (Cox, 1958). Para optimizar los hiperparámetros y mejorar el rendimiento 
+de estos modelos, se empleó GridSearchCV (Pedregosa et al., 2011), que realiza una búsqueda 
+exhaustiva a través de un rango especificado de valores de parámetros. Además, se consideró 
+el modelo GradientBoostingClassifier (Friedman, 2001), un método de boosting que, al igual 
+que AdaBoost, combina múltiples modelos débiles para formar un modelo fuerte. Estos enfoques 
 maximizan la precisión y robustez de las predicciones al ajustar finamente los parámetros y 
 combinar varios clasificadores en un esquema de ensamble. 3) En seguida realizaremos la 
 validación y evaluación del modelo: en otras palabras, medir el rendimiento del modelo 
 utilizando datos de prueba y métricas de evaluación. Para ello, se evaluará el rendimiento de 
-los modelos mediante área bajo la curva (AUC), una métrica que proporciona una medida agregada 
-del rendimiento en todas las posibles clasificaciones. 4) Finalmente se describirá los 
-resultados, interpretación y discusiones: en esta parte nos apoyaremos mediante figuras y 
+los modelos mediante área bajo la curva (AUC), una métrica que proporciona una medida 
+agregada del rendimiento en todas las posibles clasificaciones. 4) Finalmente se describirá }
+los resultados, interpretación y discusiones: en esta parte nos apoyaremos mediante figuras y 
 gráficos estadísticos y correlacionaremos con anteriores resultados. 
 
 # Experimentación y resultados
