@@ -59,9 +59,10 @@ Para este estudio, se utilizará el conjunto de datos elaborado en [@fernandes20
 
 ## Descripción del conjunto de datos (falta completar)
 
-El conjunto de datos proporciona una visión general exhaustiva del contenido en línea, incorporando varias métricas y características relacionadas con atributos textuales, elementos multimedia e indicadores de participación. Captura atributos textuales clave, como el número de tokens en los títulos y el contenido, la proporción de tokens únicos y la longitud promedio de los tokens, ofreciendo información sobre la complejidad y estructura del contenido. El conjunto de datos también incluye métricas de palabras clave, que destacan la relevancia e importancia de las palabras clave en el contenido. Además, registra el número de hipervínculos y elementos multimedia como imágenes y videos, reflejando la riqueza y los aspectos multimedia de los artículos o publicaciones.
+El trabajo utiliza los datos del repositorio de aprendizaje automático UCI (https://archive.ics.uci.edu/dataset/332/online+news+popularity). La información fue utilizada para entrenar modelos predictivos de compartidos de noticias de Mashable (www.mashable.com), abarca un período de dos años (7 de enero de 2013 al 7 de enero de 2015) y contiene 58 características heterogéneas. Estas características incluyen la longitud del título y del contenido, el número de imágenes y videos, variables temporales como el día de la semana y la hora de publicación, y metadatos como la popularidad en otras plataformas y el tema de la noticia. También se consideran características sociales, como el número de comentarios y compartidos en redes sociales, y técnicas, como la presencia de multimedia y palabras clave. Este conjunto de datos integral permite un análisis exhaustivo para desarrollar modelos predictivos efectivos que estimen la popularidad de una noticia basada en su probabilidad de ser compartida.
 
-Además, el conjunto de datos clasifica el contenido en diferentes canales, como estilo de vida, entretenimiento, negocios, redes sociales, tecnología y noticias mundiales, proporcionando una clara clasificación de los tipos de contenido. Se incluye información temporal a través de variables que indican el día de la semana en que se publicó el contenido y si se publicó en un fin de semana. En estos casos, las variables han sido incluidas como binarias.
+De acuerdo a la página web UCI, el conjunto de datos de Mashable consta de 39 797 instancias con 58 características, que abarcan tipos de datos enteros y reales. Los datos se pueden adaptar para aplicar modelos de clasificación y regresión. Len resumen, los datos proporcionan información sobre diversos aspectos de los artículos de noticias, lo que los hace valiosos para analizar tendencias y predecir métricas de rendimiento en el panorama de los medios digitales.
+
 
 ```{python}
 # Select columns containing "is"
@@ -94,19 +95,7 @@ El conjunto de datos también presenta componentes de análisis semántico laten
 
 ## Metodología
 
-El presente trabajo prioriza la etapa de procesamiento del dataset, paso fundamental antes de realizar el entrenamiento de los datos. El conjunto de datos que actualmente 
-manejamos cuenta con 59 características y 39 mil registros, claramente se observa la necesidad de reducir el numero de caracteristicas. Para un adecuado procesamiento y 
-entrenamiento de datos, el presente trabjo considera los sigientes pasos: 1) Exploración y análisis de datos: en este paso realizaremos la reducción de la dimensionalidad 
-utilizando la herramienta de análisis de principales componentes (PCA) y análisis de correlación de datos, ambos métodos nos ayudaran a visualizar y entender las relaciones y 
-patrones de las variables. 2) Selección y entrenamiento del modelo; los datos clasificacion: En paso utilizaremos varios modelos de clasificación, incluyendo 
-RandomForestClassifier (Breiman, 2001), AdaBoostClassifier (Freund & Schapire, 1997) y LogisticRegression (Cox, 1958). Para optimizar los hiperparámetros y mejorar el 
-rendimiento de estos modelos, se empleó GridSearchCV (Pedregosa et al., 2011), que realiza una búsqueda exhaustiva a través de un rango especificado de valores de parámetros. 
-Además, se consideró el modelo GradientBoostingClassifier (Friedman, 2001), un método de boosting que, al igual que AdaBoost, combina múltiples modelos débiles para formar un 
-modelo fuerte. Estos enfoques maximizan la precisión y robustez de las predicciones al ajustar finamente los parámetros y combinar varios clasificadores en un esquema de 
-ensamble. 3) Validación y evaluación del modelo: en otras palabras, medir el rendimiento del modelo utilizando datos de prueba y métricas de evaluación. Para ello, se evaluará 
-el rendimiento de los modelos mediante área bajo la curva (AUC), una métrica que proporciona una medida agregada del rendimiento en todas las posibles clasificaciones. 4) 
-Finalmente se describirá  los resultados, interpretación y discusiones: en esta parte nos apoyaremos mediante 
-figuras y gráficos estadísticos y correlacionaremos con anteriores resultados.
+El presente trabajo prioriza la etapa de procesamiento del dataset, paso fundamental antes de realizar el entrenamiento de los datos. El conjunto de datos que actualmente manejamos cuenta con 58 características y 39 mil registros, claramente se observa la necesidad de reducir el número de caracteristicas. Para un adecuado procesamiento y entrenamiento de datos, el presente trabjo considera los sigientes pasos: 1) Exploración y análisis de datos: en este paso realizaremos la reducción de la dimensionalidad utilizando la herramienta de análisis de principales componentes (PCA) y análisis de correlación de datos, ambos métodos nos ayudaran a visualizar y entender las relaciones y patrones de las variables. 2) Selección y entrenamiento del modelo; los datos clasificacion: En paso utilizaremos varios modelos de clasificación, incluyendo RandomForestClassifier (Breiman, 2001), AdaBoostClassifier (Freund & Schapire, 1997) y LogisticRegression (Cox, 1958). Para optimizar los hiperparámetros y mejorar el rendimiento de estos modelos, se empleó GridSearchCV (Pedregosa et al., 2011), que realiza una búsqueda exhaustiva a través de un rango especificado de valores de parámetros. Además, se consideró el modelo GradientBoostingClassifier (Friedman, 2001), un método de boosting que, al igual que AdaBoost, combina múltiples modelos débiles para formar un modelo fuerte. Estos enfoques maximizan la precisión y robustez de las predicciones al ajustar finamente los parámetros y combinar varios clasificadores en un esquema de ensamble. 3) Validación y evaluación del modelo: en otras palabras, medir el rendimiento del modelo utilizando datos de prueba y métricas de evaluación. Para ello, se evaluará el rendimiento de los modelos mediante área bajo la curva (AUC), una métrica que proporciona una medida agregada del rendimiento en todas las posibles clasificaciones. 4)  Finalmente se describirá los resultados, interpretación y discusiones: en esta parte nos apoyaremos mediante figuras y gráficos estadísticos y correlacionaremos con anteriores resultados.
 
 ### Exploración y análisis de datos
 En la fase de exploración y análisis de datos, se comienza con el ordenamiento de caracteres, que implica la normalización y 
@@ -119,33 +108,9 @@ Componentes Principales (PCA), para reducir el número de características mante
 Este proceso asegura que los datos sean limpios, relevantes y manejables, facilitando el desarrollo de modelos predictivos 
 efectivos.
 
-```{python}
-# Eliminar espacios vacios de variables
-def borrar_espacios(text_param: str) -> str:
-  return text_param.replace(' ', '')
-def quitar_espacios_vacíos_df(df_param):
-  for key in df.columns:
-    df_param.rename(columns={str(key): borrar_espacios(str(key))}, inplace=True)
-  return df_param
-# Mostrar grafico de correlacion
-def show_correlation(df_param):
-    # Matriz de correlacion
-    matriz_correlacion = df_param.corr()
-
-    plt.matshow(matriz_correlacion, cmap="coolwarm")
-    plt.colorbar()
-    plt.show()
-# Mostrar grafico codo
-def show_codo_graf(ve_param, vc_param):
-    # Visualizar gráfico de codo
-    plt.plot(range(1, len(ve_param) + 1), vc_param)
-    plt.xlabel('Número de caracteristicas')
-    plt.ylabel('Varianza explicada acumulada')
-    plt.grid(True)
-    plt.show()
-```
 
 ### Selección y entrenamiento del modelo
+
 
 ### Validación y evaluación del modelo
 
