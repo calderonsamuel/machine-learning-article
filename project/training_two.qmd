@@ -1,0 +1,190 @@
+---
+jupyter: python3
+---
+
+Este documento realiza la réplica del artículo de "Online News Popularity" elaborado por Kelwin Fernandes, Pedro Vinagre, Paulo Cortez y Pedro Sernadela. Disponible en: <https://archive.ics.uci.edu/dataset/332/online+news+popularity>
+
+```{python}
+import pandas as pd
+import numpy as np
+
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neural_network import MLPClassifier
+from sklearn.svm import SVC
+
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, recall_score, f1_score, roc_curve
+
+# Stacking Ensamble de Modelos
+from sklearn.ensemble import StackingClassifier
+# from sklearn.pipeline import make_pipeline
+# from sklearn.preprocessing import StandardScaler
+```
+
+```{python}
+# Cargar el conjunto de datos, provisto en CSV
+data = pd.read_csv('data/ReadyToTrain.csv')
+data.columns = data.columns.str.strip()
+```
+
+```{python}
+# Listado de features que nos interesan. url y timedelta no son importantes
+features = list(data.drop(columns = []))
+```
+
+```{python}
+# Se remueve la columna shares, que es el target
+X = data[features].drop(columns=['shares'])
+# Clasificación binaria. Se usa el mismo treshold de popularidad que en artículo principal (1400)
+y = (data['shares'] > 1400).astype(int)  
+
+# División en test de training y test. Se usa la misma proporción que en el artículo principal
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+```
+
+```{python}
+# Los modelos trabajados en el artículo principal
+models = {
+    'RandomForest': RandomForestClassifier(),
+    'AdaBoost': AdaBoostClassifier(),
+    'LogisticRegression': LogisticRegression(),
+    'MLP': MLPClassifier(max_iter=1000),  # Agregar el modelo MLPClassifier
+    # 'XGBClassifier': ,
+    'SVM': SVC(),
+    
+
+}
+# Hyper parámetros utilizados en el artículo principal
+param_grids = {
+    'RandomForest': {'n_estimators': [10, 20, 50, 100, 200, 400]},
+    'AdaBoost': {'n_estimators': [10, 20, 50, 100, 200, 400]},
+    'LogisticRegression': {
+        'penalty': ['l1', 'l2'],
+        'C': [0.001, 0.01, 0.1, 1, 10],
+        'solver': ['liblinear', 'saga']
+    },
+    'SVM': {'C': [2**0, 2**1, 2**2, 2**3, 2**4, 2**5, 2**6]},
+    'MLP': {  # Hiperparámetros para MLPClassifier
+        'hidden_layer_sizes': [(50,), (100,), (150,)],
+        'activation': ['tanh', 'relu'],
+        'solver': ['sgd', 'adam'],
+        'alpha': [0.0001, 0.001, 0.01],
+        'learning_rate': ['constant', 'adaptive']
+    }
+}
+```
+
+```{python}
+# Se realiza búsqueda en grid para cada modelo y se obtiene los mejores estimadores de cada búsqueda.
+best_models = {}
+for model_name, model in models.items():
+    print(f"Training {model_name}...")
+    # Le pasamos n_jobs para indicarle que utiliza 14 núcleos de CPU. Así se obtiene resultados más rápido
+    grid_search = GridSearchCV(model, param_grids[model_name], cv=5, scoring='roc_auc', n_jobs=16, verbose=3) 
+    grid_search.fit(X_train, y_train)
+    best_models[model_name] = grid_search.best_estimator_
+```
+
+
+```{python}
+# Se obtienen las métricas de todos los modelos.
+results = {}
+for model_name, model in best_models.items():
+    y_pred_prob = model.predict_proba(X_test)[:, 1]
+    auc = roc_auc_score(y_test, y_pred_prob)
+    accuracy = accuracy_score(y_test, model.predict(X_test))
+    precision = precision_score(y_test, model.predict(X_test))
+    recall = recall_score(y_test, model.predict(X_test))
+    f1 = f1_score(y_test, model.predict(X_test))
+    results[model_name] = {
+        'AUC': auc,
+        'Accuracy': accuracy,
+        'Precision': precision,
+        'Recall': recall,
+        'F1': f1
+    }
+
+# Print resultados de evaluación
+for model_name, metrics in results.items():
+    print(f"{model_name}: {metrics}")
+```
+
+Se obtuvo Random Forest como el mejor modelo. Tal como en el artículo principal.
+
+```
+RandomForest: {'AUC': 0.7295987759506009, 'Accuracy': 0.6633596771481419, 'Precision': 0.6551430517711172, 'Recall': 0.6603158256093374, 'F1': 0.657719268250983}
+AdaBoost: {'AUC': 0.71803440739476, 'Accuracy': 0.6592399529174373, 'Precision': 0.6523981433728726, 'Recall': 0.6513903192584964, 'F1': 0.6518938417933522}
+SVM: {'AUC': 0.6328445259707977, 'Accuracy': 0.5850849167647554, 'Precision': 0.5950907150480256, 'Recall': 0.4785444558874013, 'F1': 0.5304918656645419}
+KNN: {'AUC': 0.6119554817684731, 'Accuracy': 0.5773499243315957, 'Precision': 0.5830734040341027, 'Recall': 0.48129076553381395, 'F1': 0.5273154677950165}
+NaiveBayes: {'AUC': 0.6235357616539953, 'Accuracy': 0.5347233899445099, 'Precision': 0.6556503198294243, 'Recall': 0.10556127703398559, 'F1': 0.18184506209343584}
+```
+
+# Ensamble de Modelos
+```{python}
+# Crea un meta-learner
+meta_learner = LogisticRegression()
+# Construye el StackingClassifier
+stacking_clf = StackingClassifier(
+    estimators=[(name, model) for name, model in best_models.items()],
+    final_estimator=meta_learner,
+    cv=5
+)
+# Entrena el StackingClassifier
+stacking_clf.fit(X_train, y_train)
+# Evalúa el StackingClassifier
+y_pred_prob = stacking_clf.predict_proba(X_test)[:, 1]
+auc = roc_auc_score(y_test, y_pred_prob)
+accuracy = accuracy_score(y_test, stacking_clf.predict(X_test))
+precision = precision_score(y_test, stacking_clf.predict(X_test))
+recall = recall_score(y_test, stacking_clf.predict(X_test))
+f1 = f1_score(y_test, stacking_clf.predict(X_test))
+
+# Muestra las métricas del StackingClassifier
+print(f"StackingClassifier: AUC={auc}, Accuracy={accuracy}, Precision={precision}, Recall={recall}, F1={f1}")
+```
+
+```{python}
+# Seleccionar el mejor modelo. En este caso, Random Forest.
+best_model = best_models['MLP']
+```
+
+```{python}
+# Optimización usando "stochastic hill climbing". Esto se realizó para el modelo de random forest en el artículo.
+def stochastic_hill_climbing(article, model, iterations=100, prob=0.5):
+    best_article = article.copy()
+    best_prob = model.predict_proba([article])[0][1]
+    
+    for _ in range(iterations):
+        new_article = best_article.copy()
+        
+        # Perturbaciones (ejemplo: modificar número de palabras en el título y contenido, número de imágenes o videos)
+        perturbations = [
+            ('n_tokens_title', [-1, 1]),
+            ('n_tokens_content', [-1, 1]),
+            ('num_imgs', [-1, 1]),
+            ('num_videos', [-1, 1]),
+            ('is_weekend', [0, 1])
+        ]
+        
+        for feature, changes in perturbations:
+            change = np.random.choice(changes)
+            new_article[feature] += change
+            if new_article[feature] < 0:
+                new_article[feature] = 0
+        
+        new_prob = model.predict_proba([new_article])[0][1]
+        
+        if new_prob > best_prob or np.random.rand() < prob:
+            best_article = new_article
+            best_prob = new_prob
+    
+    return best_article, best_prob
+
+# Eujemplo de optimización de un artículo
+sample_article = X_test.iloc[0].copy()
+optimized_article, optimized_prob = stochastic_hill_climbing(sample_article, best_model)
+
+print("Probabilidad de artículo original:", best_model.predict_proba([sample_article])[0][1])
+print("Probabilidad de artículo optimizado:", optimized_prob)
+```

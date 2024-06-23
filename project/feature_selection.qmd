@@ -176,4 +176,5 @@ print(columnas_descartadas)
 reduced_df.to_csv('data/ReadyToTrain.csv', index=False)
 ```
 
+```{python}
 ```
