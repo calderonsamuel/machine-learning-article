@@ -158,7 +158,7 @@ reduced_pca_df = df.drop(columnas_descartadas, axis=1)
 # Forward Selection
 ```{python}
 '''
-  No se pudo ocupar por el tiempo de ejecucion que tiene. Por esta razon se realizo un ajuste para aprobechar l
+  No se pudo ocupar por el tiempo de ejecucion en un equipo normal.
 '''
 data_target = df['shares']
 data_features = df.drop(columns=['shares'])
@@ -169,7 +169,7 @@ print("Selected features:", selected_features)
 # Mutual Information (Ejecutar despues Forward Selection)
 ```{python}
 '''
-  Todavia en etapa de pruebas
+  Todavia en etapa de pruebas.
 '''
 x = df.drop("shares", axis=1)
 y = df["shares"]
@@ -177,7 +177,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 # Para clasificación multiclase
 mi_classif = mutual_info_classif(X_train, y_train)
 mi_df = pd.DataFrame({'feature': X_train.columns, 'mutual_info': mi_classif}).sort_values(by='mutual_info', ascending=False)
-selected_features = mi_df[mi_df['mutual_info'] > 0.01]['feature']  # umbral de información mutua
+selected_features = mi_df[mi_df['mutual_info'] > 0.01]['feature']
 ```
 # Tomar solo caracteristicas seleccionadas + shared (Ejecutar despues Forward Selection)
 ```{python}
