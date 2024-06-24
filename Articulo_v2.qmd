@@ -161,4 +161,6 @@ $$
 
 # Conclusiones y trabajos futuros
 
+Basado en las métricas evaluadas, los modelos RandomForest y AdaBoost mostraron un rendimiento superior con AUC de 0.7095 y 0.7030 respectivamente, indicando una buena capacidad para clasificar correctamente. LogisticRegression también fue competitivo con un AUC de 0.6793, aunque mostró una precisión ligeramente menor. En contraste, MLP obtuvo un AUC más bajo de 0.5679, pero destacó en sensibilidad (recall) con 0.7427, siendo efectivo en la identificación de casos positivos. En conclusión, RandomForest y AdaBoost son recomendados por su sólido desempeño general en este conjunto de datos, mientras que MLP muestra una fortaleza en la detección de casos positivos.
+
 # References
