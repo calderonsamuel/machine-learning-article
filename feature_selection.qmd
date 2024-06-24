@@ -17,6 +17,10 @@ from sklearn.feature_selection import mutual_info_classif
 # Cargar data
 df = pd.read_csv("data/OnlineNewsPopularity.csv")
 ```
+```{python}
+# Cargar data
+df
+```
 # Metodos practicos
 ```{python}
 # Eliminar espacios vacios de variables
@@ -106,10 +110,6 @@ df = quitar_espacios_vacíos_df(df)
 df.drop(['url'], axis=1, inplace=True) # Todos los urls estan agregadas pero ya no existen, por esta razon quitamos el campo.
 # Descartamos time_delta
 df
-```
-# Matriz de correlacion
-```{python}
-show_correlation(df)
 ```
 # Normalizar Datos
 ```{python}
