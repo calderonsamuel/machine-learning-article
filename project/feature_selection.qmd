@@ -8,6 +8,12 @@ import numpy as np
 
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+# Librerias probadas Segunda seleccion de variables
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+# Multiple core
+from multiprocessing import Pool
 ```
 # Cargar data
 ```{python}
@@ -40,6 +46,56 @@ def show_codo_graf(ve_param, vc_param):
     plt.ylabel('Varianza explicada acumulada')
     plt.grid(True)
     plt.show()
+# Forward Selection
+def forward_selection(data, target):
+    initial_features = data.columns.tolist()
+    best_features = []
+    while initial_features:
+        remaining_features = list(set(initial_features) - set(best_features))
+        new_feature = None
+        best_score = 0
+        for feature in remaining_features:
+            current_features = best_features + [feature]
+            X_train, X_test, y_train, y_test = train_test_split(data[current_features], target, test_size=0.3, random_state=42)
+            model = LogisticRegression(max_iter=10000, multi_class='multinomial', solver='lbfgs', n_jobs=16)
+            model.fit(X_train, y_train)
+            predictions = model.predict(X_test)
+            score = accuracy_score(y_test, predictions)
+            if score > best_score:
+                best_score = score
+                new_feature = feature
+        if new_feature:
+            best_features.append(new_feature)
+        else:
+            break
+    return best_features
+# Ejecucucion paralela Forward Selection
+def evaluate_feature(args):
+    feature, best_features, data, target = args
+    current_features = best_features + [feature]
+    X_train, X_test, y_train, y_test = train_test_split(data[current_features], target, test_size=0.3, random_state=42)
+    model = LogisticRegression(max_iter=10000)  
+    model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
+    score = accuracy_score(y_test, predictions)
+    return score, feature
+
+def parallel_forward_selection(data, target, n_cores):
+    initial_features = data.columns.tolist()
+    best_features = []
+    
+    with Pool(n_cores) as pool:
+        while initial_features:
+            remaining_features = list(set(initial_features) - set(best_features))
+            args = [(feature, best_features, data, target) for feature in remaining_features]
+            scores_features = pool.map(evaluate_feature, args)
+            best_score, new_feature = max(scores_features)
+            if new_feature:
+                best_features.append(new_feature)
+            else:
+                break
+
+    return best_features
 ```
 # Ordenamiento
 ```{python}
@@ -51,95 +107,36 @@ df.head(5)
 # Eliminar variables no ocupadas
 df = quitar_espacios_vacíos_df(df)
 # Descartando url
-df.drop(['url', 'timedelta'], axis=1, inplace=True) # Todos los urls estan agregadas pero ya no existen, por esta razon quitamos el campo.
+df.drop(['url'], axis=1, inplace=True) # Todos los urls estan agregadas pero ya no existen, por esta razon quitamos el campo.
 # Descartamos time_delta
 df
-```
-# Union de variables variables
-```{python}
-# Uniendo variables de categoria de articulos
-df['data_channel_is_lifestyle'] = df['data_channel_is_lifestyle'].astype(bool)
-df['data_channel_is_entertainment'] = df['data_channel_is_entertainment'].astype(bool)
-df['data_channel_is_bus'] = df['data_channel_is_bus'].astype(bool)
-df['data_channel_is_socmed'] = df['data_channel_is_socmed'].astype(bool)
-df['data_channel_is_tech'] = df['data_channel_is_tech'].astype(bool)
-df['data_channel_is_world'] = df['data_channel_is_world'].astype(bool)
-
-conditions = [
-    df['data_channel_is_lifestyle'],
-    df['data_channel_is_entertainment'],
-    df['data_channel_is_bus'],
-    df['data_channel_is_socmed'],
-    df['data_channel_is_tech'],
-    df['data_channel_is_world']
-]
-
-choices = [1,2,3,4,5,6]
-
-df['data_channel'] = np.select(conditions, choices, default=0)
-# df['data_channel'].value_counts()
-# Descatando variables ya no ocupadas
-df.drop(['data_channel_is_lifestyle',
-    'data_channel_is_entertainment',
-    'data_channel_is_bus',
-    'data_channel_is_socmed',
-    'data_channel_is_tech',
-    'data_channel_is_world'], axis=1, inplace=True)
-```
-```{python}
-# Uniendo variables de Dia de Publicacion
-df['weekday_is_monday'] = df['weekday_is_monday'].astype(bool)
-df['weekday_is_tuesday'] = df['weekday_is_tuesday'].astype(bool)
-df['weekday_is_wednesday'] = df['weekday_is_wednesday'].astype(bool)
-df['weekday_is_thursday'] = df['weekday_is_thursday'].astype(bool)
-df['weekday_is_friday'] = df['weekday_is_friday'].astype(bool)
-df['weekday_is_saturday'] = df['weekday_is_saturday'].astype(bool)
-df['weekday_is_sunday'] = df['weekday_is_sunday'].astype(bool)
-
-conditions = [
-    df['weekday_is_monday'],
-    df['weekday_is_tuesday'],
-    df['weekday_is_wednesday'],
-    df['weekday_is_thursday'],
-    df['weekday_is_friday'],
-    df['weekday_is_saturday'],
-    df['weekday_is_sunday']
-]
-
-choices = [1,2,3,4,5,6,7]
-
-df['publication_day'] = np.select(conditions, choices, default=0)
-# df['data_channel'].value_counts()
-# Descatando variables ya no ocupadas
-df.drop(['weekday_is_monday',
-    'weekday_is_tuesday',
-    'weekday_is_wednesday',
-    'weekday_is_thursday',
-    'weekday_is_friday',
-    'weekday_is_saturday',
-    'weekday_is_sunday'], axis=1, inplace=True)
 ```
 # Matriz de correlacion
 ```{python}
 show_correlation(df)
 ```
-# Disminuir dimensionalidad con PCA
+# Normalizar Datos
 ```{python}
 # Normalizar datos
 scaler = StandardScaler()
 df_scaled = scaler.fit_transform(df)
+
+# pd.DataFrame(df_scaled, columns=df.columns)
+```
+# Disminuir dimensionalidad con PCA
+```{python}
 # Crear objeto PCA
 pca = PCA()
 # Ajustar el modelo PCA a los datos normalizados
 pca.fit(df_scaled)
 ```
+# Grafica Codo
 ```{python}
 # Obtener varianza explicada por cada caracteristica
 variance_explained = pca.explained_variance_ratio_
 # Calcular varianza acumulada
 variance_cumulada = np.cumsum(variance_explained)
-```
-```{python}
+
 show_codo_graf(variance_explained, variance_cumulada)
 ```
 # Establecer umbral de varianza explicada
@@ -160,7 +157,15 @@ caracteristicas_descartados = np.where(variance_cumulada < umbral_varianza)[0]
 # Obtener nombres de las columnas descartadas
 columnas_descartadas = df.columns[caracteristicas_descartados]
 # Eliminar columnas descartadas por nombre
-reduced_df = df.drop(columnas_descartadas, axis=1)
+reduced_pca_df = df.drop(columnas_descartadas, axis=1)
+```
+# Forward Selection
+```{python}
+data_target = reduced_pca_df['shares']
+data_features = reduced_pca_df.drop(columns=['shares'])
+# selected_features = forward_selection(data_features, data_target)
+selected_features = parallel_forward_selection(data_features, data_target, n_cores=16)
+print("Selected features:", selected_features)
 ```
 # Imprimir caracteristicas selecionadas y descartados
 ```{python}
@@ -173,7 +178,8 @@ print(columnas_descartadas)
 # Descargar df preparado
 ```{python}
 # Descargar caracteristicas preparadas
-reduced_df.to_csv('data/ReadyToTrain.csv', index=False)
+reduced_pca_df.to_csv('data/ReadyToTrain.csv', index=False)
 ```
-
+```{python}
+reduced_pca_df
 ```
