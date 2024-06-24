@@ -7,19 +7,15 @@ Este documento realiza la réplica del artículo de "Online News Popularity" ela
 ```{python}
 import pandas as pd
 import numpy as np
-
+# Modelos
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
+from sklearn.ensemble import StackingClassifier
 
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, recall_score, f1_score, roc_curve
-
-# Stacking Ensamble de Modelos
-from sklearn.ensemble import StackingClassifier
-# from sklearn.pipeline import make_pipeline
-# from sklearn.preprocessing import StandardScaler
 ```
 
 ```{python}
@@ -51,7 +47,7 @@ models = {
     'LogisticRegression': LogisticRegression(),
     'MLP': MLPClassifier(max_iter=1000),  # Agregar el modelo MLPClassifier
     # 'XGBClassifier': ,
-    'SVM': SVC(),
+    # 'SVM': SVC(),
     
 
 }
@@ -64,7 +60,7 @@ param_grids = {
         'C': [0.001, 0.01, 0.1, 1, 10],
         'solver': ['liblinear', 'saga']
     },
-    'SVM': {'C': [2**0, 2**1, 2**2, 2**3, 2**4, 2**5, 2**6]},
+    # 'SVM': {'C': [2**0, 2**1, 2**2, 2**3, 2**4, 2**5, 2**6]},
     'MLP': {  # Hiperparámetros para MLPClassifier
         'hidden_layer_sizes': [(50,), (100,), (150,)],
         'activation': ['tanh', 'relu'],
@@ -146,7 +142,7 @@ print(f"StackingClassifier: AUC={auc}, Accuracy={accuracy}, Precision={precision
 
 ```{python}
 # Seleccionar el mejor modelo. En este caso, Random Forest.
-best_model = best_models['MLP']
+best_model = best_models['RandomForest']
 ```
 
 ```{python}
@@ -159,13 +155,7 @@ def stochastic_hill_climbing(article, model, iterations=100, prob=0.5):
         new_article = best_article.copy()
         
         # Perturbaciones (ejemplo: modificar número de palabras en el título y contenido, número de imágenes o videos)
-        perturbations = [
-            ('n_tokens_title', [-1, 1]),
-            ('n_tokens_content', [-1, 1]),
-            ('num_imgs', [-1, 1]),
-            ('num_videos', [-1, 1]),
-            ('is_weekend', [0, 1])
-        ]
+        perturbations = []
         
         for feature, changes in perturbations:
             change = np.random.choice(changes)
