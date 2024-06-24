@@ -1,21 +1,16 @@
 # Librerias
 ```{python}
-# Importaciones
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-# Mutual Information
 from sklearn.feature_selection import mutual_info_regression
-# Librerias probadas Segunda seleccion de variables
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-# Multiple core
 from multiprocessing import Pool
+from sklearn.feature_selection import mutual_info_classif
 ```
 # Cargar data
 ```{python}
@@ -24,7 +19,6 @@ df = pd.read_csv("data/OnlineNewsPopularity.csv")
 ```
 # Metodos practicos
 ```{python}
-# Funciones usables reusables
 # Eliminar espacios vacios de variables
 def borrar_espacios(text_param: str) -> str:
   return text_param.replace(' ', '')
@@ -161,34 +155,36 @@ columnas_descartadas = df.columns[caracteristicas_descartados]
 # Eliminar columnas descartadas por nombre
 reduced_pca_df = df.drop(columnas_descartadas, axis=1)
 ```
-# Forward Selection (Tarda Cargando)
+# Forward Selection
 ```{python}
+'''
+  No se pudo ocupar por el tiempo de ejecucion en un equipo normal.
+'''
 data_target = df['shares']
 data_features = df.drop(columns=['shares'])
 # selected_features = forward_selection(data_features, data_target)
 selected_features = parallel_forward_selection(data_features, data_target, n_cores=16)
 print("Selected features:", selected_features)
 ```
-# Mutual Information (Probando)
+# Mutual Information (Ejecutar despues Forward Selection)
 ```{python}
-from sklearn.feature_selection import mutual_info_classif
-
+'''
+  Todavia en etapa de pruebas.
+'''
 x = df.drop("shares", axis=1)
 y = df["shares"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 # Para clasificación multiclase
 mi_classif = mutual_info_classif(X_train, y_train)
 mi_df = pd.DataFrame({'feature': X_train.columns, 'mutual_info': mi_classif}).sort_values(by='mutual_info', ascending=False)
-selected_features = mi_df[mi_df['mutual_info'] > 0.01]['feature']  # umbral de información mutua
+selected_features = mi_df[mi_df['mutual_info'] > 0.01]['feature']
 ```
-
-# Tomar solo caracteristicas seleccionadas + shared
+# Tomar solo caracteristicas seleccionadas + shared (Ejecutar despues Forward Selection)
 ```{python}
 reduced_mutual_df = df.loc[:, selected_features]
 reduced_mutual_df['shares'] = df['shares']
 reduced_mutual_df
 ```
-
 # Imprimir caracteristicas selecionadas y descartados
 ```{python}
 # Imprimir caracteristicas
@@ -201,8 +197,4 @@ print(columnas_descartadas)
 ```{python}
 # Descargar caracteristicas preparadas
 reduced_mutual_df.to_csv('data/ReadyToTrain.csv', index=False)
-```
-```{python}
-
-
 ```
