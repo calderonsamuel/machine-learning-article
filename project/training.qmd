@@ -1,106 +1,88 @@
-# Librerias
+---
+jupyter: python3
+---
+
+Este documento realiza la réplica del artículo de "Online News Popularity" elaborado por Kelwin Fernandes, Pedro Vinagre, Paulo Cortez y Pedro Sernadela. Disponible en: <https://archive.ics.uci.edu/dataset/332/online+news+popularity>
+
 ```{python}
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-# RandomForest
+import numpy as np
 from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, recall_score, f1_score
+# Modelos
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from sklearn.metrics import accuracy_score
-# LogisticRegression 
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-# KNN
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.metrics import mean_squared_error, r2_score
-# Validacion Cruzada
-from sklearn.model_selection import KFold
-
-from sklearn.datasets import make_classification
-from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, recall_score, f1_score, roc_curve
+from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import StackingClassifier
 ```
 
-# Cargar data 
 ```{python}
-# Cargar data
-df = pd.read_csv("data/ReadyToTrain.csv")
-```
-# Separar variables predictoras y objetivo
-```{python}
-# Separar variables predictoras y objetivo
-x = df.drop("shares", axis=1)
-y = df["shares"]
-# Dividir conjunto de entrenamiento y de prueba
-# x, y = make_classification(n_samples=1000, n_features=20, random_state=42)
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
-```
-# Metodos de Entrenaiento
-```{python}
-# Bosque aleatorio 
-modelo_bosque_aleatorio = RandomForestClassifier(n_estimators=50, random_state=42)
-modelo_bosque_aleatorio.fit(x_train, y_train)
-```
-```{python}
-# Regresion Logistica
-modelo_regresion_logistica = LogisticRegression()
-modelo_regresion_logistica.fit(x_train, y_train)
-```
-```{python}
-# K-Nearest Neighbors
-modelo_knn = KNeighborsRegressor(n_neighbors=10)
-modelo_knn.fit(x_train, y_train)
-# Evaluacion del Modelo
-y_pred = modelo_knn.predict(x_test)
-
-mse = mean_squared_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
-
-print("Error cuadrático medio:", mse)
-print("Coeficiente de determinación:", r2)
+# Cargar el conjunto de datos, provisto en CSV
+data = pd.read_csv('data/ReadyToTrain.csv')
+data.columns = data.columns.str.strip()
 ```
 
-# Metodo Samuel
 ```{python}
+# Listado de features que nos interesan. url y timedelta no son importantes
+features = list(data.drop(columns = []))
+```
+
+```{python}
+# Se remueve la columna shares, que es el target
+X = data[features].drop(columns=['shares'])
+# 1400 umbral usado para considerar si un articulo es popular o no
+y = (data['shares'] > 1400).astype(int)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+```
+# Modelos de Entrenamiento
+```{python}
+# Modelos ocupados
 models = {
+    'LogisticRegression': LogisticRegression(),
+    'MLP': MLPClassifier(max_iter=1000),
     'RandomForest': RandomForestClassifier(),
     'AdaBoost': AdaBoostClassifier(),
-    'LogisticRegression': LogisticRegression()
 }
-
+# Parametros ocupados por modelo
 param_grids = {
-    'RandomForest': {'n_estimators': [10, 20, 50, 100, 200, 400]},
-    'AdaBoost': {'n_estimators': [10, 20, 50, 100, 200, 400]},
     'LogisticRegression': {
         'penalty': ['l1', 'l2'],
         'C': [0.001, 0.01, 0.1, 1, 10],
         'solver': ['liblinear', 'saga']
+    },
+    'MLP': {  # Hiperparámetros para MLPClassifier
+        'hidden_layer_sizes': [(50,), (100,), (150,)],
+        'activation': ['tanh', 'relu'],
+        'solver': ['sgd', 'adam'],
+        'alpha': [0.0001, 0.001, 0.01],
+        'learning_rate': ['constant', 'adaptive']
     }
+    'RandomForest': {'n_estimators': [10, 20, 50, 100, 200, 400]},
+    'AdaBoost': {'n_estimators': [10, 20, 50, 100, 200, 400]},
 }
-
-# Se realiza búsqueda en grid para cada modelo y se obtiene los mejores estimadores de cada búsqueda.
+```
+# Busqueda Grid para obtener mejores estimadores de busqueda
+```{python}
+# # Busqueda Grid para obtener mejores estimadores de busqueda
 best_models = {}
 for model_name, model in models.items():
     print(f"Training {model_name}...")
-    grid_search = GridSearchCV(model, param_grids[model_name], cv=5, scoring='roc_auc', n_jobs=10, verbose=3)
-    grid_search.fit(x_train, y_train)
+    # Le pasamos n_jobs para indicarle que utiliza 14 núcleos de CPU. Así se obtiene resultados más rápido
+    grid_search = GridSearchCV(model, param_grids[model_name], cv=5, scoring='roc_auc', n_jobs=16, verbose=3) 
+    grid_search.fit(X_train, y_train)
     best_models[model_name] = grid_search.best_estimator_
-
-# Mostrar los mejores modelos encontrados
-for model_name, best_model in best_models.items():
-    print(f"Best {model_name} model:")
-    print(best_model)
-    print()
 ```
+# Obtener Metricas
 ```{python}
 # Se obtienen las métricas de todos los modelos.
 results = {}
 for model_name, model in best_models.items():
-    y_pred_prob = model.predict_proba(x_test)[:, 1]
+    y_pred_prob = model.predict_proba(X_test)[:, 1]
     auc = roc_auc_score(y_test, y_pred_prob)
-    accuracy = accuracy_score(y_test, model.predict(x_test))
-    precision = precision_score(y_test, model.predict(x_test))
-    recall = recall_score(y_test, model.predict(x_test))
-    f1 = f1_score(y_test, model.predict(x_test))
+    accuracy = accuracy_score(y_test, model.predict(X_test))
+    precision = precision_score(y_test, model.predict(X_test))
+    recall = recall_score(y_test, model.predict(X_test))
+    f1 = f1_score(y_test, model.predict(X_test))
     results[model_name] = {
         'AUC': auc,
         'Accuracy': accuracy,
@@ -108,45 +90,98 @@ for model_name, model in best_models.items():
         'Recall': recall,
         'F1': f1
     }
-
 # Print resultados de evaluación
 for model_name, metrics in results.items():
     print(f"{model_name}: {metrics}")
 ```
 
+Se obtuvo Random Forest como el mejor modelo.
+```
+RandomForest:
+AUC (Área bajo la curva ROC): 0.7095
+Accuracy (Precisión): 0.6510
+Precision (Precisión Positiva): 0.6447
+Recall (Sensibilidad): 0.6406
+F1 (Puntuación F1): 0.6426
+AdaBoost:
+AUC (Área bajo la curva ROC): 0.7030
+Accuracy (Precisión): 0.6488
+Precision (Precisión Positiva): 0.6423
+Recall (Sensibilidad): 0.6389
+F1 (Puntuación F1): 0.6406
+LogisticRegression:
+AUC (Área bajo la curva ROC): 0.6793
+Accuracy (Precisión): 0.6350
+Precision (Precisión Positiva): 0.6286
+Recall (Sensibilidad): 0.6231
+F1 (Puntuación F1): 0.6258
+MLP (Perceptrón Multicapa):
+AUC (Área bajo la curva ROC): 0.5679
+Accuracy (Precisión): 0.5034
+Precision (Precisión Positiva): 0.4954
+Recall (Sensibilidad): 0.7427
+F1 (Puntuación F1): 0.5943
+```
 
-
-
-<!-- # Validacion cruzada
+# Ensamble de Modelos
 ```{python}
-k = 5
-# Configuración de la validación cruzada KFold
-kfold = KFold(n_splits=k, shuffle=True, random_state=42)
-# Ejecucion de validacion cruzada
-scores = []
+# Crea un meta-learner
+meta_learner = LogisticRegression()
+# Construye el StackingClassifier
+stacking_clf = StackingClassifier(
+    estimators=[(name, model) for name, model in best_models.items()],
+    final_estimator=meta_learner,
+    cv=5
+)
+# Entrena el StackingClassifier
+stacking_clf.fit(X_train, y_train)
+# Evalúa el StackingClassifier
+y_pred_prob = stacking_clf.predict_proba(X_test)[:, 1]
+auc = roc_auc_score(y_test, y_pred_prob)
+accuracy = accuracy_score(y_test, stacking_clf.predict(X_test))
+precision = precision_score(y_test, stacking_clf.predict(X_test))
+recall = recall_score(y_test, stacking_clf.predict(X_test))
+f1 = f1_score(y_test, stacking_clf.predict(X_test))
 
-for train_index, test_index in kfold.split(x, y):
-    x_train, x_test = x.iloc[train_index], x.iloc[test_index]
-    y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+# Muestra las métricas del StackingClassifier
+print(f"StackingClassifier: AUC={auc}, Accuracy={accuracy}, Precision={precision}, Recall={recall}, F1={f1}")
+```
 
-    modelo_regresion_logistica.fit(x_train, y_train)
-    y_pred = modelo_regresion_logistica.predict(x_test)
-
-    accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred)
-    recall = recall_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
-    print('-------------------------')
-    print("Precisión:", accuracy)
-    print("Precisión:", precision)
-    print("Recuperación:", recall)
-    print("Puntuación F1:", f1)
-``` -->
-
-# Hacer predicciones en el conjunto de prueba
 ```{python}
-# Hacer predicciones en el conjunto de prueba
-y_pred = modelo_regresion_logistica.predict(x_test)
-accuracy = accuracy_score(y_test, y_pred)
-print("Accuracy:", accuracy)
+# Seleccionar el mejor modelo. En este caso, Random Forest.
+best_model = best_models['RandomForest']
+```
+
+```{python}
+# Optimización usando "stochastic hill climbing".
+def stochastic_hill_climbing(article, model, iterations=100, prob=0.5):
+    best_article = article.copy()
+    best_prob = model.predict_proba([article])[0][1]
+    
+    for _ in range(iterations):
+        new_article = best_article.copy()
+        
+        # Perturbaciones (ejemplo: modificar número de palabras en el título y contenido, número de imágenes o videos)
+        perturbations = []
+        
+        for feature, changes in perturbations:
+            change = np.random.choice(changes)
+            new_article[feature] += change
+            if new_article[feature] < 0:
+                new_article[feature] = 0
+        
+        new_prob = model.predict_proba([new_article])[0][1]
+        
+        if new_prob > best_prob or np.random.rand() < prob:
+            best_article = new_article
+            best_prob = new_prob
+    
+    return best_article, best_prob
+
+# Eujemplo de optimización de un artículo
+sample_article = X_test.iloc[0].copy()
+optimized_article, optimized_prob = stochastic_hill_climbing(sample_article, best_model)
+
+print("Probabilidad de artículo original:", best_model.predict_proba([sample_article])[0][1])
+print("Probabilidad de artículo optimizado:", optimized_prob)
 ```
