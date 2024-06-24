@@ -45,7 +45,7 @@ models = {
     'RandomForest': RandomForestClassifier(),
     'AdaBoost': AdaBoostClassifier(),
     'KNN': KNeighborsClassifier(),
-    'SVM': SVC(probability=True),
+    # 'SVM': SVC(probability=True),
     'NaiveBayes': GaussianNB()
 }
 
@@ -92,6 +92,46 @@ for model_name, model in best_models.items():
 # Print resultados de evaluación
 for model_name, metrics in results.items():
     print(f"{model_name}: {metrics}")
+```
+
+```{python}
+results = {
+    "RandomForest": {
+        'AUC': 0.7295987759506009,
+        'Accuracy': 0.6633596771481419,
+        'Precision': 0.6551430517711172,
+        'Recall': 0.6603158256093374,
+        'F1': 0.657719268250983
+    },
+    "AdaBoost": {
+        'AUC': 0.71803440739476,
+        'Accuracy': 0.6592399529174373,
+        'Precision': 0.6523981433728726,
+        'Recall': 0.6513903192584964,
+        'F1': 0.6518938417933522
+    },
+    "SVM": {
+        'AUC': 0.6328445259707977, 
+        'Accuracy': 0.5850849167647554, 
+        'Precision': 0.5950907150480256, 
+        'Recall': 0.4785444558874013, 
+        'F1': 0.5304918656645419
+    },
+    "KNN": {
+        'AUC': 0.6119554817684731, 
+        'Accuracy': 0.5773499243315957, 
+        'Precision': 0.5830734040341027, 
+        'Recall': 0.48129076553381395, 
+        'F1': 0.5273154677950165
+    },
+    "NaiveBayes": {
+        'AUC': 0.6235357616539953, 
+        'Accuracy': 0.5347233899445099,
+        'Precision': 0.6556503198294243, 
+        'Recall': 0.10556127703398559, 
+        'F1': 0.18184506209343584
+    }
+}
 ```
 
 Se obtuvo Random Forest como el mejor modelo. Tal como en el artículo principal.
