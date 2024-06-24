@@ -198,23 +198,23 @@ los consumidores de estos medios usualmente comparten, se suscriben e
 interactúan con la información. La noción de popularidad suele
 expresarse investigando el número de interacciones en la web y las redes
 sociales, por ejemplo, la tasa de clics, el número de compartidos, me
-gusta y retweets \citep{Uddin2016}. El número de veces que se comparte
+gusta y retweets \citep{uddin2016}. El número de veces que se comparte
 una noticia es un buen indicador de su popularidad potencial. La
 predicción de la popularidad de un artículo tiene múltiples aplicaciones
-en el mundo real, desde el punto de vista de \citep{Tarar2014a}, hay dos
+en el mundo real, desde el punto de vista de \citep{tatar2014a}, hay dos
 caminos de predicción más conocidas: el primero relacionado con las
 características que se conocen luego de la publicación y los que no
 utilizan dichas características. El primero es el más conocido y más
 común
-\citep{Kaltenbrunner2007, Szabo2010, Lee2012, Ahmed2013, Tatar2014b}. De
-acuerdo a \citep{Fernandes2015}, la popularidad de un artículo candidato
+\citep{kaltenbrunner2007, szabo2010, lee2012, ahmed2013, tatar2014b}. De
+acuerdo a \citep{fernandes2015}, la popularidad de un artículo candidato
 puede ser estimado utilizando un módulo de predicción y luego un módulo
 de optimización, según el autor sugiere cambios en el contenido y la
 estructura del artículo, con el fin de maximizar su popularidad
 esperada. Existen varios estudios que sugieren, la predicción puede ser
 alta utilizando los metadatos posteriores a la publicación, dándonos
 ventaja en la atención recibidas de la información luego de ser recibida
-\citep{Lee2012, Ahmed2013}. Por el contrario \citep{Fernandes2015},
+\citep{lee2012, ahmed2013}. Por el contrario \citep{fernandes2015},
 menciona que al utilizar las características de metadatos antes de la
 publicación de los contenidos resulta ser difícil, aunque la precisión
 de la predicción esperada es comparativamente baja en el método de antes
@@ -390,13 +390,13 @@ principales componentes (PCA) y análisis de correlación de datos, ambos
 métodos nos ayudaran a visualizar y entender las relaciones y patrones
 de las variables. 2) Selección y entrenamiento del modelo: En este paso
 utilizaremos varios modelos de clasificación, incluyendo
-RandomForestClassifier \citep{Breiman2001}, AdaBoostClassifier
-\citep{Freund1997}, LogisticRegression \citep{Cox1958} y K-Nearest
-Neighbors \citep{Hodges1951}. Para optimizar los hiperparámetros y
+RandomForestClassifier \citep{breiman2001}, AdaBoostClassifier
+\citep{freund1997}, LogisticRegression \citep{cox1958} y K-Nearest
+Neighbors \citep{hodges1951}. Para optimizar los hiperparámetros y
 mejorar el rendimiento de estos modelos se empleó GridSearchCV
-\citep{Pedregosa2011}, el cual realiza una búsqueda exhaustiva a través
+\citep{pedregosa2011}, el cual realiza una búsqueda exhaustiva a través
 de un rango especificado de valores de parámetros. Además, se consideró
-el modelo GradientBoostingClassifier \citep{Friedman2001}, un método de
+el modelo GradientBoostingClassifier \citep{friedman2001}, un método de
 boosting que, al igual que AdaBoost, combina múltiples modelos débiles
 para formar un modelo fuerte. Estos enfoques maximizan la precisión y
 robustez de las predicciones al ajustar finamente los parámetros y
@@ -442,12 +442,10 @@ extrae muestras bootstrap del conjunto de datos original y genera
 árboles de regresión no podados para cada muestra. En lugar de elegir el
 mejor atributo de división, se selecciona aleatoriamente de un conjunto
 de atributos. La predicción final se obtiene promediando las
-predicciones de todos los árboles individuales. Nosotros utilizamos la
-librería de scikit-learn
-(https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html),
-para implementar el modelo de Random Forests (bosque aleatorio) y
-fijamos el número de estimadores en 50 estimadores con random\_state
-igual a 42.
+predicciones de todos los árboles individuales. Se utilizó la librería
+\href{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html}{\texttt{scikit-learn}},
+para implementar el modelo de Random Forest (bosque aleatorio) y fijamos
+el número de estimadores en 50 estimadores con random\_state igual a 42.
 
 \subsubsection{AdaBoostClassifier (Adaptive
 Boosting)}\label{adaboostclassifier-adaptive-boosting}
@@ -521,13 +519,6 @@ de AUC y precisión global.
 Los resultados de las métricas de evaluación para los diferentes modelos
 se presentan en la Tabla 1.
 
-\$\$
-
-\documentclass{article}
-\usepackage{amsmath}
-
-\begin{document}
-
 \begin{table}[ht]
 \centering
 \caption{Métricas de evaluación de modelos}
@@ -544,28 +535,37 @@ MLP & 0.5679 & 0.5034 & 0.4954 & 0.7427 & 0.5943 \\
 \end{tabular}
 \end{table}
 
-\end{document}
-$$
+El gráfico de barras muestra la comparación de las métricas de AUC (Área
+bajo la curva ROC) y Accuracy para cuatro modelos de clasificación:
+RandomForest, AdaBoost, LogisticRegression y MLP (Perceptrón Multicapa).
+Cada modelo está representado por barras de diferentes colores: azul
+para AUC y verde para Accuracy. RandomForest y AdaBoost destacan con
+altos valores de AUC y Accuracy, seguidos por LogisticRegression con
+valores ligeramente inferiores. En contraste, MLP muestra un desempeño
+más bajo en ambas métricas. Esta representación visual facilita la
+comparación directa del rendimiento relativo de cada modelo en términos
+de su capacidad predictiva y precisión.
 
-El gráfico de barras muestra la comparación de las métricas de AUC (Área bajo la curva ROC) y Accuracy para cuatro modelos de clasificación: RandomForest, AdaBoost, LogisticRegression y MLP (Perceptrón Multicapa). Cada modelo está representado por barras de diferentes colores: azul para AUC y verde para Accuracy. RandomForest y AdaBoost destacan con altos valores de AUC y Accuracy, seguidos por LogisticRegression con valores ligeramente inferiores. En contraste, MLP muestra un desempeño más bajo en ambas métricas. Esta representación visual facilita la comparación directa del rendimiento relativo de cada modelo en términos de su capacidad predictiva y precisión.
+\includegraphics{Articulo_v2_files/figure-pdf/cell-5-output-1.pdf}
 
-::: {.cell execution_count=4}
+\section{Discusión}\label{discusiuxf3n}
 
-::: {.cell-output .cell-output-display}
-![](Articulo_v2_files/figure-pdf/cell-5-output-1.pdf){}
-:::
-:::
+\section{Conclusiones y trabajos
+futuros}\label{conclusiones-y-trabajos-futuros}
+
+Basado en las métricas evaluadas, los modelos RandomForest y AdaBoost
+mostraron un rendimiento superior con AUC de 0.7095 y 0.7030
+respectivamente, indicando una buena capacidad para clasificar
+correctamente. LogisticRegression también fue competitivo con un AUC de
+0.6793, aunque mostró una precisión ligeramente menor. En contraste, MLP
+obtuvo un AUC más bajo de 0.5679, pero destacó en sensibilidad (recall)
+con 0.7427, siendo efectivo en la identificación de casos positivos. En
+conclusión, RandomForest y AdaBoost son recomendados por su sólido
+desempeño general en este conjunto de datos, mientras que MLP muestra
+una fortaleza en la detección de casos positivos.
 
 
-# Discusión
-
-# Conclusiones y trabajos futuros
-
-Basado en las métricas evaluadas, los modelos RandomForest y AdaBoost mostraron un rendimiento superior con AUC de 0.7095 y 0.7030 respectivamente, indicando una buena capacidad para clasificar correctamente. LogisticRegression también fue competitivo con un AUC de 0.6793, aunque mostró una precisión ligeramente menor. En contraste, MLP obtuvo un AUC más bajo de 0.5679, pero destacó en sensibilidad (recall) con 0.7427, siendo efectivo en la identificación de casos positivos. En conclusión, RandomForest y AdaBoost son recomendados por su sólido desempeño general en este conjunto de datos, mientras que MLP muestra una fortaleza en la detección de casos positivos.
-
-# References
-
-
+\renewcommand\refname{References}
   \bibliography{references.bib}
 
 
