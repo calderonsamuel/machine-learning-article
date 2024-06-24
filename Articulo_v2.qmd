@@ -221,7 +221,7 @@ experiment_results = {
         "Recall": 0.7427,
         "F1": 0.5943
     },
-    XGBoost: {
+    "XGBoost": {
         'AUC': 0.73174181283592, 
         'Accuracy': 0.6644526652093492, 
         'Precision': 0.6559048428207307, 
@@ -255,9 +255,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Datos de los modelos y sus métricas
-modelos = ['RandomForest', 'AdaBoost', 'LogisticRegression', 'MLP']
-auc_scores = [0.7095, 0.7030, 0.6793, 0.5679]
-accuracy_scores = [0.6510, 0.6488, 0.6350, 0.5034]
+modelos = ['RandomForest', 'AdaBoost', 'LogisticRegression', 'MLP', 'XGBoost']
+auc_scores = [0.7095, 0.7030, 0.6793, 0.5679, 0.7317]
+accuracy_scores = [0.6510, 0.6488, 0.6350, 0.5034, 0.6644]
 
 x = np.arange(len(modelos))  # Posiciones en el eje x
 
