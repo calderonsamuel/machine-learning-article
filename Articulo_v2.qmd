@@ -133,7 +133,6 @@ Los resultados muestran que RandomForest y AdaBoost son los modelos con mejor re
 
 Los resultados de las métricas de evaluación para los diferentes modelos se presentan en la Tabla 1. 
 
-$$
 \documentclass{article}
 \usepackage{amsmath}
 
@@ -156,7 +155,6 @@ MLP & 0.5679 & 0.5034 & 0.4954 & 0.7427 & 0.5943 \\
 \end{table}
 
 \end{document}
-$$
 
 El gráfico de barras muestra la comparación de las métricas de AUC (Área bajo la curva ROC) y Accuracy para cuatro modelos de clasificación: RandomForest, AdaBoost, LogisticRegression y MLP (Perceptrón Multicapa). Cada modelo está representado por barras de diferentes colores: azul para AUC y verde para Accuracy. RandomForest y AdaBoost destacan con altos valores de AUC y Accuracy, seguidos por LogisticRegression con valores ligeramente inferiores. En contraste, MLP muestra un desempeño más bajo en ambas métricas. Esta representación visual facilita la comparación directa del rendimiento relativo de cada modelo en términos de su capacidad predictiva y precisión.
 
