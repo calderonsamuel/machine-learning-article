@@ -109,8 +109,14 @@ Este proceso asegura que los datos sean limpios, relevantes y manejables, facili
 efectivos.
 
 
-### Selección y entrenamiento del modelo
+#### Selección y entrenamiento del modelo
+Los bosques aleatorios son métodos de aprendizaje en conjunto para la regresión que utilizan múltiples árboles de decisión. El algoritmo extrae muestras bootstrap del conjunto de datos original y genera árboles de regresión no podados para cada muestra. En lugar de elegir el mejor atributo de división, se selecciona aleatoriamente de un conjunto de atributos. La predicción final se obtiene promediando las predicciones de todos los árboles individuales. Nosotros utilizamos la librería de scikit-learn (https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html), para implementar el modelo de Random Forests (bosque aleatorio) y fijamos el número de estimadores en 50 estimadores con random_state igual a 42.
 
+#### Regresión logística
+La regresión logística es una técnica de clasificación utilizada para predecir la probabilidad de pertenencia a una clase binaria. Utiliza la función sigmoide para convertir una combinación lineal de variables independientes en una probabilidad, y ajusta el modelo minimizando la función de costo logloss. La implementación del modelo fue realizando la librería scikit-learn.
+
+#### K-Nearest Neighbors (KNN)
+El modelo K-Nearest Neighbors (KNN) es un algoritmo de aprendizaje supervisado utilizado para clasificación y regresión. Clasifica una observación basándose en las clases de sus K vecinos más cercanos, donde K=10 en este caso, utilizando una medida de distancia como la Euclidiana. En clasificación, asigna la clase más común entre los vecinos, y en regresión, toma el promedio de los valores de los vecinos. Es un método simple y no paramétrico que no hace suposiciones sobre la distribución de los datos, y puede implementarse fácilmente en Python usando la biblioteca scikit-learn.
 
 ### Validación y evaluación del modelo
 
