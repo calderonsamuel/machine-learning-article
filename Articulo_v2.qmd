@@ -157,6 +157,41 @@ MLP & 0.5679 & 0.5034 & 0.4954 & 0.7427 & 0.5943 \\
 \end{document}
 $$
 
+El gráfico de barras muestra la comparación de las métricas de AUC (Área bajo la curva ROC) y Accuracy para cuatro modelos de clasificación: RandomForest, AdaBoost, LogisticRegression y MLP (Perceptrón Multicapa). Cada modelo está representado por barras de diferentes colores: azul para AUC y verde para Accuracy. RandomForest y AdaBoost destacan con altos valores de AUC y Accuracy, seguidos por LogisticRegression con valores ligeramente inferiores. En contraste, MLP muestra un desempeño más bajo en ambas métricas. Esta representación visual facilita la comparación directa del rendimiento relativo de cada modelo en términos de su capacidad predictiva y precisión.
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Datos de los modelos y sus métricas
+modelos = ['RandomForest', 'AdaBoost', 'LogisticRegression', 'MLP']
+auc_scores = [0.7095, 0.7030, 0.6793, 0.5679]
+accuracy_scores = [0.6510, 0.6488, 0.6350, 0.5034]
+
+x = np.arange(len(modelos))  # Posiciones en el eje x
+
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Configurar barras para AUC
+bar_width = 0.35
+ax1.bar(x - bar_width/2, auc_scores, bar_width, label='AUC', color='b', alpha=0.6)
+
+# Configurar barras para Accuracy
+ax1.bar(x + bar_width/2, accuracy_scores, bar_width, label='Accuracy', color='g', alpha=0.6)
+
+# Etiquetas, título y leyenda
+ax1.set_xlabel('Modelos')
+ax1.set_ylabel('Valor')
+ax1.set_title('Comparación de AUC y Accuracy entre modelos')
+ax1.set_xticks(x)
+ax1.set_xticklabels(modelos)
+ax1.legend()
+
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
+
+```
+
 # Discusión
 
 # Conclusiones y trabajos futuros
