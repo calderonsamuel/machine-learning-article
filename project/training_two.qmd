@@ -33,7 +33,7 @@ features = list(data.drop(columns = []))
 # Se remueve la columna shares, que es el target
 X = data[features].drop(columns=['shares'])
 # Clasificación binaria. Se usa el mismo treshold de popularidad que en artículo principal (1400)
-y = (data['shares'] > 1400).astype(int)  
+y = (data['shares'] > 1400).astype(int)
 
 # División en test de training y test. Se usa la misma proporción que en el artículo principal
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
