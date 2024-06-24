@@ -53,46 +53,6 @@
   \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
 
-\usepackage{color}
-\usepackage{fancyvrb}
-\newcommand{\VerbBar}{|}
-\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
-\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
-% Add ',fontsize=\small' for more characters per line
-\usepackage{framed}
-\definecolor{shadecolor}{RGB}{241,243,245}
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
-\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
-\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
@@ -380,29 +340,32 @@ efectividad de varios tipos de contenido a lo largo de diferentes
 canales y en el tiempo. A continuación, se presenta una descripción más
 detallada.
 
-\subsection{Descripción del conjunto de datos (falta
-completar)}\label{descripciuxf3n-del-conjunto-de-datos-falta-completar}
+\subsection{Descripción del conjunto de
+datos}\label{descripciuxf3n-del-conjunto-de-datos}
 
-El conjunto de datos proporciona una visión general exhaustiva del
-contenido en línea, incorporando varias métricas y características
-relacionadas con atributos textuales, elementos multimedia e indicadores
-de participación. Captura atributos textuales clave, como el número de
-tokens en los títulos y el contenido, la proporción de tokens únicos y
-la longitud promedio de los tokens, ofreciendo información sobre la
-complejidad y estructura del contenido. El conjunto de datos también
-incluye métricas de palabras clave, que destacan la relevancia e
-importancia de las palabras clave en el contenido. Además, registra el
-número de hipervínculos y elementos multimedia como imágenes y videos,
-reflejando la riqueza y los aspectos multimedia de los artículos o
-publicaciones.
+El trabajo utiliza los datos del repositorio de aprendizaje automático
+UCI (https://archive.ics.uci.edu/dataset/332/online+news+popularity). La
+información fue utilizada para entrenar modelos predictivos de
+compartidos de noticias de Mashable (www.mashable.com), abarca un
+período de dos años (7 de enero de 2013 al 7 de enero de 2015) y
+contiene 58 características heterogéneas. Estas características incluyen
+la longitud del título y del contenido, el número de imágenes y videos,
+variables temporales como el día de la semana y la hora de publicación,
+y metadatos como la popularidad en otras plataformas y el tema de la
+noticia. También se consideran características sociales, como el número
+de comentarios y compartidos en redes sociales, y técnicas, como la
+presencia de multimedia y palabras clave. Este conjunto de datos
+integral permite un análisis exhaustivo para desarrollar modelos
+predictivos efectivos que estimen la popularidad de una noticia basada
+en su probabilidad de ser compartida.
 
-Además, el conjunto de datos clasifica el contenido en diferentes
-canales, como estilo de vida, entretenimiento, negocios, redes sociales,
-tecnología y noticias mundiales, proporcionando una clara clasificación
-de los tipos de contenido. Se incluye información temporal a través de
-variables que indican el día de la semana en que se publicó el contenido
-y si se publicó en un fin de semana. En estos casos, las variables han
-sido incluidas como binarias.
+De acuerdo a la página web UCI, el conjunto de datos de Mashable consta
+de 39 797 instancias con 58 características, que abarcan tipos de datos
+enteros y reales. Los datos se pueden adaptar para aplicar modelos de
+clasificación y regresión. Len resumen, los datos proporcionan
+información sobre diversos aspectos de los artículos de noticias, lo que
+los hace valiosos para analizar tendencias y predecir métricas de
+rendimiento en el panorama de los medios digitales.
 
 \includegraphics{Articulo_v2_files/figure-pdf/cell-4-output-1.pdf}
 
@@ -415,179 +378,194 @@ variables continuas.
 
 \subsection{Metodología}\label{metodologuxeda}
 
-El presente trabajo se prioriza en el procesamiento de los datos y
-esencialmente antes del entrenamiento de los datos. Por tanto, se
-seguirá los siguientes pasos:
+El presente trabajo prioriza la etapa de procesamiento del dataset, paso
+fundamental antes de realizar el entrenamiento de los datos. El conjunto
+de datos que actualmente manejamos cuenta con 58 características y 39
+mil registros, por lo que claramente se observa la necesidad de reducir
+el número de caracteristicas. Para un adecuado procesamiento y
+entrenamiento de datos, el presente trabjo considera los sigientes
+pasos: 1) Exploración y análisis de datos: en este paso realizaremos la
+reducción de la dimensionalidad utilizando la herramienta de análisis de
+principales componentes (PCA) y análisis de correlación de datos, ambos
+métodos nos ayudaran a visualizar y entender las relaciones y patrones
+de las variables. 2) Selección y entrenamiento del modelo: En este paso
+utilizaremos varios modelos de clasificación, incluyendo
+RandomForestClassifier \citep{Breiman2001}, AdaBoostClassifier
+\citep{Freund1997}, LogisticRegression \citep{Cox1958} y K-Nearest
+Neighbors \citep{Hodges1951}. Para optimizar los hiperparámetros y
+mejorar el rendimiento de estos modelos se empleó GridSearchCV
+\citep{Pedregosa2011}, el cual realiza una búsqueda exhaustiva a través
+de un rango especificado de valores de parámetros. Además, se consideró
+el modelo GradientBoostingClassifier \citep{Friedman2001}, un método de
+boosting que, al igual que AdaBoost, combina múltiples modelos débiles
+para formar un modelo fuerte. Estos enfoques maximizan la precisión y
+robustez de las predicciones al ajustar finamente los parámetros y
+combinar varios clasificadores en un esquema de ensamble. 3) Validación
+y evaluación del modelo: en otras palabras, medir el rendimiento del
+modelo utilizando datos de prueba y métricas de evaluación. Para ello,
+se evaluará el rendimiento de los modelos mediante área bajo la curva
+(AUC), una métrica que proporciona una medida agregada del rendimiento
+en todas las posibles clasificaciones. 4) Finalmente se describirá los
+resultados, interpretación y discusiones: en esta parte nos apoyaremos
+mediante figuras y gráficos estadísticos y correlacionaremos con
+anteriores resultados.
 
-\#1) Preparación de datos, este punto realizaremos la limpieza de datos,
-el manejo de valores faltantes, nulos y detección de los outlier.
+\subsubsection{Exploración y análisis de
+datos}\label{exploraciuxf3n-y-anuxe1lisis-de-datos}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi})}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  Exploración y análisis de datos: en este paso realizaremos la
-  reducción de la dimensionalidad utilizando la herramienta de análisis
-  de principales componentes (PCA) y análisis de correlación de datos,
-  ambos métodos nos ayudaran a visualizar y entender las relaciones y
-  patrones de las variables.
-\end{enumerate}
+En la fase de exploración y análisis de datos, se comienza con el
+ordenamiento de caracteres, que implica la normalización y limpieza de
+los datos textuales, como la conversión a minúsculas, la eliminación de
+espacios vacios y caracteres especiales. Luego, se procede a la
+eliminación de características irrelevantes, identificando y descartando
+aquellas que no aportan valor predictivo. A continuación, se realiza la
+unión de variables, combinando múltiples características en una sola
+para simplificar\\
+el análisis. La creación de una matriz de correlación permite
+identificar relaciones entre variables, ayudando a detectar
+características redundantes. Finalmente, se aplica la disminución de
+dimensionalidad, utilizando técnicas como el Análisis de Componentes
+Principales (PCA), para reducir el número de características manteniendo
+la mayor cantidad de información posible. Este proceso asegura que los
+datos sean limpios, relevantes y manejables, facilitando el desarrollo
+de modelos predictivos efectivos.
 
-PCA, toma encuenta la varianza ya incluye el analis de correlacion
+\subsubsection{Selección y entrenamiento del
+modelo}\label{selecciuxf3n-y-entrenamiento-del-modelo}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi})}
-\setcounter{enumi}{2}
-\tightlist
-\item
-  Selección y entrenamiento del modelo; los datos clasificacion:
-  `RandomForest': RandomForestClassifier(), `AdaBoost':
-  AdaBoostClassifier(), `LogisticRegression': LogisticRegression()
-  GridSearchCV gradienBoots Redes neuronales (opcional)
-\end{enumerate}
+\subsubsection{Clasificación Random
+Forest}\label{clasificaciuxf3n-random-forest}
 
-considerando que los datos se acomodan para aplicar modelos de
-regresión, priorizaremos la metodología de , el cual es una técnica que
-se utiliza la mejor combinación de hiperparámetros. En este punto,
-además, optimizaremos los parámetros del modelo para mejorar su
-rendimiento.
+Los bosques aleatorios son métodos de aprendizaje en conjunto para la
+regresión que utilizan múltiples árboles de decisión. El algoritmo
+extrae muestras bootstrap del conjunto de datos original y genera
+árboles de regresión no podados para cada muestra. En lugar de elegir el
+mejor atributo de división, se selecciona aleatoriamente de un conjunto
+de atributos. La predicción final se obtiene promediando las
+predicciones de todos los árboles individuales. Nosotros utilizamos la
+librería de scikit-learn
+(https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html),
+para implementar el modelo de Random Forests (bosque aleatorio) y
+fijamos el número de estimadores en 50 estimadores con random\_state
+igual a 42.
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi})}
-\setcounter{enumi}{3}
-\item
-  En seguida realizaremos la validación y evaluación del modelo: en
-  otras palabras, medir el rendimiento del modelo utilizando datos de
-  prueba y métricas de evaluación. Aquiursasi y el area bajo la curva
-\item
-  Finalmente se describirá los resultados, interpretación y discusiones:
-  en esta parte nos apoyaremos mediante figuras y gráficos estadísticos
-  y correlacionaremos con anteriores resultados.
-\end{enumerate}
+\subsubsection{AdaBoostClassifier (Adaptive
+Boosting)}\label{adaboostclassifier-adaptive-boosting}
+
+Es un algoritmo de aprendizaje automático utilizado principalmente para
+tareas de clasificación. AdaBoost funciona construyendo un modelo a
+partir de un conjunto inicial de datos y luego ajusta iterativamente los
+pesos de los ejemplos mal clasificados, incrementando la influencia de
+aquellos que resultaron más difíciles de clasificar en cada iteración.
+Esto permite que los clasificadores posteriores se centren más en los
+ejemplos difíciles. Finalmente, los modelos individuales se combinan
+mediante una votación ponderada para mejorar la precisión global.
+AdaBoost es conocido por su capacidad para mejorar el rendimiento de
+modelos débiles y su eficacia en diversos dominios, aunque su
+rendimiento puede verse afectado por la presencia de ruido en los datos
+y por la elección de los clasificadores base. Este modelo se implementó
+utilizando la librería Scikit-learn.
+
+\subsubsection{Regresión logística}\label{regresiuxf3n-loguxedstica}
+
+La regresión logística es una técnica de clasificación utilizada para
+predecir la probabilidad de pertenencia a una clase binaria. Utiliza la
+función sigmoide para convertir una combinación lineal de variables
+independientes en una probabilidad, y ajusta el modelo minimizando la
+función de costo logloss. La implementación del modelo fue realizando la
+librería scikit-learn.
+
+\subsubsection{K-Nearest Neighbors (KNN)}\label{k-nearest-neighbors-knn}
+
+El modelo K-Nearest Neighbors (KNN) es un algoritmo de aprendizaje
+supervisado utilizado para clasificación y regresión. Clasifica una
+observación basándose en las clases de sus K vecinos más cercanos, donde
+K=10 en este caso, utilizando una medida de distancia como la
+Euclidiana. En clasificación, asigna la clase más común entre los
+vecinos, y en regresión, toma el promedio de los valores de los vecinos.
+Es un método simple y no paramétrico que no hace suposiciones sobre la
+distribución de los datos, y puede implementarse fácilmente en Python
+usando la Libreria scikit-learn.
+
+\subsubsection{GridSearchCV}\label{gridsearchcv}
+
+Es una técnica esencial en el aprendizaje automático para optimizar los
+hiperparámetros de un modelo. Utiliza validación cruzada para evaluar
+exhaustivamente todas las combinaciones posibles de valores de
+hiperparámetros especificados. Por ejemplo, para un modelo SVM, se
+pueden explorar diferentes valores para los parámetros como C y el tipo
+de kernel. GridSearchCV entrena y evalúa el modelo con cada combinación,
+seleccionando automáticamente la configuración que maximiza una métrica
+de rendimiento definida, como la exactitud o el AUC. Aunque efectivo
+para mejorar el rendimiento del modelo, su implementación puede ser
+intensiva en recursos debido a la exhaustividad de la búsqueda, siendo
+crucial considerar la escalabilidad y el tiempo computacional requerido.
 
 \section{Experimentación y
 resultados}\label{experimentaciuxf3n-y-resultados}
 
-\section{Referencias}\label{referencias}
+Los resultados muestran que RandomForest y AdaBoost son los modelos con
+mejor rendimiento general, con AUC (Área bajo la curva ROC) de 0.7095 y
+0.7030 respectivamente. RandomForest alcanza una precisión (Accuracy) de
+0.6510 y una precisión positiva (Precision) de 0.6447, mientras que
+AdaBoost logra 0.6488 y 0.6423 respectivamente en estas métricas.
+LogisticRegression, aunque presenta un AUC de 0.6793, muestra una
+precisión y precision positiva ligeramente más bajas en comparación con
+los modelos de ensemble. Por otro lado, MLP (Perceptrón Multicapa)
+muestra el rendimiento más bajo con un AUC de 0.5679 y una precisión de
+0.5034, aunque destaca en recall (Sensibilidad) con 0.7427. Estos
+resultados resaltan la capacidad superior de los modelos ensemble como
+RandomForest y AdaBoost para la clasificación, especialmente en términos
+de AUC y precisión global.
 
-\section{Quarto}\label{quarto}
+Los resultados de las métricas de evaluación para los diferentes modelos
+se presentan en la Tabla 1.
 
-Quarto enables you to weave together content and executable code into a
-finished document. To learn more about Quarto see
-\url{https://quarto.org}.
+\$\$
 
-\section{Running Code}\label{running-code}
+\documentclass{article}
+\usepackage{amsmath}
 
-When you click the \textbf{Render} button a document will be generated
-that includes both content and the output of embedded code. You can
-embed code like this:
+\begin{document}
 
-\begin{verbatim}
-2
-\end{verbatim}
+\begin{table}[ht]
+\centering
+\caption{Métricas de evaluación de modelos}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Modelo} & \textbf{AUC} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+\hline
+RandomForest & 0.7095 & 0.6510 & 0.6447 & 0.6406 & 0.6426 \\
+AdaBoost & 0.7030 & 0.6488 & 0.6423 & 0.6389 & 0.6406 \\
+LogisticRegression & 0.6793 & 0.6350 & 0.6286 & 0.6231 & 0.6258 \\
+K-Nearest Neighbors & 0 & 0 & 0 & 0 & 0 \\
+MLP & 0.5679 & 0.5034 & 0.4954 & 0.7427 & 0.5943 \\
+\hline
+\end{tabular}
+\end{table}
 
-You can add options to executable code like this
+\end{document}
+$$
 
-\begin{verbatim}
-4
-\end{verbatim}
+El gráfico de barras muestra la comparación de las métricas de AUC (Área bajo la curva ROC) y Accuracy para cuatro modelos de clasificación: RandomForest, AdaBoost, LogisticRegression y MLP (Perceptrón Multicapa). Cada modelo está representado por barras de diferentes colores: azul para AUC y verde para Accuracy. RandomForest y AdaBoost destacan con altos valores de AUC y Accuracy, seguidos por LogisticRegression con valores ligeramente inferiores. En contraste, MLP muestra un desempeño más bajo en ambas métricas. Esta representación visual facilita la comparación directa del rendimiento relativo de cada modelo en términos de su capacidad predictiva y precisión.
 
-The \texttt{echo:\ false} option disables the printing of code (only
-output is displayed). This is the default behavior.
+::: {.cell execution_count=4}
 
-When you use \texttt{echo:\ true} you will show both the code and the
-output.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\BuiltInTok{print}\NormalTok{(}\StringTok{"Hello"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-Hello
-\end{verbatim}
-
-\section{Using figures and equations}\label{using-figures-and-equations}
-
-Using \texttt{fig-cap} allows you to specifiy a caption for a figure.
-Use it in code blocks where the last line prints a plot.
-
-\begin{figure}
-
-\centering{
-
-\includegraphics{Articulo_v2_files/figure-pdf/fig-radial-output-1.pdf}
-
-}
-
-\caption{\label{fig-radial}Radial plot}
-
-\end{figure}%
-
-You can write Latex equiations:
-
-\[
-E=mc^2
-\]
-
-If the label attribute of a code chunk starts with \texttt{fig-} when it
-renders a plot, you can reference it. For example, here we reference
-Figure~\ref{fig-radial}.
-
-Be attentive as some things might need manual tweaking.
-
-\section{Using other formating}\label{using-other-formating}
-
-Multiple formatting options
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  You can use lists
-\item
-  They will numerate by themselves
-\item
-  No need to worry about counting
-\end{enumerate}
-
-You are not restricted to numbered lists.
-
-\begin{itemize}
-\tightlist
-\item
-  first
-\item
-  second
-\item
-  third
-\end{itemize}
-
-\subsection{Use of sub headers}\label{use-of-sub-headers}
-
-Organize your document as you please. How much organization do you
-really need?
-
-\subsection{Another subheader}\label{another-subheader}
-
-Does this looks nice to you? This document follows Markdown conventions.
-
-\subsubsection{A deeper level}\label{a-deeper-level}
-
-However, is best that you don't go too deep because lower levels might
-not be fully supported in this template.
-
-\section{Citations}\label{citations}
-
-You can add citationsfor something some said at some point. Your
-references should be inside the \texttt{references.bib} file. Some
-people might have already researched this field
-\citep[see][pp.~1-2]{misc_online_news_popularity_332}.
+::: {.cell-output .cell-output-display}
+![](Articulo_v2_files/figure-pdf/cell-5-output-1.pdf){}
+:::
+:::
 
 
-\renewcommand\refname{References}
+# Discusión
+
+# Conclusiones y trabajos futuros
+
+Basado en las métricas evaluadas, los modelos RandomForest y AdaBoost mostraron un rendimiento superior con AUC de 0.7095 y 0.7030 respectivamente, indicando una buena capacidad para clasificar correctamente. LogisticRegression también fue competitivo con un AUC de 0.6793, aunque mostró una precisión ligeramente menor. En contraste, MLP obtuvo un AUC más bajo de 0.5679, pero destacó en sensibilidad (recall) con 0.7427, siendo efectivo en la identificación de casos positivos. En conclusión, RandomForest y AdaBoost son recomendados por su sólido desempeño general en este conjunto de datos, mientras que MLP muestra una fortaleza en la detección de casos positivos.
+
+# References
+
+
   \bibliography{references.bib}
 
 
