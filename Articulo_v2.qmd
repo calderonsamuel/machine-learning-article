@@ -23,6 +23,8 @@ bibliography: references.bib
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from great_tables import GT, style, loc
+import polars.selectors as cs
 ```
 
 ```{python}
@@ -154,24 +156,61 @@ En este análisis, se examinan diversos modelos de clasificación para predecir 
 
 Los resultados muestran que RandomForest y AdaBoost son los modelos con mejor rendimiento general, con AUC (Área bajo la curva ROC) de 0.7095 y 0.7030 respectivamente. RandomForest alcanza una precisión (Accuracy) de 0.6510 y una precisión positiva (Precision) de 0.6447, mientras que AdaBoost logra 0.6488 y 0.6423 respectivamente en estas métricas. LogisticRegression, aunque presenta un AUC de 0.6793, muestra una precisión y precision positiva ligeramente más bajas en comparación con los modelos de ensemble. Por otro lado, MLP (Perceptrón Multicapa) muestra el rendimiento más bajo con un AUC de 0.5679 y una precisión de 0.5034, aunque destaca en recall (Sensibilidad) con 0.7427. Estos resultados resaltan la capacidad superior de los modelos ensemble como RandomForest y AdaBoost para la clasificación, especialmente en términos de AUC y precisión global.
 
-Los resultados de las métricas de evaluación para los diferentes modelos se presentan en la Tabla 1. 
+Los resultados de las métricas de evaluación para los diferentes modelos se presentan en la @tbl-metricas. 
 
-\begin{table}[ht]
-\centering
-\caption{Métricas de evaluación de modelos}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-\textbf{Modelo} & \textbf{AUC} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
-\hline
-RandomForest & 0.7095 & 0.6510 & 0.6447 & 0.6406 & 0.6426 \\
-AdaBoost & 0.7030 & 0.6488 & 0.6423 & 0.6389 & 0.6406 \\
-LogisticRegression & 0.6793 & 0.6350 & 0.6286 & 0.6231 & 0.6258 \\
-K-Nearest Neighbors & 0 & 0 & 0 & 0 & 0 \\
-MLP & 0.5679 & 0.5034 & 0.4954 & 0.7427 & 0.5943 \\
-\hline
-\end{tabular}
-\end{table}
+```{python}
+experiment_results = {
+    "RandomForest": {
+        "Model" : "Random Forest",
+        "AUC": 0.7095,
+        "Accuracy": 0.6510,
+        "Precision": 0.6447,
+        "Recall": 0.6406,
+        "F1": 0.6426
+    },
+    "AdaBoost": {
+        "Model" : "AdaBoost",
+        "AUC": 0.7030,
+        "Accuracy": 0.6488,
+        "Precision": 0.6423,
+        "Recall": 0.6389,
+        "F1": 0.6406
+    },
+    "LogisticRegression": {
+        "Model": "Logistic Regression",
+        "AUC": 0.6793,
+        "Accuracy": 0.6350,
+        "Precision": 0.6286,
+        "Recall": 0.6231,
+        "F1": 0.6258
+    },
+    "MLP": {
+        "Model": "MLP",
+        "AUC": 0.5679,
+        "Accuracy": 0.5034,
+        "Precision": 0.4954,
+        "Recall": 0.7427,
+        "F1": 0.5943
+    }
+}
 
+experiments_tbl = pd.DataFrame(experiment_results).transpose()
+```
+
+```{python}
+#| label: tbl-metricas
+#| tbl-cap: "Métricas de evaluación de modelos"
+(
+  GT(experiments_tbl)
+    .tab_style(
+      style=style.text(size=8), 
+      locations=loc.body(
+        columns= ["Model", "AUC", "Accuracy", "Precision", "Recall", "F1"],
+        rows= [0,1,2,3]
+      )
+    )
+)
+```
 
 El gráfico de barras muestra la comparación de las métricas de AUC (Área bajo la curva ROC) y Accuracy para cuatro modelos de clasificación: RandomForest, AdaBoost, LogisticRegression y MLP (Perceptrón Multicapa). Cada modelo está representado por barras de diferentes colores: azul para AUC y verde para Accuracy. RandomForest y AdaBoost destacan con altos valores de AUC y Accuracy, seguidos por LogisticRegression con valores ligeramente inferiores. En contraste, MLP muestra un desempeño más bajo en ambas métricas. Esta representación visual facilita la comparación directa del rendimiento relativo de cada modelo en términos de su capacidad predictiva y precisión.
 

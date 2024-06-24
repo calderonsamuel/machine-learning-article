@@ -487,17 +487,39 @@ usando la Libreria scikit-learn.
 
 \subsubsection{GridSearchCV}\label{gridsearchcv}
 
-Es una técnica esencial en el aprendizaje automático para optimizar los
-hiperparámetros de un modelo. Utiliza validación cruzada para evaluar
-exhaustivamente todas las combinaciones posibles de valores de
-hiperparámetros especificados. Por ejemplo, para un modelo SVM, se
-pueden explorar diferentes valores para los parámetros como C y el tipo
-de kernel. GridSearchCV entrena y evalúa el modelo con cada combinación,
-seleccionando automáticamente la configuración que maximiza una métrica
-de rendimiento definida, como la exactitud o el AUC. Aunque efectivo
-para mejorar el rendimiento del modelo, su implementación puede ser
-intensiva en recursos debido a la exhaustividad de la búsqueda, siendo
-crucial considerar la escalabilidad y el tiempo computacional requerido.
+En este análisis, se examinan diversos modelos de clasificación para
+predecir la popularidad de noticias en línea utilizando el dataset de
+Online News Popularity de Mashable. Se implementan cuatro modelos:
+RandomForest, AdaBoost, LogisticRegression y K-Nearest Neighbors (KNN).
+Para cada modelo, se definen conjuntos específicos de hiperparámetros y
+se emplea GridSearchCV para realizar una búsqueda exhaustiva de los
+mejores parámetros mediante validación cruzada. Una vez entrenados y
+optimizados los modelos, se selecciona el mejor estimador y se evalúa su
+rendimiento en un conjunto de prueba. La precisión obtenida en este
+conjunto se utiliza para comparar la eficacia de cada modelo. Este
+proceso automatiza la selección de hiperparámetros y facilita una
+comparación objetiva entre diferentes algoritmos de clasificación,
+proporcionando información valiosa sobre su desempeño en el contexto de
+la popularidad de noticias en línea. En la tabla \ref{} se lista los
+mejores hiperparametros por modelo.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Modelo} & \textbf{Hiperparámetro} & \textbf{Valores} \\ \hline
+        RandomForest & n\_estimators & [10, 20, 50, 100, 200, 400] \\ \hline
+        AdaBoost & n\_estimators & [10, 20, 50, 100, 200, 400] \\ \hline
+        LogisticRegression & penalty & ['l1', 'l2'] \\ \hline
+        & C & [0.001, 0.01, 0.1, 1, 10] \\ \hline
+        & solver & ['liblinear', 'saga'] \\ \hline
+        K-Nearest Neighbors (KNN) & n\_neighbors & [3, 5, 7, 9, 11, 13] \\ \hline
+        & weights & ['uniform', 'distance'] \\ \hline
+        & algorithm & ['auto', 'ball\_tree', 'kd\_tree', 'brute'] \\ \hline
+    \end{tabular}
+    \caption{Hiperparámetros probados para cada modelo}
+    \label{tab:hyperparams}
+\end{table}
 
 \section{Experimentación y
 resultados}\label{experimentaciuxf3n-y-resultados}
@@ -517,23 +539,25 @@ RandomForest y AdaBoost para la clasificación, especialmente en términos
 de AUC y precisión global.
 
 Los resultados de las métricas de evaluación para los diferentes modelos
-se presentan en la Tabla 1.
+se presentan en la Table~\ref{tbl-metricas}.
 
-\begin{table}[ht]
-\centering
-\caption{Métricas de evaluación de modelos}
-\begin{tabular}{|l|c|c|c|c|c|}
-\hline
-\textbf{Modelo} & \textbf{AUC} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
-\hline
-RandomForest & 0.7095 & 0.6510 & 0.6447 & 0.6406 & 0.6426 \\
-AdaBoost & 0.7030 & 0.6488 & 0.6423 & 0.6389 & 0.6406 \\
-LogisticRegression & 0.6793 & 0.6350 & 0.6286 & 0.6231 & 0.6258 \\
-K-Nearest Neighbors & 0 & 0 & 0 & 0 & 0 \\
+\begin{longtable}[]{@{}llllll@{}}
+
+\caption{\label{tbl-metricas}Métricas de evaluación de modelos}
+
+\tabularnewline
+
+\toprule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Model & AUC & Accuracy & Precision & Recall & F1 \\
+Random Forest & 0.7095 & 0.651 & 0.6447 & 0.6406 & 0.6426 \\
+AdaBoost & 0.703 & 0.6488 & 0.6423 & 0.6389 & 0.6406 \\
+Logistic Regression & 0.6793 & 0.635 & 0.6286 & 0.6231 & 0.6258 \\
 MLP & 0.5679 & 0.5034 & 0.4954 & 0.7427 & 0.5943 \\
-\hline
-\end{tabular}
-\end{table}
+
+\end{longtable}
 
 El gráfico de barras muestra la comparación de las métricas de AUC (Área
 bajo la curva ROC) y Accuracy para cuatro modelos de clasificación:
@@ -546,7 +570,7 @@ más bajo en ambas métricas. Esta representación visual facilita la
 comparación directa del rendimiento relativo de cada modelo en términos
 de su capacidad predictiva y precisión.
 
-\includegraphics{Articulo_v2_files/figure-pdf/cell-5-output-1.pdf}
+\includegraphics{Articulo_v2_files/figure-pdf/cell-7-output-1.pdf}
 
 \section{Discusión}\label{discusiuxf3n}
 
