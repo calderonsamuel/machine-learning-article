@@ -134,23 +134,48 @@ El modelo K-Nearest Neighbors (KNN) es un algoritmo de aprendizaje supervisado u
 
 En este análisis, se examinan diversos modelos de clasificación para predecir la popularidad de noticias en línea utilizando el dataset de Online News Popularity de Mashable. Se implementan cuatro modelos: RandomForest, AdaBoost, LogisticRegression y K-Nearest Neighbors (KNN). Para cada modelo, se definen conjuntos específicos de hiperparámetros y se emplea GridSearchCV para realizar una búsqueda exhaustiva de los mejores parámetros mediante validación cruzada. Una vez entrenados y optimizados los modelos, se selecciona el mejor estimador y se evalúa su rendimiento en un conjunto de prueba. La precisión obtenida en este conjunto se utiliza para comparar la eficacia de cada modelo. Este proceso automatiza la selección de hiperparámetros y facilita una comparación objetiva entre diferentes algoritmos de clasificación, proporcionando información valiosa sobre su desempeño en el contexto de la popularidad de noticias en línea. En la tabla \ref{} se lista los mejores hiperparametros por modelo.
 
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{|l|l|l|}
-        \hline
-        \textbf{Modelo} & \textbf{Hiperparámetro} & \textbf{Valores} \\ \hline
-        RandomForest & n\_estimators & [10, 20, 50, 100, 200, 400] \\ \hline
-        AdaBoost & n\_estimators & [10, 20, 50, 100, 200, 400] \\ \hline
-        LogisticRegression & penalty & ['l1', 'l2'] \\ \hline
-        & C & [0.001, 0.01, 0.1, 1, 10] \\ \hline
-        & solver & ['liblinear', 'saga'] \\ \hline
-        K-Nearest Neighbors (KNN) & n\_neighbors & [3, 5, 7, 9, 11, 13] \\ \hline
-        & weights & ['uniform', 'distance'] \\ \hline
-        & algorithm & ['auto', 'ball\_tree', 'kd\_tree', 'brute'] \\ \hline
-    \end{tabular}
-    \caption{Hiperparámetros probados para cada modelo}
-    \label{tab:hyperparams}
-\end{table}
+```{python}
+hyper_parameters = [
+    {"model": "Random Forest", "hyper parameter": "n_estimators", "Valores": [10, 20, 50, 100, 200, 400]},
+    {"model": "AdaBoost", "hyper parameter": "n_estimators", "Valores": [10, 20, 50, 100, 200, 400]},
+    {"model": "Logistic Regression", "hyper parameter": "penalty", "Valores": ['l1', 'l2']},
+    {"model": "", "hyper parameter": "C", "Valores": [0.001, 0.01, 0.1, 1, 10]},
+    {"model": "", "hyper parameter": "solver", "Valores": ['liblinear', 'saga']},
+    {"model": "K-Nearest Neighbors (KNN)", "hyper parameter": "n_neighbors", "Valores": [3, 5, 7, 9, 11, 13]},
+    {"model": "", "hyper parameter": "weights", "Valores": ['uniform', 'distance']},
+    {"model": "", "hyper parameter": "algorithm", "Valores": ['auto', 'ball_tree', 'kd_tree', 'brute']}
+]
+
+hyper_df = pd.DataFrame(hyper_parameters)
+```
+
+```{python}
+#| tbl-cap: "Hiperparámetros probados para cada modelo"
+#| tbl-colwidths: [25, 25, 25]
+#| label: tbl-hyperparams
+
+# Preparing data for the table
+# table_data = []
+# last_model = None
+# for entry in hyper_parameters:
+#     model = entry["model"]
+#     hyper_param = entry["hyper parameter"]
+#     valores = ", ".join(map(str, entry["Valores"]))  # Convert list to string
+#     if model == last_model:
+#         table_data.append(["", hyper_param, valores])
+#     else:
+#         table_data.append([model, hyper_param, valores])
+#         last_model = model
+
+# # Creating the table
+# headers = ["Model", "Hyper Parameter", "Values"]
+# table = tabulate(table_data, headers, tablefmt="pipe")
+
+(
+  GT(hyper_df)
+)
+```
+
 
 # Experimentación y resultados
 
@@ -201,11 +226,11 @@ experiments_tbl = pd.DataFrame(experiment_results).transpose()
 #| label: tbl-metricas
 #| tbl-cap: "Métricas de evaluación de modelos"
 (
-  GT(experiments_tbl)
+  GT(experiments_tbl[["Model", "AUC", "Accuracy", "Precision", "Recall"]])
     .tab_style(
       style=style.text(size=8), 
       locations=loc.body(
-        columns= ["Model", "AUC", "Accuracy", "Precision", "Recall", "F1"],
+        columns= ["Model", "AUC", "Accuracy", "Precision", "Recall"],
         rows= [0,1,2,3]
       )
     )
