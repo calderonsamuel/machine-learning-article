@@ -144,8 +144,6 @@ En este análisis, se examinan diversos modelos de clasificación para predecir 
     \label{tab:hyperparams}
 \end{table}
 
-
-
 # Experimentación y resultados
 
 Los resultados muestran que RandomForest y AdaBoost son los modelos con mejor rendimiento general, con AUC (Área bajo la curva ROC) de 0.7095 y 0.7030 respectivamente. RandomForest alcanza una precisión (Accuracy) de 0.6510 y una precisión positiva (Precision) de 0.6447, mientras que AdaBoost logra 0.6488 y 0.6423 respectivamente en estas métricas. LogisticRegression, aunque presenta un AUC de 0.6793, muestra una precisión y precision positiva ligeramente más bajas en comparación con los modelos de ensemble. Por otro lado, MLP (Perceptrón Multicapa) muestra el rendimiento más bajo con un AUC de 0.5679 y una precisión de 0.5034, aunque destaca en recall (Sensibilidad) con 0.7427. Estos resultados resaltan la capacidad superior de los modelos ensemble como RandomForest y AdaBoost para la clasificación, especialmente en términos de AUC y precisión global.
