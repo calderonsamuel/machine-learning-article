@@ -171,9 +171,9 @@ hyper_df = pd.DataFrame(hyper_parameters)
 # headers = ["Model", "Hyper Parameter", "Values"]
 # table = tabulate(table_data, headers, tablefmt="pipe")
 
-(
-  GT(hyper_df)
-)
+# (
+#   GT(hyper_df)
+# )
 ```
 
 

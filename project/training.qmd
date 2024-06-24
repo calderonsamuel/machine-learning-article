@@ -10,11 +10,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, recall_score, f1_score
 # Modelos
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.neural_network import MLPClassifier
-from sklearn.ensemble import StackingClassifier
+import xgboost as xgb
 ```
 
 ```{python}
