@@ -32,7 +32,7 @@ news_data = pd.read_csv("data/OnlineNewsPopularity.csv")
 
 # Introducción
 
-El estudio de la popularidad de las noticias en línea ha cobrado gran relevancia en la última década, ya que los medios compiten por la atención en un entorno digital saturado. La capacidad de predecir qué noticias serán populares es esencial para optimizar estrategias de contenido y aumentar la participación de la audiencia. Para abordar este desafío, se han desarrollado modelos basados en datos históricos y aprendizaje automático que consideran una variedad de características, como el contenido de la noticia, el comportamiento del usuario y las dinámicas de las plataformas de distribución. Los usuarios, quienes son los consumidores de estos medios usualmente comparten, se suscriben e interactúan con la información. La noción de popularidad suele expresarse investigando el número de interacciones en la web y las redes sociales, por ejemplo, la tasa de clics, el número de compartidos, me gusta y retweets [@Uddin2016]. El número de veces que se comparte una noticia es un buen indicador de su popularidad potencial. La predicción de la popularidad de un artículo tiene múltiples aplicaciones en el mundo real, desde el punto de vista de @Tarar2014a, hay dos caminos de predicción más conocidas: el primero relacionado con las características que se conocen luego de la publicación y los que no utilizan dichas características. El primero es el más conocido y más común [@Kaltenbrunner2007; @Szabo2010; @Lee2012; @Ahmed2013; @Tatar2014b]. De acuerdo a @Fernandes2015, la popularidad de un artículo candidato puede ser estimado utilizando un módulo de predicción y luego un módulo de optimización, según el autor sugiere cambios en el contenido y la estructura del artículo, con el fin de maximizar su popularidad esperada. Existen varios estudios que sugieren, la predicción puede ser alta utilizando los metadatos posteriores a la publicación, dándonos ventaja en la atención recibidas de la información luego de ser recibida [@Lee2012; @Ahmed2013]. Por el contrario @Fernandes2015, menciona que al utilizar las características de metadatos antes de la publicación de los contenidos resulta ser difícil, aunque la precisión de la predicción esperada es comparativamente baja en el método de antes de la publicación, ya que estamos utilizando sólo características de metadatos en lugar del contenido original de la noticia.
+El estudio de la popularidad de las noticias en línea ha cobrado gran relevancia en la última década, ya que los medios compiten por la atención en un entorno digital saturado. La capacidad de predecir qué noticias serán populares es esencial para optimizar estrategias de contenido y aumentar la participación de la audiencia. Para abordar este desafío, se han desarrollado modelos basados en datos históricos y aprendizaje automático que consideran una variedad de características, como el contenido de la noticia, el comportamiento del usuario y las dinámicas de las plataformas de distribución. Los usuarios, quienes son los consumidores de estos medios usualmente comparten, se suscriben e interactúan con la información. La noción de popularidad suele expresarse investigando el número de interacciones en la web y las redes sociales, por ejemplo, la tasa de clics, el número de compartidos, me gusta y retweets [@uddin2016]. El número de veces que se comparte una noticia es un buen indicador de su popularidad potencial. La predicción de la popularidad de un artículo tiene múltiples aplicaciones en el mundo real, desde el punto de vista de @tatar2014a, hay dos caminos de predicción más conocidas: el primero relacionado con las características que se conocen luego de la publicación y los que no utilizan dichas características. El primero es el más conocido y más común [@kaltenbrunner2007; @szabo2010; @lee2012; @ahmed2013; @tatar2014b]. De acuerdo a @fernandes2015, la popularidad de un artículo candidato puede ser estimado utilizando un módulo de predicción y luego un módulo de optimización, según el autor sugiere cambios en el contenido y la estructura del artículo, con el fin de maximizar su popularidad esperada. Existen varios estudios que sugieren, la predicción puede ser alta utilizando los metadatos posteriores a la publicación, dándonos ventaja en la atención recibidas de la información luego de ser recibida [@lee2012; @ahmed2013]. Por el contrario @fernandes2015, menciona que al utilizar las características de metadatos antes de la publicación de los contenidos resulta ser difícil, aunque la precisión de la predicción esperada es comparativamente baja en el método de antes de la publicación, ya que estamos utilizando sólo características de metadatos en lugar del contenido original de la noticia.
 
 El objetivo de este artículo es desarrollar un modelo de aprendizaje automático que logre predecir la popularidad de los artículos de noticias en línea antes de su publicación. La sección de estado del arte presenta trabajos previos en la materia, incluyendo la metodología y resultados. La sección Diseño del experimento se centra en explicar la metodología de este artículo, incluyendo la descripción del conjunto de datos y los modelos a ser entrenados.
 
@@ -59,9 +59,10 @@ Para este estudio, se utilizará el conjunto de datos elaborado en [@fernandes20
 
 ## Descripción del conjunto de datos
 
-El conjunto de datos proporciona una visión general exhaustiva del contenido en línea, incorporando varias métricas y características relacionadas con atributos textuales, elementos multimedia e indicadores de participación. Captura atributos textuales clave, como el número de tokens en los títulos y el contenido, la proporción de tokens únicos y la longitud promedio de los tokens, ofreciendo información sobre la complejidad y estructura del contenido. El conjunto de datos también incluye métricas de palabras clave, que destacan la relevancia e importancia de las palabras clave en el contenido. Además, registra el número de hipervínculos y elementos multimedia como imágenes y videos, reflejando la riqueza y los aspectos multimedia de los artículos o publicaciones.
+El trabajo utiliza los datos del repositorio de aprendizaje automático UCI (https://archive.ics.uci.edu/dataset/332/online+news+popularity). La información fue utilizada para entrenar modelos predictivos de compartidos de noticias de Mashable (www.mashable.com), abarca un período de dos años (7 de enero de 2013 al 7 de enero de 2015) y contiene 58 características heterogéneas. Estas características incluyen la longitud del título y del contenido, el número de imágenes y videos, variables temporales como el día de la semana y la hora de publicación, y metadatos como la popularidad en otras plataformas y el tema de la noticia. También se consideran características sociales, como el número de comentarios y compartidos en redes sociales, y técnicas, como la presencia de multimedia y palabras clave. Este conjunto de datos integral permite un análisis exhaustivo para desarrollar modelos predictivos efectivos que estimen la popularidad de una noticia basada en su probabilidad de ser compartida.
 
-Además, el conjunto de datos clasifica el contenido en diferentes canales, como estilo de vida, entretenimiento, negocios, redes sociales, tecnología y noticias mundiales, proporcionando una clara clasificación de los tipos de contenido. Se incluye información temporal a través de variables que indican el día de la semana en que se publicó el contenido y si se publicó en un fin de semana. En estos casos, las variables han sido incluidas como binarias.
+De acuerdo a la página web UCI, el conjunto de datos de Mashable consta de 39 797 instancias con 58 características, que abarcan tipos de datos enteros y reales. Los datos se pueden adaptar para aplicar modelos de clasificación y regresión. Len resumen, los datos proporcionan información sobre diversos aspectos de los artículos de noticias, lo que los hace valiosos para analizar tendencias y predecir métricas de rendimiento en el panorama de los medios digitales.
+
 
 ```{python}
 # Select columns containing "is"
@@ -94,95 +95,123 @@ El conjunto de datos también presenta componentes de análisis semántico laten
 
 ## Metodología
 
-# Referencias
+El presente trabajo prioriza la etapa de procesamiento del dataset, paso fundamental antes de realizar el entrenamiento de los datos. El conjunto de datos que actualmente manejamos cuenta con 58 características y 39 mil registros, por lo que claramente se observa la necesidad de reducir el número de caracteristicas. Para un adecuado procesamiento y entrenamiento de datos, el presente trabjo considera los sigientes pasos: 1) Exploración y análisis de datos: en este paso realizaremos la reducción de la dimensionalidad utilizando la herramienta de análisis de principales componentes (PCA) y análisis de correlación de datos, ambos métodos nos ayudaran a visualizar y entender las relaciones y patrones de las variables. 2) Selección y entrenamiento del modelo: En este paso utilizaremos varios modelos de clasificación, incluyendo RandomForestClassifier [@breiman2001], AdaBoostClassifier [@freund1997], LogisticRegression [@cox1958] y K-Nearest Neighbors [@hodges1951]. Para optimizar los hiperparámetros y mejorar el rendimiento de estos modelos se empleó GridSearchCV [@pedregosa2011], el cual realiza una búsqueda exhaustiva a través de un rango especificado de valores de parámetros. Además, se consideró el modelo GradientBoostingClassifier [@friedman2001], un método de boosting que, al igual que AdaBoost, combina múltiples modelos débiles para formar un modelo fuerte. Estos enfoques maximizan la precisión y robustez de las predicciones al ajustar finamente los parámetros y combinar varios clasificadores en un esquema de ensamble. 3) Validación y evaluación del modelo: en otras palabras, medir el rendimiento del modelo utilizando datos de prueba y métricas de evaluación. Para ello, se evaluará el rendimiento de los modelos mediante área bajo la curva (AUC), una métrica que proporciona una medida agregada del rendimiento en todas las posibles clasificaciones. 4) Finalmente se describirá los resultados, interpretación y discusiones: en esta parte nos apoyaremos mediante figuras y gráficos estadísticos y correlacionaremos con anteriores resultados.
 
-# Quarto
+### Exploración y análisis de datos
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+En la fase de exploración y análisis de datos, se comienza con el ordenamiento de caracteres, que implica la normalización y 
+limpieza de los datos textuales, como la conversión a minúsculas, la eliminación de espacios vacios y caracteres especiales. 
+Luego, se procede a la eliminación de características irrelevantes, identificando y descartando aquellas que no aportan valor 
+predictivo. A continuación, se realiza la unión de variables, combinando múltiples características en una sola para simplificar  
+el análisis. La creación de una matriz de correlación permite identificar relaciones entre variables, ayudando a detectar 
+características redundantes. Finalmente, se aplica la disminución de dimensionalidad, utilizando técnicas como el Análisis de 
+Componentes Principales (PCA), para reducir el número de características manteniendo la mayor cantidad de información posible. 
+Este proceso asegura que los datos sean limpios, relevantes y manejables, facilitando el desarrollo de modelos predictivos 
+efectivos.
 
-# Running Code
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+### Selección y entrenamiento del modelo
+
+### Clasificación Random Forest
+
+Los bosques aleatorios son métodos de aprendizaje en conjunto para la regresión que utilizan múltiples árboles de decisión. El algoritmo extrae muestras bootstrap del conjunto de datos original y genera árboles de regresión no podados para cada muestra. En lugar de elegir el mejor atributo de división, se selecciona aleatoriamente de un conjunto de atributos. La predicción final se obtiene promediando las predicciones de todos los árboles individuales. Se utilizó la librería [`scikit-learn`](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html), para implementar el modelo de Random Forest (bosque aleatorio) y fijamos el número de estimadores en 50 estimadores con random_state igual a 42.
+
+### AdaBoostClassifier (Adaptive Boosting)
+
+Es un algoritmo de aprendizaje automático utilizado principalmente para tareas de clasificación. AdaBoost funciona construyendo un modelo a partir de un conjunto inicial de datos y luego ajusta iterativamente los pesos de los ejemplos mal clasificados, incrementando la influencia de aquellos que resultaron más difíciles de clasificar en cada iteración. Esto permite que los clasificadores posteriores se centren más en los ejemplos difíciles. Finalmente, los modelos individuales se combinan mediante una votación ponderada para mejorar la precisión global. AdaBoost es conocido por su capacidad para mejorar el rendimiento de modelos débiles y su eficacia en diversos dominios, aunque su rendimiento puede verse afectado por la presencia de ruido en los datos y por la elección de los clasificadores base. Este modelo se implementó utilizando la librería Scikit-learn. 
+
+### Regresión logística
+
+La regresión logística es una técnica de clasificación utilizada para predecir la probabilidad de pertenencia a una clase binaria. Utiliza la función sigmoide para convertir una combinación lineal de variables independientes en una probabilidad, y ajusta el modelo minimizando la función de costo logloss. La implementación del modelo fue realizando la librería scikit-learn.
+
+### K-Nearest Neighbors (KNN)
+
+El modelo K-Nearest Neighbors (KNN) es un algoritmo de aprendizaje supervisado utilizado para clasificación y regresión. Clasifica una observación basándose en las clases de sus K vecinos más cercanos, donde K=10 en este caso, utilizando una medida de distancia como la Euclidiana. En clasificación, asigna la clase más común entre los vecinos, y en regresión, toma el promedio de los valores de los vecinos. Es un método simple y no paramétrico que no hace suposiciones sobre la distribución de los datos, y puede implementarse fácilmente en Python usando la Libreria scikit-learn.
+
+### GridSearchCV
+
+En este análisis, se examinan diversos modelos de clasificación para predecir la popularidad de noticias en línea utilizando el dataset de Online News Popularity de Mashable. Se implementan cuatro modelos: RandomForest, AdaBoost, LogisticRegression y K-Nearest Neighbors (KNN). Para cada modelo, se definen conjuntos específicos de hiperparámetros y se emplea GridSearchCV para realizar una búsqueda exhaustiva de los mejores parámetros mediante validación cruzada. Una vez entrenados y optimizados los modelos, se selecciona el mejor estimador y se evalúa su rendimiento en un conjunto de prueba. La precisión obtenida en este conjunto se utiliza para comparar la eficacia de cada modelo. Este proceso automatiza la selección de hiperparámetros y facilita una comparación objetiva entre diferentes algoritmos de clasificación, proporcionando información valiosa sobre su desempeño en el contexto de la popularidad de noticias en línea. En la tabla \ref{} se lista los mejores hiperparametros por modelo.
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{Modelo} & \textbf{Hiperparámetro} & \textbf{Valores} \\ \hline
+        RandomForest & n\_estimators & [10, 20, 50, 100, 200, 400] \\ \hline
+        AdaBoost & n\_estimators & [10, 20, 50, 100, 200, 400] \\ \hline
+        LogisticRegression & penalty & ['l1', 'l2'] \\ \hline
+        & C & [0.001, 0.01, 0.1, 1, 10] \\ \hline
+        & solver & ['liblinear', 'saga'] \\ \hline
+        K-Nearest Neighbors (KNN) & n\_neighbors & [3, 5, 7, 9, 11, 13] \\ \hline
+        & weights & ['uniform', 'distance'] \\ \hline
+        & algorithm & ['auto', 'ball\_tree', 'kd\_tree', 'brute'] \\ \hline
+    \end{tabular}
+    \caption{Hiperparámetros probados para cada modelo}
+    \label{tab:hyperparams}
+\end{table}
+
+# Experimentación y resultados
+
+Los resultados muestran que RandomForest y AdaBoost son los modelos con mejor rendimiento general, con AUC (Área bajo la curva ROC) de 0.7095 y 0.7030 respectivamente. RandomForest alcanza una precisión (Accuracy) de 0.6510 y una precisión positiva (Precision) de 0.6447, mientras que AdaBoost logra 0.6488 y 0.6423 respectivamente en estas métricas. LogisticRegression, aunque presenta un AUC de 0.6793, muestra una precisión y precision positiva ligeramente más bajas en comparación con los modelos de ensemble. Por otro lado, MLP (Perceptrón Multicapa) muestra el rendimiento más bajo con un AUC de 0.5679 y una precisión de 0.5034, aunque destaca en recall (Sensibilidad) con 0.7427. Estos resultados resaltan la capacidad superior de los modelos ensemble como RandomForest y AdaBoost para la clasificación, especialmente en términos de AUC y precisión global.
+
+Los resultados de las métricas de evaluación para los diferentes modelos se presentan en la Tabla 1. 
+
+\begin{table}[ht]
+\centering
+\caption{Métricas de evaluación de modelos}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Modelo} & \textbf{AUC} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+\hline
+RandomForest & 0.7095 & 0.6510 & 0.6447 & 0.6406 & 0.6426 \\
+AdaBoost & 0.7030 & 0.6488 & 0.6423 & 0.6389 & 0.6406 \\
+LogisticRegression & 0.6793 & 0.6350 & 0.6286 & 0.6231 & 0.6258 \\
+K-Nearest Neighbors & 0 & 0 & 0 & 0 & 0 \\
+MLP & 0.5679 & 0.5034 & 0.4954 & 0.7427 & 0.5943 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+El gráfico de barras muestra la comparación de las métricas de AUC (Área bajo la curva ROC) y Accuracy para cuatro modelos de clasificación: RandomForest, AdaBoost, LogisticRegression y MLP (Perceptrón Multicapa). Cada modelo está representado por barras de diferentes colores: azul para AUC y verde para Accuracy. RandomForest y AdaBoost destacan con altos valores de AUC y Accuracy, seguidos por LogisticRegression con valores ligeramente inferiores. En contraste, MLP muestra un desempeño más bajo en ambas métricas. Esta representación visual facilita la comparación directa del rendimiento relativo de cada modelo en términos de su capacidad predictiva y precisión.
 
 ```{python}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{python}
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed). This is the default behavior.
-
-When you use `echo: true` you will show both the code and the output.
-
-```{python}
-#| echo: true
-print("Hello")
-```
-
-# Using figures and equations
-
-Using `fig-cap` allows you to specifiy a caption for a figure. Use it in code blocks where the last line prints a plot.
-
-```{python}
-#| fig-cap: Radial plot
-#| label: fig-radial
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-r = np.arange(0, 2, 0.01)
-theta = 2 * np.pi * r
-fig, ax = plt.subplots(
-  subplot_kw = {'projection': 'polar'} 
-)
-ax.plot(theta, r)
-ax.set_rticks([0.5, 1, 1.5, 2])
-ax.grid(True)
+# Datos de los modelos y sus métricas
+modelos = ['RandomForest', 'AdaBoost', 'LogisticRegression', 'MLP']
+auc_scores = [0.7095, 0.7030, 0.6793, 0.5679]
+accuracy_scores = [0.6510, 0.6488, 0.6350, 0.5034]
+
+x = np.arange(len(modelos))  # Posiciones en el eje x
+
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Configurar barras para AUC
+bar_width = 0.35
+ax1.bar(x - bar_width/2, auc_scores, bar_width, label='AUC', color='b', alpha=0.6)
+
+# Configurar barras para Accuracy
+ax1.bar(x + bar_width/2, accuracy_scores, bar_width, label='Accuracy', color='g', alpha=0.6)
+
+# Etiquetas, título y leyenda
+ax1.set_xlabel('Modelos')
+ax1.set_ylabel('Valor')
+ax1.set_title('Comparación de AUC y Accuracy entre modelos')
+ax1.set_xticks(x)
+ax1.set_xticklabels(modelos)
+ax1.legend()
+
+plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.show()
+
 ```
 
-You can write Latex equiations:
+# Discusión
 
-$$
-E=mc^2
-$$
+# Conclusiones y trabajos futuros
 
-If the label attribute of a code chunk starts with `fig-` when it renders a  plot, you can reference it. For example, here we reference @fig-radial.
-
-Be attentive as some things might need manual tweaking.
-
-# Using other formating
-
-Multiple formatting options
-
-1. You can use lists
-1. They will numerate by themselves
-1. No need to worry about counting
-
-You are not restricted to numbered lists.
-
-- first
-- second
-- third
-
-## Use of sub headers
-
-Organize your document as you please. How much organization do you really need?
-
-## Another subheader
-
-Does this looks nice to you? This document follows Markdown conventions.
-
-### A deeper level
-
-However, is best that you don't go too deep because lower levels might not be fully supported in this template.
-
-# Citations
-
-You can add citationsfor something some said at some point. Your references should be inside the `references.bib` file. Some people might have already researched this field [see @misc_online_news_popularity_332, pp. 1-2].
+Basado en las métricas evaluadas, los modelos RandomForest y AdaBoost mostraron un rendimiento superior con AUC de 0.7095 y 0.7030 respectivamente, indicando una buena capacidad para clasificar correctamente. LogisticRegression también fue competitivo con un AUC de 0.6793, aunque mostró una precisión ligeramente menor. En contraste, MLP obtuvo un AUC más bajo de 0.5679, pero destacó en sensibilidad (recall) con 0.7427, siendo efectivo en la identificación de casos positivos. En conclusión, RandomForest y AdaBoost son recomendados por su sólido desempeño general en este conjunto de datos, mientras que MLP muestra una fortaleza en la detección de casos positivos.
 
 # References
-
