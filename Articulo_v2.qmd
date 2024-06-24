@@ -118,13 +118,11 @@ La regresión logística es una técnica de clasificación utilizada para predec
 #### K-Nearest Neighbors (KNN)
 El modelo K-Nearest Neighbors (KNN) es un algoritmo de aprendizaje supervisado utilizado para clasificación y regresión. Clasifica una observación basándose en las clases de sus K vecinos más cercanos, donde K=10 en este caso, utilizando una medida de distancia como la Euclidiana. En clasificación, asigna la clase más común entre los vecinos, y en regresión, toma el promedio de los valores de los vecinos. Es un método simple y no paramétrico que no hace suposiciones sobre la distribución de los datos, y puede implementarse fácilmente en Python usando la biblioteca scikit-learn.
 
-### Validación y evaluación del modelo
-
 # Experimentación y resultados
 
-# Referencias
+# Discusión
 
-# Quarto
+# Conclusiones y trabajos futuros
 
 Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
