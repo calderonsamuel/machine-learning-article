@@ -150,7 +150,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Predecir la popularidad de noticias en línea utilizando modelos de clasificación y/o regresión},
+  pdftitle={Predecir la popularidad de noticias en línea utilizando modelos de clasificación},
   pdfauthor={Calderon, S., Arenas, K., Torres, J.},
   colorlinks=true,
   linkcolor={blue},
@@ -164,7 +164,7 @@
 
 \begin{frontmatter}
 \title{Predecir la popularidad de noticias en línea utilizando modelos
-de clasificación y/o regresión}
+de clasificación}
 \author[]{Calderon, S., Arenas, K., Torres, J.%
 %
 }
@@ -174,6 +174,30 @@ de clasificación y/o regresión}
 \cortext[cor1]{Corresponding author}
 
         
+\begin{abstract}
+Este artículo tiene como objetivo desarrollar un modelo de aprendizaje
+automático para predecir la popularidad de los artículos de noticias en
+línea antes de su publicación. Utilizando datos obtenidos del
+repositorio de aprendizaje automático de la UCI, específicamente
+noticias compartidas de Mashable (www.mashable.com), se aplicó PCA para
+reducir la dimensionalidad de las características antes de entrenar los
+modelos. Los modelos evaluados incluyeron Random Forest, AdaBoost,
+Regresión Logística y K-Nearest Neighbors. Los resultados mostraron que
+Random Forest y AdaBoost obtuvieron los valores más altos en AUC (0.7095
+y 0.7030 respectivamente), indicando su robustez en la predicción de la
+popularidad de los artículos. AdaBoost también destacó por su precisión
+(0.6423) y F1-score (0.6406), mientras que Random Forest mostró una alta
+exactitud (0.6510). La Regresión Logística, aunque tuvo valores
+ligeramente más bajos en AUC (0.6793), demostró una buena capacidad de
+clasificación con una precisión de 0.6286 y un F1-score de 0.6258. Por
+otro lado, K-Nearest Neighbors no mostraron buenos resultados. Como
+trabajo futuro, se propone implementar redes neuronales, como el
+Perceptrón Multicapa (MLP), para explorar su potencial en la
+clasificación de estos datos de noticias en línea. Además, se
+considerará la incorporación de técnicas avanzadas de procesamiento de
+lenguaje natural y la optimización de hiperparámetros para mejorar aún
+más el rendimiento predictivo de los modelos.
+\end{abstract}
 
 
 
@@ -181,8 +205,6 @@ de clasificación y/o regresión}
 
 \end{frontmatter}
     
-\section{Resumen}\label{resumen}
-
 \section{Introducción}\label{introducciuxf3n}
 
 El estudio de la popularidad de las noticias en línea ha cobrado gran
@@ -380,35 +402,36 @@ variables continuas.
 
 El presente trabajo prioriza la etapa de procesamiento del dataset, paso
 fundamental antes de realizar el entrenamiento de los datos. El conjunto
-de datos que actualmente manejamos cuenta con 58 características y 39
+de datos que actualmente manejamos cuenta con 61 características y 39
 mil registros, por lo que claramente se observa la necesidad de reducir
-el número de caracteristicas. Para un adecuado procesamiento y
-entrenamiento de datos, el presente trabjo considera los sigientes
-pasos: 1) Exploración y análisis de datos: en este paso realizaremos la
-reducción de la dimensionalidad utilizando la herramienta de análisis de
-principales componentes (PCA) y análisis de correlación de datos, ambos
-métodos nos ayudaran a visualizar y entender las relaciones y patrones
-de las variables. 2) Selección y entrenamiento del modelo: En este paso
-utilizaremos varios modelos de clasificación, incluyendo
-RandomForestClassifier \citep{breiman2001}, AdaBoostClassifier
-\citep{freund1997}, LogisticRegression \citep{cox1958} y K-Nearest
-Neighbors \citep{hodges1951}. Para optimizar los hiperparámetros y
-mejorar el rendimiento de estos modelos se empleó GridSearchCV
+el número de caracteristicas para mejorar el rendimiento de datos,
+reducir el tiempo de entrenamiento. Para un adecuado procesamiento y
+entrenamiento de datos, el presente trabajo considera los sigientes
+pasos: 1) Exploración y análisis de datos: empezando se pudo identificar
+que la data entregada no contaba con informacion incompleta, pero si
+contenia una variable cuyo uso era nulo por esta razon se descarto,
+posterior a esta accion se realizo la reducción de la dimensionalidad
+utilizando la herramienta de análisis de principales componentes (PCA),
+el cual nos ayudara a mejorar el redimiento computacional y siplificar
+el modelo para que este sea mas simple y facil de interpretar. 2)
+Selección y entrenamiento del modelo: En este paso utilizaremos varios
+modelos de clasificación, incluyendo RandomForestClassifier
+\citep{breiman2001}, AdaBoostClassifier \citep{freund1997},
+LogisticRegression \citep{cox1958} y K-Nearest Neighbors
+\citep{Cover1967}. Para optimizar los hiperparámetros y mejorar el
+rendimiento de estos modelos se empleó GridSearchCV
 \citep{pedregosa2011}, el cual realiza una búsqueda exhaustiva a través
-de un rango especificado de valores de parámetros. Además, se consideró
-el modelo GradientBoostingClassifier \citep{friedman2001}, un método de
-boosting que, al igual que AdaBoost, combina múltiples modelos débiles
-para formar un modelo fuerte. Estos enfoques maximizan la precisión y
-robustez de las predicciones al ajustar finamente los parámetros y
-combinar varios clasificadores en un esquema de ensamble. 3) Validación
-y evaluación del modelo: en otras palabras, medir el rendimiento del
-modelo utilizando datos de prueba y métricas de evaluación. Para ello,
-se evaluará el rendimiento de los modelos mediante área bajo la curva
-(AUC), una métrica que proporciona una medida agregada del rendimiento
-en todas las posibles clasificaciones. 4) Finalmente se describirá los
-resultados, interpretación y discusiones: en esta parte nos apoyaremos
-mediante figuras y gráficos estadísticos y correlacionaremos con
-anteriores resultados.
+de un rango especificado de valores de parámetros. Estos enfoques
+maximizan la precisión y robustez de las predicciones al ajustar
+finamente los parámetros y combinar varios clasificadores en un esquema
+de ensamble. 3) Validación y evaluación del modelo: en esta etapa
+medimos el rendimiento del modelo utilizando datos de prueba y métricas
+de evaluación. Para ello, se evaluará el rendimiento de los modelos
+mediante área bajo la curva (AUC), Accuracy, Precision y Recall,
+respectivamente. 4) Finalmente se describirá los resultados,
+interpretación y discusiones: en esta parte nos apoyaremos mediante
+figuras y gráficos estadísticos y correlacionaremos con anteriores
+resultados.
 
 \subsubsection{Exploración y análisis de
 datos}\label{exploraciuxf3n-y-anuxe1lisis-de-datos}
@@ -417,10 +440,10 @@ En la fase de exploración y análisis de datos, se comienza con el
 ordenamiento de caracteres, que implica la normalización y limpieza de
 los datos textuales, como la conversión a minúsculas, la eliminación de
 espacios vacios y caracteres especiales. Luego, se procede a la
-eliminación de características irrelevantes, identificando y descartando
-aquellas que no aportan valor predictivo. A continuación, se realiza la
-unión de variables, combinando múltiples características en una sola
-para simplificar\\
+eliminación de características irrelevantes (e. g. url), identificando y
+descartando aquellas que no aportan valor predictivo. A continuación, se
+realiza la unión de variables, combinando múltiples características en
+una sola para simplificar\\
 el análisis. La creación de una matriz de correlación permite
 identificar relaciones entre variables, ayudando a detectar
 características redundantes. Finalmente, se aplica la disminución de
@@ -433,6 +456,13 @@ de modelos predictivos efectivos.
 \subsubsection{Selección y entrenamiento del
 modelo}\label{selecciuxf3n-y-entrenamiento-del-modelo}
 
+Tomando en cuenta los resultados del trabajo pionero de
+\citep{fernandes2015}, se volvió a utilizar los dos modelos con mejor
+desempeño. Sumado a ellos, se tomó en cuenta la literatura trabajada
+posteriormente y la búsqueda en ``grid'' para obtener resultados más
+exhaustivos. Se hace una especial mención del modelo ``XGBoost'' que
+apareció con posterioridad a la publicación de \citep{fernandes2015}.
+
 \subsubsection{Clasificación Random
 Forest}\label{clasificaciuxf3n-random-forest}
 
@@ -443,9 +473,8 @@ extrae muestras bootstrap del conjunto de datos original y genera
 mejor atributo de división, se selecciona aleatoriamente de un conjunto
 de atributos. La predicción final se obtiene promediando las
 predicciones de todos los árboles individuales. Se utilizó la librería
-\href{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html}{\texttt{scikit-learn}},
-para implementar el modelo de Random Forest (bosque aleatorio) y fijamos
-el número de estimadores en 50 estimadores con random\_state igual a 42.
+\href{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html}{scikit-learn},
+para implementar el modelo de Random Forest (bosque aleatorio).
 
 \subsubsection{AdaBoostClassifier (Adaptive
 Boosting)}\label{adaboostclassifier-adaptive-boosting}
@@ -485,6 +514,20 @@ Es un método simple y no paramétrico que no hace suposiciones sobre la
 distribución de los datos, y puede implementarse fácilmente en Python
 usando la Libreria scikit-learn.
 
+\subsubsection{XGBoost}\label{xgboost}
+
+XGBoost \citep{Chen_2016}, abreviatura de eXtreme Gradient Boosting, es
+un algoritmo de aprendizaje automático altamente efectivo y ampliamente
+utilizado para tareas de regresión y clasificación. Basado en el
+concepto de boosting, combina múltiples modelos débiles secuencialmente,
+optimizando este proceso mediante gradientes de la función de costo para
+mejorar la precisión en cada iteración. Con capacidades para manejar
+datos dispersos y faltantes, selección automática de variables
+importantes y mecanismos de regularización, XGBoost se destaca por su
+rendimiento excepcional y su versatilidad, convirtiéndose en una
+herramienta indispensable en diversas aplicaciones de ciencia de datos y
+competiciones de análisis de datos.
+
 \subsubsection{GridSearchCV}\label{gridsearchcv}
 
 En este análisis, se examinan diversos modelos de clasificación para
@@ -503,43 +546,30 @@ proporcionando información valiosa sobre su desempeño en el contexto de
 la popularidad de noticias en línea. En la tabla \ref{} se lista los
 mejores hiperparametros por modelo.
 
-\begin{longtable}[]{@{}lll@{}}
-
-\caption{\label{tbl-hyperparams}Hiperparámetros probados para cada
-modelo}
-
-\tabularnewline
-
-\toprule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-model & hyper parameter & Valores \\
-Random Forest & n\_estimators & {[}10, 20, 50, 100, 200, 400{]} \\
-AdaBoost & n\_estimators & {[}10, 20, 50, 100, 200, 400{]} \\
-Logistic Regression & penalty & {[}\textquotesingle l1\textquotesingle,
-\textquotesingle l2\textquotesingle{]} \\
-& C & {[}0.001, 0.01, 0.1, 1, 10{]} \\
-& solver & {[}\textquotesingle liblinear\textquotesingle,
-\textquotesingle saga\textquotesingle{]} \\
-K-Nearest Neighbors (KNN) & n\_neighbors & {[}3, 5, 7, 9, 11, 13{]} \\
-& weights & {[}\textquotesingle uniform\textquotesingle,
-\textquotesingle distance\textquotesingle{]} \\
-& algorithm & {[}\textquotesingle auto\textquotesingle,
-\textquotesingle ball\_tree\textquotesingle,
-\textquotesingle kd\_tree\textquotesingle,
-\textquotesingle brute\textquotesingle{]} \\
-
-\end{longtable}
+Para el modelo RandomForest, se evaluaron seis valores para
+n\_estimators: 10, 20, 50, 100, 200 y 400. Para AdaBoost, se probaron
+los mismos seis valores para n\_estimators. LogisticRegression fue
+evaluado con dos penalizaciones (penalty): l1 y l2, y cinco valores de
+regularización (C): 0.001, 0.01, 0.1, 1 y 10, junto con dos algoritmos
+de optimización (solver): `liblinear' y `saga'. K-Nearest Neighbors
+(KNN) exploró seis números de vecinos (n\_neighbors): 3, 5, 7, 9, 11 y
+13, dos métodos de ponderación (weights): `uniform' y `distance', y
+cuatro algoritmos (algorithm) para calcular vecinos cercanos: `auto',
+`ball\_tree', `kd\_tree' y `brute'. Para XGBoost se utilzó 3 valores
+para profundiad máxima (max\_depth): 3, 5 y 7; 3 valores para tasa de
+aprendizaje (learning rate): 0.01, 0.1, 0.3; y 3 valores para número de
+estimadores (n\_estimators): 100, 200 y 300. Estos hiperparámetros
+fueron ajustados para optimizar el desempeño predictivo de cada modelo
+en la clasificación de datos.
 
 \section{Experimentación y
 resultados}\label{experimentaciuxf3n-y-resultados}
 
-Los resultados muestran que RandomForest y AdaBoost son los modelos con
-mejor rendimiento general, con AUC (Área bajo la curva ROC) de 0.7095 y
-0.7030 respectivamente. RandomForest alcanza una precisión (Accuracy) de
+Los resultados muestran que XGBoost y RandomForest son los modelos con
+mejor rendimiento general, con AUC (Área bajo la curva ROC) de 0.7317 y
+0.7095 respectivamente. RandomForest alcanza una precisión (Accuracy) de
 0.6510 y una precisión positiva (Precision) de 0.6447, mientras que
-AdaBoost logra 0.6488 y 0.6423 respectivamente en estas métricas.
+XGBoost logra 0.6644 y 0.6559 respectivamente en estas métricas.
 LogisticRegression, aunque presenta un AUC de 0.6793, muestra una
 precisión y precision positiva ligeramente más bajas en comparación con
 los modelos de ensemble. Por otro lado, MLP (Perceptrón Multicapa)
@@ -552,7 +582,7 @@ de AUC y precisión global.
 Los resultados de las métricas de evaluación para los diferentes modelos
 se presentan en la Table~\ref{tbl-metricas}.
 
-\begin{longtable}[]{@{}lllll@{}}
+\begin{longtable}[]{@{}llll@{}}
 
 \caption{\label{tbl-metricas}Métricas de evaluación de modelos}
 
@@ -562,11 +592,12 @@ se presentan en la Table~\ref{tbl-metricas}.
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Model & AUC & Accuracy & Precision & Recall \\
-Random Forest & 0.7095 & 0.651 & 0.6447 & 0.6406 \\
-AdaBoost & 0.703 & 0.6488 & 0.6423 & 0.6389 \\
-Logistic Regression & 0.6793 & 0.635 & 0.6286 & 0.6231 \\
-MLP & 0.5679 & 0.5034 & 0.4954 & 0.7427 \\
+Modelo & AUC & Accuracy & Precision \\
+Random Forest & 0.7095 & 0.651 & 0.6447 \\
+AdaBoost & 0.703 & 0.6488 & 0.6423 \\
+Logistic Regression & 0.6793 & 0.635 & 0.6286 \\
+MLP & 0.5679 & 0.5034 & 0.4954 \\
+XGBoost & 0.73174181283592 & 0.6644526652093492 & 0.6559048428207307 \\
 
 \end{longtable}
 
@@ -581,9 +612,35 @@ más bajo en ambas métricas. Esta representación visual facilita la
 comparación directa del rendimiento relativo de cada modelo en términos
 de su capacidad predictiva y precisión.
 
-\includegraphics{Articulo_v2_files/figure-pdf/cell-9-output-1.pdf}
+\includegraphics{Articulo_v2_files/figure-pdf/cell-7-output-1.pdf}
 
 \section{Discusión}\label{discusiuxf3n}
+
+En este estudio, hemos desarrollado y evaluado un modelo de aprendizaje
+automático para predecir la popularidad de los artículos de noticias en
+línea antes de su publicación, utilizando datos del repositorio de
+aprendizaje automático de la UCI que incluyen noticias de Mashable. Una
+de las decisiones clave fue aplicar PCA (Análisis de Componentes
+Principales) para reducir la dimensionalidad de las características
+antes del entrenamiento de los modelos. Esto no solo mejoró la
+eficiencia computacional, sino que también ayudó a mitigar problemas
+asociados con la multicolinealidad entre variables. Los modelos
+evaluados, incluyendo Random Forest, AdaBoost, Regresión Logística y
+Vecinos más Cercanos, fueron seleccionados por su capacidad demostrada
+en problemas de clasificación y predicción. Nuestro análisis detallado
+de métricas como AUC, exactitud, precisión, recall y F1-score reveló que
+Random Forest y AdaBoost superaron consistentemente a los otros modelos,
+alcanzando AUC de 0.7095 y 0.7030 respectivamente. Estos resultados
+indican que ambos modelos son efectivos para predecir qué artículos
+pueden volverse populares en línea, proporcionando una herramienta
+valiosa para editores y creadores de contenido digital. Además,
+observamos que AdaBoost mostró una alta precisión (0.6423) y F1-score
+(0.6406), lo que sugiere su capacidad para identificar de manera
+confiable los artículos que eventualmente se volverán populares. Aunque
+la Regresión Logística obtuvo resultados ligeramente inferiores en AUC
+(0.6793), su consistencia en precisión (0.6286) y F1-score (0.6258) la
+posiciona como una opción sólida para aplicaciones donde la
+interpretación de las predicciones es crucial.
 
 \section{Conclusiones y trabajos
 futuros}\label{conclusiones-y-trabajos-futuros}
@@ -598,6 +655,29 @@ con 0.7427, siendo efectivo en la identificación de casos positivos. En
 conclusión, RandomForest y AdaBoost son recomendados por su sólido
 desempeño general en este conjunto de datos, mientras que MLP muestra
 una fortaleza en la detección de casos positivos.
+
+En este nuevo estudio, también se contempla la posibilidad de incorporar
+técnicas de ensamblado de modelos para mejorar aún más la precisión de
+las predicciones. Se planea explorar métodos como el ensamblado de
+modelos mediante votación (Voting Classifier), que combina las
+predicciones de múltiples modelos base para obtener una predicción
+final. Este enfoque podría ser especialmente útil para aprovechar las
+fortalezas individuales de cada modelo y mitigar sus debilidades,
+mejorando así la capacidad de generalización del modelo final. Además,
+se considerará la posibilidad de utilizar técnicas avanzadas de ajuste
+de hiperparámetros para optimizar la configuración de los modelos y
+mejorar su rendimiento. La combinación de estas estrategias tiene como
+objetivo desarrollar un modelo predictivo robusto y preciso para la
+popularidad de noticias en línea.
+
+Comentario final, el estudio proporciona una evaluación exhaustiva de
+modelos de aprendizaje automático en el contexto de la predicción de la
+popularidad de artículos de noticias en línea. Nuestros hallazgos no
+solo contribuyen al campo académico, sino que también ofrecen insights
+prácticos para la implementación de sistemas de apoyo a decisiones
+inteligentes en entornos editoriales digitales, con potencial para
+mejorar la efectividad y relevancia del contenido publicado en
+plataformas en línea.
 
 En la siguiente etapa del trabajo, se tiene pensado implementar redes
 neuronales como ejemplo Perceptrón Multicapa (Multilayer Perceptron,
@@ -615,7 +695,7 @@ del ``Perceptrón Multicapa'' en la predicción de la popularidad de
 noticias en plataformas online.
 
 
-\renewcommand\refname{References}
+\renewcommand\refname{Referencias}
   \bibliography{references.bib}
 
 
