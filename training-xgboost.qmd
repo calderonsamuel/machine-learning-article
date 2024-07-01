@@ -12,6 +12,7 @@ from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, reca
 import xgboost as xgb
 ```
 
+# Con data original
 
 ```{python}
 data = pd.read_csv('data/OnlineNewsPopularity.csv')
@@ -100,5 +101,309 @@ XGBoost: {
     'Precision': np.float64(0.6559048428207307), 
     'Recall': np.float64(0.6625472021970478), 
     'F1': np.float64(0.659209290410725)
+}
+```
+
+
+# Con data backwards
+
+```{python}
+data = pd.read_csv('data/selected_features_backwards.csv')
+data.columns = data.columns.str.strip()
+```
+
+```{python}
+# Se remueve la columna shares, que es el target
+X = data.drop(columns=['shared'])
+# 1400 umbral usado para considerar si un articulo es popular o no
+y = data['shared']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+```
+
+```{python}
+# Modelos ocupados
+models = {
+    'XGBoost' : xgb.XGBClassifier(tree_method="hist")
+}
+# Parametros ocupados por modelo
+param_grids = {
+    'XGBoost': {
+        'max_depth': [3, 5, 7],
+        'learning_rate': [0.01, 0.1, 0.3],
+        'n_estimators': [100, 200, 300],
+    }
+}
+```
+
+```{python}
+# # Busqueda Grid para obtener mejores estimadores de busqueda
+best_models = {}
+for model_name, model in models.items():
+    print(f"Training {model_name}...")
+    # Le pasamos n_jobs para indicarle que utiliza todos los núcleos de CPU. Así se obtiene resultados más rápido
+    grid_search = GridSearchCV(model, param_grids[model_name], cv=5, scoring='roc_auc', n_jobs=-1, verbose=3) 
+    grid_search.fit(X_train, y_train)
+    best_models[model_name] = grid_search.best_estimator_
+print(best_models)
+```
+
+```
+{'XGBoost': XGBClassifier(base_score=None, booster=None, callbacks=None,
+              colsample_bylevel=None, colsample_bynode=None,
+              colsample_bytree=None, device=None, early_stopping_rounds=None,
+              enable_categorical=False, eval_metric=None, feature_types=None,
+              gamma=None, grow_policy=None, importance_type=None,
+              interaction_constraints=None, learning_rate=0.1, max_bin=None,
+              max_cat_threshold=None, max_cat_to_onehot=None,
+              max_delta_step=None, max_depth=5, max_leaves=None,
+              min_child_weight=None, missing=nan, monotone_constraints=None,
+              multi_strategy=None, n_estimators=100, n_jobs=None,
+              num_parallel_tree=None, random_state=None, ...)}
+```
+
+```{python}
+# Se obtienen las métricas de todos los modelos.
+results = {}
+for model_name, model in best_models.items():
+    y_pred_prob = model.predict_proba(X_test)[:, 1]
+    auc = roc_auc_score(y_test, y_pred_prob)
+    accuracy = accuracy_score(y_test, model.predict(X_test))
+    precision = precision_score(y_test, model.predict(X_test))
+    recall = recall_score(y_test, model.predict(X_test))
+    f1 = f1_score(y_test, model.predict(X_test))
+    results[model_name] = {
+        'AUC': auc,
+        'Accuracy': accuracy,
+        'Precision': precision,
+        'Recall': recall,
+        'F1': f1
+    }
+# Print resultados de evaluación
+for model_name, metrics in results.items():
+    print(f"{model_name}: {metrics}")
+
+print(results)
+```
+
+```
+{'XGBoost': {
+    'AUC': np.float64(0.7266845133797735),
+    'Accuracy': 0.6629392971246006,
+    'Precision': np.float64(0.6563952487519367),
+    'Recall': np.float64(0.6544799176107106),
+    'F1': np.float64(0.655436183927804)}
+}
+```
+
+# Con data mutual
+
+```{python}
+data = pd.read_csv('data/ReadyToTrain.csv')
+data.columns = data.columns.str.strip()
+```
+
+```{python}
+# Se remueve la columna shares, que es el target
+X = data.drop(columns=['shares'])
+# 1400 umbral usado para considerar si un articulo es popular o no
+y = (data['shares'] > 1400).astype(int)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+```
+
+```{python}
+# Modelos ocupados
+models = {
+    'XGBoost' : xgb.XGBClassifier(tree_method="hist")
+}
+# Parametros ocupados por modelo
+param_grids = {
+    'XGBoost': {
+        'max_depth': [3, 5, 7],
+        'learning_rate': [0.01, 0.1, 0.3],
+        'n_estimators': [100, 200, 300],
+    }
+}
+```
+
+```{python}
+# # Busqueda Grid para obtener mejores estimadores de busqueda
+best_models = {}
+for model_name, model in models.items():
+    print(f"Training {model_name}...")
+    # Le pasamos n_jobs para indicarle que utiliza todos los núcleos de CPU. Así se obtiene resultados más rápido
+    grid_search = GridSearchCV(model, param_grids[model_name], cv=5, scoring='roc_auc', n_jobs=-1, verbose=3) 
+    grid_search.fit(X_train, y_train)
+    best_models[model_name] = grid_search.best_estimator_
+print(best_models)
+```
+
+```
+{'XGBoost': XGBClassifier(base_score=None, booster=None, callbacks=None,
+              colsample_bylevel=None, colsample_bynode=None,
+              colsample_bytree=None, device=None, early_stopping_rounds=None,
+              enable_categorical=False, eval_metric=None, feature_types=None,
+              gamma=None, grow_policy=None, importance_type=None,
+              interaction_constraints=None, learning_rate=0.1, max_bin=None,
+              max_cat_threshold=None, max_cat_to_onehot=None,
+              max_delta_step=None, max_depth=3, max_leaves=None,
+              min_child_weight=None, missing=nan, monotone_constraints=None,
+              multi_strategy=None, n_estimators=300, n_jobs=None,
+              num_parallel_tree=None, random_state=None, ...)}
+```
+
+```{python}
+# Se obtienen las métricas de todos los modelos.
+results = {}
+for model_name, model in best_models.items():
+    y_pred_prob = model.predict_proba(X_test)[:, 1]
+    auc = roc_auc_score(y_test, y_pred_prob)
+    accuracy = accuracy_score(y_test, model.predict(X_test))
+    precision = precision_score(y_test, model.predict(X_test))
+    recall = recall_score(y_test, model.predict(X_test))
+    f1 = f1_score(y_test, model.predict(X_test))
+    results[model_name] = {
+        'AUC': auc,
+        'Accuracy': accuracy,
+        'Precision': precision,
+        'Recall': recall,
+        'F1': f1
+    }
+# Print resultados de evaluación
+for model_name, metrics in results.items():
+    print(f"{model_name}: {metrics}")
+
+print(results)
+```
+
+```
+{'XGBoost': {'AUC': np.float64(0.7334503219151934), 'Accuracy': 0.6703379855389272, 'Precision': np.float64(0.6652211621856028), 'Recall': np.float64(0.658256093374528), 'F1': np.float64(0.6617203002329394)}}
+```
+
+# Con PCA
+
+```{python}
+data = pd.read_csv('data/reduced_pca.csv')
+data.columns = data.columns.str.strip()
+```
+
+```{python}
+# Se remueve la columna shares, que es el target
+X = data.drop(columns=['shares'])
+# 1400 umbral usado para considerar si un articulo es popular o no
+y = (data['shares'] > 1400).astype(int)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+```
+
+```{python}
+# Modelos ocupados
+models = {
+    'XGBoost' : xgb.XGBClassifier(tree_method="hist")
+}
+# Parametros ocupados por modelo
+param_grids = {
+    'XGBoost': {
+        'max_depth': [3, 5, 7],
+        'learning_rate': [0.01, 0.1, 0.3],
+        'n_estimators': [100, 200, 300],
+    }
+}
+```
+
+```{python}
+# # Busqueda Grid para obtener mejores estimadores de busqueda
+best_models = {}
+for model_name, model in models.items():
+    print(f"Training {model_name}...")
+    # Le pasamos n_jobs para indicarle que utiliza todos los núcleos de CPU. Así se obtiene resultados más rápido
+    grid_search = GridSearchCV(model, param_grids[model_name], cv=5, scoring='roc_auc', n_jobs=-1, verbose=3) 
+    grid_search.fit(X_train, y_train)
+    best_models[model_name] = grid_search.best_estimator_
+print(best_models)
+```
+
+```
+{'XGBoost': XGBClassifier(base_score=None, booster=None, callbacks=None,
+              colsample_bylevel=None, colsample_bynode=None,
+              colsample_bytree=None, device=None, early_stopping_rounds=None,
+              enable_categorical=False, eval_metric=None, feature_types=None,
+              gamma=None, grow_policy=None, importance_type=None,
+              interaction_constraints=None, learning_rate=0.1, max_bin=None,
+              max_cat_threshold=None, max_cat_to_onehot=None,
+              max_delta_step=None, max_depth=3, max_leaves=None,
+              min_child_weight=None, missing=nan, monotone_constraints=None,
+              multi_strategy=None, n_estimators=300, n_jobs=None,
+              num_parallel_tree=None, random_state=None, ...)}
+```
+
+```{python}
+# Se obtienen las métricas de todos los modelos.
+results = {}
+for model_name, model in best_models.items():
+    y_pred_prob = model.predict_proba(X_test)[:, 1]
+    auc = roc_auc_score(y_test, y_pred_prob)
+    accuracy = accuracy_score(y_test, model.predict(X_test))
+    precision = precision_score(y_test, model.predict(X_test))
+    recall = recall_score(y_test, model.predict(X_test))
+    f1 = f1_score(y_test, model.predict(X_test))
+    results[model_name] = {
+        'AUC': auc,
+        'Accuracy': accuracy,
+        'Precision': precision,
+        'Recall': recall,
+        'F1': f1
+    }
+# Print resultados de evaluación
+for model_name, metrics in results.items():
+    print(f"{model_name}: {metrics}")
+
+print(results)
+```
+
+```
+{'XGBoost': {'AUC': np.float64(0.7153804400341162), 'Accuracy': 0.6542794686396503, 'Precision': np.float64(0.6470992104359766), 'Recall': np.float64(0.6470992104359766), 'F1': np.float64(0.6470992104359766)}}
+
+```
+
+# Datos compilados
+
+
+```{python}
+xgboost = {
+    "Original": {
+        XGBoost: {
+            'AUC': np.float64(0.73174181283592), 
+            'Accuracy': 0.6644526652093492, 
+            'Precision': np.float64(0.6559048428207307), 
+            'Recall': np.float64(0.6625472021970478), 
+            'F1': np.float64(0.659209290410725)
+        }
+    },
+    "Backward": {
+        'XGBoost': {
+            'AUC': np.float64(0.7266845133797735),
+            'Accuracy': 0.6629392971246006,
+            'Precision': np.float64(0.6563952487519367),
+            'Recall': np.float64(0.6544799176107106),
+            'F1': np.float64(0.655436183927804)
+        }
+    },
+    "Mutual information": {
+        'XGBoost': {
+            'AUC': np.float64(0.7334503219151934), 
+            'Accuracy': 0.6703379855389272, 
+            'Precision': np.float64(0.6652211621856028), 
+            'Recall': np.float64(0.658256093374528), 
+            'F1': np.float64(0.6617203002329394)
+        }
+    },
+    "PCA" : {
+        'XGBoost': {
+            'AUC': np.float64(0.7153804400341162), 
+            'Accuracy': 0.6542794686396503, 
+            'Precision': np.float64(0.6470992104359766), 
+            'Recall': np.float64(0.6470992104359766), 
+            'F1': np.float64(0.6470992104359766)
+        }
+    }
 }
 ```
