@@ -9,3 +9,4 @@ polars
 great_tables
 tabulate
 xgboost
+statsmodels
