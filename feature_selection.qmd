@@ -248,3 +248,9 @@ print(columnas_descartadas)
 # Descargar caracteristicas preparadas
 df.to_csv('data/ReadyToTrain.csv', index=False)
 ```
+
+
+```{python}
+
+reduced_pca_df.to_csv("data/reduced_pca.csv", index=False)
+```
