@@ -1,0 +1,86 @@
+---
+jupyter: python3
+---
+
+
+```{python}
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+from sklearn.feature_selection import SequentialFeatureSelector
+import statsmodels.api as sm
+
+# Load the dataset
+data = pd.read_csv("data/OnlineNewsPopularity.csv")
+data.columns = data.columns.str.strip()
+
+# Preprocess the data
+# Drop irrelevant columns
+# data = data.drop(columns=['url', 'Name', 'Ticket', 'Cabin'])
+
+# Handle missing values
+# data['Age'].fillna(data['Age'].median(), inplace=True)
+# data['Embarked'].fillna(data['Embarked'].mode()[0], inplace=True)
+
+# Encode categorical variables
+# label_encoder = LabelEncoder()
+# data['Sex'] = label_encoder.fit_transform(data['Sex'])
+# data['Embarked'] = label_encoder.fit_transform(data['Embarked'])
+
+# Split the data into features and target
+features = list(data.drop(columns = ["url"]))
+# Se remueve la columna shares, que es el target
+X = data[features].drop(columns=['shares'])
+# Clasificación binaria. Se usa el mismo treshold de popularidad que en artículo principal (1400)
+y = (data['shares'] > 1400).astype(int)  
+```
+
+
+```{python}
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Standardize the features
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Initialize the logistic regression model
+model = LogisticRegression()
+
+# Implement backward SFS
+sfs = SequentialFeatureSelector(model, direction='backward', scoring='accuracy', cv=5, n_jobs=-1)
+
+```
+
+
+```{python}
+sfs.fit(X_train, y_train)
+
+# Get the selected features
+selected_features = X.columns[sfs.get_support()]
+
+# Evaluate the model with the selected features
+model.fit(X_train[:, sfs.get_support()], y_train)
+y_pred = model.predict(X_test[:, sfs.get_support()])
+accuracy = accuracy_score(y_test, y_pred)
+
+
+```
+
+
+```{python}
+# Save the dataset with selected features to a CSV file
+selected_features_data = data[selected_features]
+selected_features_data['shared'] = y
+selected_features_data.to_csv('data/selected_features_backwards.csv', index=False)
+
+selected_features, accuracy
+```
+
+
+```{python}
+
+```
