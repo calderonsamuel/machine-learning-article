@@ -1,0 +1,105 @@
+---
+jupyter: python3
+---
+
+
+```{python}
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+```
+
+```{python}
+# Puntuaciones usando (Scalamiento - PCA)
+scores_pca = {
+    'LogisticRegression': {'AUC': 0.68575214397035, 'Accuracy': 0.6343534555237935, 'Precision': 0.6327521121696926, 'Recall': 0.6041881222107792, 'F1': 0.6181403108262359},
+    'RandomForest': {'AUC': 0.714232207767286, 'Accuracy': 0.6549520766773163, 'Precision': 0.6470286885245902, 'Recall': 0.6503604531410917, 'F1': 0.6486902927580893},
+    'AdaBoost': {'AUC': 0.7079332730032286, 'Accuracy': 0.654195392634942, 'Precision': 0.6490342787541326, 'Recall': 0.6402334363199451, 'F1': 0.644603819234425}
+}
+
+# Puntuaciones usando (Sin Scalamiento - BackWard)
+scores_backward = {
+    'LogisticRegression': {'AUC': 0.6760395571779361, 'Accuracy': 0.6258617790482597, 'Precision': 0.6222459132906895, 'Recall': 0.6010985238585651, 'F1': 0.6114894360048891},
+    'RandomForest': {'AUC': 0.7202080647500883, 'Accuracy': 0.6568017487808979, 'Precision': 0.6477966101694915, 'Recall': 0.6560247167868177, 'F1': 0.6518847006651884},
+    'AdaBoost': {'AUC': 0.711708317294713, 'Accuracy': 0.6558769127291071, 'Precision': 0.6492678725236865, 'Recall': 0.6469275660830759, 'F1': 0.6480956065686527}
+}
+
+# Puntuaciones usando (Sin Scalamiento - Mutual Information)
+scores_mutual_info = {
+    'LogisticRegression': {'AUC': 0.6980692669258644, 'Accuracy': 0.6428451319993274, 'Precision': 0.6382270497547302, 'Recall': 0.6253003776175764, 'F1': 0.6316975897346974},
+    'RandomForest': {'AUC': 0.7306977184539291, 'Accuracy': 0.6649571212375988, 'Precision': 0.6566275310532584, 'Recall': 0.6623755578441469, 'F1': 0.6594890199094249},
+    'AdaBoost': {'AUC': 0.7199033875376469, 'Accuracy': 0.6613418530351438, 'Precision': 0.6549465701482248, 'Recall': 0.6522485410230003, 'F1': 0.6535947712418301}
+}
+
+# PUNTUACION SIN USAR NADA
+scores_raw = {
+    'LogisticRegression': {'AUC': 0.7005066280517789, 'Accuracy': 0.6468807802253237, 'Precision': 0.6456467216051595, 'Recall': 0.6186062478544456, 'F1': 0.6318373071528752},
+    'RandomForest': {'AUC': 0.7309192041630941, 'Accuracy': 0.6656297292752649, 'Precision': 0.6561391656814727, 'Recall': 0.6668383110195675, 'F1': 0.661445475440538}, 
+    'AdaBoost': {'AUC': 0.7225691787841697, 'Accuracy': 0.6613418530351438, 'Precision': 0.6554287690179806, 'Recall': 0.6507037418468933, 'F1': 0.6530577088716624}
+}
+
+```
+
+```{python}
+# Create a list of scenarios
+scenarios = ['PCA', 'BackWard', 'Mutual Information', 'Original']
+
+# Initialize an empty list to store dataframes
+dfs = []
+
+# Iterate over each scenario and construct a dataframe
+for i, scenario_scores in enumerate([scores_pca, scores_backward, scores_mutual_info, scores_raw]):
+    df = pd.DataFrame(scenario_scores).transpose()
+    df['Method'] = scenarios[i]  # Add scenario as a new column
+    dfs.append(df)
+
+# Concatenate all dataframes into a single dataframe
+combined_df = pd.concat(dfs).reset_index()
+combined_df = combined_df.rename(columns={'index': 'Model'})
+
+# Display the combined dataframe
+print(combined_df)
+```
+
+```{python}
+data_dict = {
+    'Method': ['Backward', 'Backward', 'Backward', 'Mutual Information', 'Mutual Information', 'Mutual Information', 'PCA', 'PCA', 'PCA'],
+    'Model': ['AdaBoost', 'LogisticRegression', 'RandomForest', 'AdaBoost', 'LogisticRegression', 'RandomForest', 'AdaBoost', 'LogisticRegression', 'RandomForest'],
+    'AUC': [0.711708, 0.67604, 0.720208, 0.719903, 0.698069, 0.730698, 0.707933, 0.685752, 0.714232],
+    'Accuracy': [0.655877, 0.625862, 0.656802, 0.661342, 0.642845, 0.664957, 0.654195, 0.634353, 0.654952],
+    'F1': [0.648096, 0.611489, 0.651885, 0.653595, 0.631698, 0.659489, 0.644604, 0.61814, 0.64869],
+    'Precision': [0.649268, 0.622246, 0.647797, 0.654947, 0.638227, 0.656628, 0.649034, 0.632752, 0.647029],
+    'Recall': [0.646928, 0.601099, 0.656025, 0.652249, 0.6253, 0.662376, 0.640233, 0.604188, 0.65036]
+}
+
+df = pd.DataFrame(data_dict)
+```
+
+```{python}
+
+df_melted = combined_df.melt(id_vars=['Method', 'Model'], var_name='Metric', value_name='Score')
+# df_melted = df.melt(id_vars=['Method', 'Model'], var_name='Metric', value_name='Score')
+
+# Create the FacetGrid with seaborn
+g = sns.FacetGrid(df_melted, col="Metric", hue="Model", sharey=False, col_wrap=2)
+
+# Map the barplot
+g.map(sns.lineplot, "Method", "Score", marker='o')
+# g.map(sns.barplot, "Model", "Score", order=['AdaBoost', 'LogisticRegression', 'RandomForest'], errorbar=None)
+
+# Add legends
+g.add_legend(bbox_to_anchor=(0.5, 0), loc='upper center', ncol=3)
+
+# Rotate x-axis labels for better readability
+# for ax in g.axes.flatten():
+#     ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+
+# Adjust layout
+plt.tight_layout()
+
+# save
+plt.savefig('metrics.png', bbox_inches='tight')
+# Show the plot
+plt.show()
+```
+
