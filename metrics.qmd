@@ -14,28 +14,56 @@ import matplotlib.pyplot as plt
 scores_pca = {
     'LogisticRegression': {'AUC': 0.68575214397035, 'Accuracy': 0.6343534555237935, 'Precision': 0.6327521121696926, 'Recall': 0.6041881222107792, 'F1': 0.6181403108262359},
     'RandomForest': {'AUC': 0.714232207767286, 'Accuracy': 0.6549520766773163, 'Precision': 0.6470286885245902, 'Recall': 0.6503604531410917, 'F1': 0.6486902927580893},
-    'AdaBoost': {'AUC': 0.7079332730032286, 'Accuracy': 0.654195392634942, 'Precision': 0.6490342787541326, 'Recall': 0.6402334363199451, 'F1': 0.644603819234425}
+    'AdaBoost': {'AUC': 0.7079332730032286, 'Accuracy': 0.654195392634942, 'Precision': 0.6490342787541326, 'Recall': 0.6402334363199451, 'F1': 0.644603819234425},
+    'XGBoost': {
+            'AUC': 0.7153804400341162, 
+            'Accuracy': 0.6542794686396503, 
+            'Precision': 0.6470992104359766, 
+            'Recall': 0.6470992104359766, 
+            'F1': 0.6470992104359766
+        }
 }
 
 # Puntuaciones usando (Sin Scalamiento - BackWard)
 scores_backward = {
     'LogisticRegression': {'AUC': 0.6760395571779361, 'Accuracy': 0.6258617790482597, 'Precision': 0.6222459132906895, 'Recall': 0.6010985238585651, 'F1': 0.6114894360048891},
     'RandomForest': {'AUC': 0.7202080647500883, 'Accuracy': 0.6568017487808979, 'Precision': 0.6477966101694915, 'Recall': 0.6560247167868177, 'F1': 0.6518847006651884},
-    'AdaBoost': {'AUC': 0.711708317294713, 'Accuracy': 0.6558769127291071, 'Precision': 0.6492678725236865, 'Recall': 0.6469275660830759, 'F1': 0.6480956065686527}
+    'AdaBoost': {'AUC': 0.711708317294713, 'Accuracy': 0.6558769127291071, 'Precision': 0.6492678725236865, 'Recall': 0.6469275660830759, 'F1': 0.6480956065686527},
+    'XGBoost': {
+            'AUC': 0.7266845133797735,
+            'Accuracy': 0.6629392971246006,
+            'Precision': 0.6563952487519367,
+            'Recall': 0.6544799176107106,
+            'F1': 0.655436183927804
+        }
 }
 
 # Puntuaciones usando (Sin Scalamiento - Mutual Information)
 scores_mutual_info = {
     'LogisticRegression': {'AUC': 0.6980692669258644, 'Accuracy': 0.6428451319993274, 'Precision': 0.6382270497547302, 'Recall': 0.6253003776175764, 'F1': 0.6316975897346974},
     'RandomForest': {'AUC': 0.7306977184539291, 'Accuracy': 0.6649571212375988, 'Precision': 0.6566275310532584, 'Recall': 0.6623755578441469, 'F1': 0.6594890199094249},
-    'AdaBoost': {'AUC': 0.7199033875376469, 'Accuracy': 0.6613418530351438, 'Precision': 0.6549465701482248, 'Recall': 0.6522485410230003, 'F1': 0.6535947712418301}
+    'AdaBoost': {'AUC': 0.7199033875376469, 'Accuracy': 0.6613418530351438, 'Precision': 0.6549465701482248, 'Recall': 0.6522485410230003, 'F1': 0.6535947712418301},
+    'XGBoost': {
+            'AUC': 0.7334503219151934, 
+            'Accuracy': 0.6703379855389272, 
+            'Precision': 0.6652211621856028, 
+            'Recall': 0.658256093374528, 
+            'F1': 0.6617203002329394
+        }
 }
 
 # PUNTUACION SIN USAR NADA
 scores_raw = {
     'LogisticRegression': {'AUC': 0.7005066280517789, 'Accuracy': 0.6468807802253237, 'Precision': 0.6456467216051595, 'Recall': 0.6186062478544456, 'F1': 0.6318373071528752},
     'RandomForest': {'AUC': 0.7309192041630941, 'Accuracy': 0.6656297292752649, 'Precision': 0.6561391656814727, 'Recall': 0.6668383110195675, 'F1': 0.661445475440538}, 
-    'AdaBoost': {'AUC': 0.7225691787841697, 'Accuracy': 0.6613418530351438, 'Precision': 0.6554287690179806, 'Recall': 0.6507037418468933, 'F1': 0.6530577088716624}
+    'AdaBoost': {'AUC': 0.7225691787841697, 'Accuracy': 0.6613418530351438, 'Precision': 0.6554287690179806, 'Recall': 0.6507037418468933, 'F1': 0.6530577088716624},
+    'XGBoost': {
+            'AUC': 0.73174181283592, 
+            'Accuracy': 0.6644526652093492, 
+            'Precision': 0.6559048428207307, 
+            'Recall': 0.6625472021970478, 
+            'F1': 0.659209290410725
+        }
 }
 
 ```
@@ -76,19 +104,75 @@ df = pd.DataFrame(data_dict)
 ```
 
 ```{python}
+xgboost = {
+    "Original": {
+        'XGBoost': {
+            'AUC': 0.73174181283592, 
+            'Accuracy': 0.6644526652093492, 
+            'Precision': 0.6559048428207307, 
+            'Recall': 0.6625472021970478, 
+            'F1': 0.659209290410725
+        }
+    },
+    "Backward": {
+        'XGBoost': {
+            'AUC': 0.7266845133797735,
+            'Accuracy': 0.6629392971246006,
+            'Precision': 0.6563952487519367,
+            'Recall': 0.6544799176107106,
+            'F1': 0.655436183927804
+        }
+    },
+    "Mutual information": {
+        'XGBoost': {
+            'AUC': 0.7334503219151934, 
+            'Accuracy': 0.6703379855389272, 
+            'Precision': 0.6652211621856028, 
+            'Recall': 0.658256093374528, 
+            'F1': 0.6617203002329394
+        }
+    },
+    "PCA" : {
+        'XGBoost': {
+            'AUC': 0.7153804400341162, 
+            'Accuracy': 0.6542794686396503, 
+            'Precision': 0.6470992104359766, 
+            'Recall': 0.6470992104359766, 
+            'F1': 0.6470992104359766
+        }
+    }
+}
+
+new_data = {'Method': [], 'Model': [], 'AUC': [], 'Accuracy': [], 'F1': [], 'Precision': [], 'Recall': []}
+
+for method, models in xgboost.items():
+    for model, metrics in models.items():
+        new_data['Method'].append(method)
+        new_data['Model'].append(model)
+        new_data['AUC'].append(metrics['AUC'])
+        new_data['Accuracy'].append(metrics['Accuracy'])
+        new_data['F1'].append(metrics['F1'])
+        new_data['Precision'].append(metrics['Precision'])
+        new_data['Recall'].append(metrics['Recall'])
+
+xgboost_df = pd.DataFrame(new_data)
+```
+
+
+```{python}
 
 df_melted = combined_df.melt(id_vars=['Method', 'Model'], var_name='Metric', value_name='Score')
 # df_melted = df.melt(id_vars=['Method', 'Model'], var_name='Metric', value_name='Score')
 
 # Create the FacetGrid with seaborn
-g = sns.FacetGrid(df_melted, col="Metric", hue="Model", sharey=False, col_wrap=2)
+g = sns.FacetGrid(df_melted, col="Metric", hue="Model", sharey=False, col_wrap=3)
 
 # Map the barplot
 g.map(sns.lineplot, "Method", "Score", marker='o')
 # g.map(sns.barplot, "Model", "Score", order=['AdaBoost', 'LogisticRegression', 'RandomForest'], errorbar=None)
 
 # Add legends
-g.add_legend(bbox_to_anchor=(0.5, 0), loc='upper center', ncol=3)
+g.add_legend(bbox_to_anchor=(0.5, 0), loc='upper center', ncol=4)
 
 # Rotate x-axis labels for better readability
 # for ax in g.axes.flatten():
