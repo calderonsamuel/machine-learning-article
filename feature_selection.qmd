@@ -11,6 +11,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from multiprocessing import Pool
 from sklearn.feature_selection import mutual_info_classif
+
+import statsmodels.api as sm
 ```
 # Cargar data
 ```{python}
@@ -96,6 +98,38 @@ def parallel_forward_selection(data, target, n_cores):
                 break
 
     return best_features
+
+# BACKWARD SELECTION
+# Función para ajustar el modelo y obtener el AIC
+def fit_model(X, y):
+    X = sm.add_constant(X)  # Agregar intercepto
+    model = sm.OLS(y, X).fit()  # Ajustar modelo de regresión lineal
+    return model
+
+# Implementación de backward selection
+def backward_selection(data, response, significance_level=0.05):
+    predictors = list(data.columns)
+    predictors.remove(response)  # Remover la variable respuesta
+    y = data[response]
+    X = data[predictors]
+    best_predictors = predictors
+    
+    while len(predictors) > 0:
+        X = data[predictors]
+        model = fit_model(X, y)
+        p_values = model.pvalues[1:]  # Excluir el p-valor del intercepto
+        max_p_value = p_values.max()
+        
+        if max_p_value > significance_level:
+            remove_feature = p_values.idxmax()
+            predictors.remove(remove_feature)
+            print(f"Eliminando '{remove_feature}' - P-valor: {max_p_value:.4f}")
+        else:
+            break
+    
+    best_predictors = predictors
+    final_model = fit_model(data[best_predictors], y)
+    return final_model, best_predictors
 ```
 # Ordenamiento
 ```{python}
@@ -171,13 +205,29 @@ print("Selected features:", selected_features)
 '''
   Todavia en etapa de pruebas.
 '''
-x = df.drop("shares", axis=1)
+X = df.drop("shares", axis=1)
 y = df["shares"]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 # Para clasificación multiclase
 mi_classif = mutual_info_classif(X_train, y_train)
 mi_df = pd.DataFrame({'feature': X_train.columns, 'mutual_info': mi_classif}).sort_values(by='mutual_info', ascending=False)
 selected_features = mi_df[mi_df['mutual_info'] > 0.01]['feature']
+```
+# BackWard Selection (Ejecutar despues de Forward Selection)
+```{python}
+'''
+  Todavia en etapa de pruebas.
+'''
+# Aplicar backward selection al conjunto de datos
+final_model, best_predictors = backward_selection(df_scaled, 'shares')
+
+# Resumen del modelo final
+print("\nModelo final:")
+print(final_model.summary())
+
+# Mejores predictores seleccionados
+print("\nMejores predictores seleccionados:")
+print(best_predictors)
 ```
 # Tomar solo caracteristicas seleccionadas + shared (Ejecutar despues Forward Selection)
 ```{python}
@@ -189,12 +239,12 @@ reduced_mutual_df
 ```{python}
 # Imprimir caracteristicas
 print('Caracteristicas seleccionadas:')
-print(df.columns[caracteristicas_seleccionados])
+print(df.columns[reduced_pca_df])
 print('Caracteristicas descartadas:')
 print(columnas_descartadas)
 ```
 # Descargar df preparado
 ```{python}
 # Descargar caracteristicas preparadas
-reduced_mutual_df.to_csv('data/ReadyToTrain.csv', index=False)
+df.to_csv('data/ReadyToTrain.csv', index=False)
 ```
